@@ -78,6 +78,9 @@ for sym in ["AAPL", "^GSPC"]:
         on_curve=cum_curve(pairs, 1), in_curve=cum_curve(pairs, 2),
         dow_on=dow_stats(pairs, 1), dow_in=dow_stats(pairs, 2))
 
+import engine
+RANKING = engine.compute()
+
 charts = {}
 for sym, a in analytics.items():
     name = "S&P 500 index" if sym == "^GSPC" else sym
@@ -175,6 +178,23 @@ def conf_badge(c):
     col = {"High":"#2da44e","Medium":"#bf8700","Low":"#cf222e","Research":"#8250df"}[c]
     return f'<span class="badge" style="background:{col}">{c}</span>'
 
+def sig_badge(s):
+    col = {"BUY":"#2da44e","WATCH":"#bf8700","AVOID":"#cf222e"}[s]
+    return f'<span class="badge" style="background:{col}">{s}</span>'
+
+screen_rows = ""
+for r in RANKING:
+    tip = "score parts: " + ", ".join(f"{k} {v:+.3f}" for k, v in r["contrib"].items())
+    screen_rows += (f'<tr data-sector="{r["sector"]}" data-signal="{r["signal"]}" title="{tip}">'
+        f'<td>{r["rank"]}</td><td><b>{r["symbol"]}</b></td><td>{r["sector"]}</td>'
+        f'<td><b>{r["score"]:+.3f}</b></td><td>{r["ret_1m"]:+.1f}%</td><td>{r["ret_3m"]:+.1f}%</td>'
+        f'<td>{r["vol20"]}%</td><td>{r["on_sharpe"]:+.2f}</td><td>{r["trend"]}%</td><td>{r["hi52"]}%</td>'
+        f'<td>{sig_badge(r["signal"])}</td><td>{r["confidence"]}</td></tr>')
+sectors = sorted({r["sector"] for r in RANKING})
+sector_opts = "".join(f'<option value="{s}">{s}</option>' for s in sectors)
+n_cached = len(RANKING)
+n_total = sum(1 for l in open(os.path.join(HERE, "universe.txt")) if l.strip())
+
 ideas_rows = "".join(
     f'<tr data-theme="{i["theme"]}" data-conf="{i["conf"]}">'
     f'<td><b>{esc(i["t"])}</b></td><td>{i["theme"]}</td><td>{esc(i["thesis"])}</td>'
@@ -237,15 +257,21 @@ q=document.getElementById('f-q').value.toLowerCase();
 document.querySelectorAll('#ideas tbody tr').forEach(function(r){
 var ok=(!th||r.dataset.theme===th)&&(!cf||r.dataset.conf===cf)&&(!q||r.textContent.toLowerCase().includes(q));
 r.style.display=ok?'':'none';});}
-window.addEventListener('DOMContentLoaded',function(){show('ideas');});
+window.addEventListener('DOMContentLoaded',function(){show('screener');});
+function filt2(){var se=document.getElementById('s-sector').value,si=document.getElementById('s-signal').value,
+q=document.getElementById('s-q').value.toLowerCase();
+document.querySelectorAll('#screen tbody tr').forEach(function(r){
+var ok=(!se||r.dataset.sector===se)&&(!si||r.dataset.signal===si)&&(!q||r.textContent.toLowerCase().includes(q));
+r.style.display=ok?'':'none';});}
 """
 
 html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>StockTrak Research Terminal v0.1</title><style>{CSS}</style></head><body>
-<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.2</span></h1>
+<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.3</span></h1>
 <span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
+<button data-t="screener" onclick="show('screener')">Screener</button>
 <button data-t="ideas" onclick="show('ideas')">Ranked ideas</button>
 <button data-t="backtests" onclick="show('backtests')">Backtests</button>
 <button data-t="risk" onclick="show('risk')">Portfolio risk</button>
@@ -254,6 +280,15 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <button data-t="methodology" onclick="show('methodology')">Methodology</button>
 <button data-t="casestudy" onclick="show('casestudy')">Case study</button>
 </nav>
+
+<section id="screener"><h2>Universe screener - explainable buy/sell ranking</h2>
+<div class="warn">Cross-sectional ranking over the StockTrak-eligible universe ({n_cached} of {n_total} symbols ingested so far; drip ingestion running). Score = fixed a-priori weights: 30% 3-month momentum, 15% 1-month momentum, 15% overnight-return Sharpe, 15% low volatility, 15% trend quality, 10% 52w-high proximity. No fitted parameters: the weights are declared before testing, which is the first defense against overfitting. Hover a row to see each factor's contribution to its score. Top quartile = BUY candidates, bottom quartile = AVOID, rest WATCH. Research output, not auto-execution.</div>
+<div class="filters">
+<select id="s-sector" onchange="filt2()"><option value="">All sectors</option>{sector_opts}</select>
+<select id="s-signal" onchange="filt2()"><option value="">All signals</option><option>BUY</option><option>WATCH</option><option>AVOID</option></select>
+<input id="s-q" oninput="filt2()" placeholder="Search symbol..."></div>
+<div class="card"><table id="screen"><thead><tr><th>#</th><th>Symbol</th><th>Sector</th><th>Score</th><th>1M</th><th>3M</th><th>Vol 20d</th><th>On Sharpe</th><th>Trend</th><th>52w hi</th><th>Signal</th><th>Data</th></tr></thead>
+<tbody>{screen_rows}</tbody></table></div></section>
 
 <section id="ideas"><h2>Ranked idea shortlist</h2>
 <div class="warn">Research shortlist, not auto-execution. Every idea needs a defensible thesis before a trade; the StockTrak notes field records it in natural language.</div>
@@ -285,7 +320,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <section id="casestudy"><h2>Case study - submission structure</h2>
 <div class="card"><p>Skeleton for the competition case-study report. Sections fill in from this terminal's logs as the competition runs.</p><ol>{case_items}</ol></div></section>
 
-<footer>StockTrak Research Terminal v0.2 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<footer>StockTrak Research Terminal v0.3 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
 <script>{JS}</script></body></html>"""
 
 out = os.path.join(HERE, "index.html")

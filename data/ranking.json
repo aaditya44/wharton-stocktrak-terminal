@@ -1,0 +1,26 @@
+[
+ {
+  "symbol": "AAPL",
+  "n": 252,
+  "close": 252.11,
+  "ret_1m": -7.4,
+  "ret_3m": -7.0,
+  "vol20": 18.1,
+  "on_sharpe": -0.06,
+  "trend": 51,
+  "hi52": 88.1,
+  "sector": "Technology",
+  "contrib": {
+   "ret_3m": 0.0,
+   "ret_1m": 0.0,
+   "on_sharpe": 0.0,
+   "low_vol": -0.0,
+   "trend": 0.0,
+   "hi52": 0.0
+  },
+  "score": 0.0,
+  "rank": 1,
+  "signal": "BUY",
+  "confidence": "full"
+ }
+]
