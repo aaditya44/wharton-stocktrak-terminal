@@ -270,8 +270,8 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <div class="card"><h3>Hypothesis register</h3>
 <table><tr><th>ID</th><th>Hypothesis</th><th>Status</th></tr>{hyp_rows}</table></div></section>
 
-<section id="risk"><h2>Portfolio risk snapshot (as of 2026-09-17 close)</h2>
-<div class="warn">Positions verified through the 2026-09-17 session. Largest structural risks: HCWC event risk (~$44k after -19.3% on day one, user-mandated HOLD), overnight gaps in the 3x sleeves (SOXL 139 sh, TQQQ). Positions bought today cannot be sold today - gap risk is undiversifiable within a session. Positions bought today cannot be sold today - gap risk is undiversifiable within a session.</div>
+<section id="risk"><h2>Portfolio risk snapshot (verified through the 2026-09-17 session)</h2>
+<div class="warn">Positions verified through the 2026-09-17 session. Largest structural risks: HCWC event risk (~$44k after -19.3% on day one, user-mandated HOLD), overnight gaps in the 3x sleeves (SOXL 139 sh, TQQQ). Positions bought today cannot be sold today - gap risk is undiversifiable within a session.</div>
 <div class="card"><table><tr><th>Sleeve</th><th>Theme</th><th>Role</th><th>Note</th></tr>{port_rows}</table></div></section>
 
 <section id="experiments"><h2>Experiment log</h2>
