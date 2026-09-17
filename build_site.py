@@ -282,7 +282,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 </nav>
 
 <section id="screener"><h2>Universe screener - explainable buy/sell ranking</h2>
-<div class="warn">Cross-sectional ranking over the StockTrak-eligible universe ({n_cached} of {n_total} symbols ingested so far; drip ingestion running). Score = fixed a-priori weights: 30% 3-month momentum, 15% 1-month momentum, 15% overnight-return Sharpe, 15% low volatility, 15% trend quality, 10% 52w-high proximity. No fitted parameters: the weights are declared before testing, which is the first defense against overfitting. Hover a row to see each factor's contribution to its score. Top quartile = BUY candidates, bottom quartile = AVOID, rest WATCH. Research output, not auto-execution.</div>
+<div class="warn">Cross-sectional ranking over the StockTrak-eligible universe ({n_cached} of {n_total} symbols ingested). Score = fixed a-priori weights: 30% 3-month momentum, 15% 1-month momentum, 15% overnight-return Sharpe, 15% low volatility, 15% trend quality, 10% 52w-high proximity. No fitted parameters: the weights are declared before testing, which is the first defense against overfitting. Hover a row to see each factor's contribution to its score. Top quartile = BUY candidates, bottom quartile = AVOID, rest WATCH. Research output, not auto-execution.</div>
 <div class="filters">
 <select id="s-sector" onchange="filt2()"><option value="">All sectors</option>{sector_opts}</select>
 <select id="s-signal" onchange="filt2()"><option value="">All signals</option><option>BUY</option><option>WATCH</option><option>AVOID</option></select>
