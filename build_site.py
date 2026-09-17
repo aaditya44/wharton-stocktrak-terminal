@@ -294,7 +294,7 @@ r.style.display=ok?'':'none';});}
 
 html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StockTrak Research Terminal v0.1</title><style>{CSS}</style></head><body>
+<title>StockTrak Research Terminal v0.4</title><style>{CSS}</style></head><body>
 <header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.4</span></h1>
 <span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
