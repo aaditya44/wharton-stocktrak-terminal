@@ -81,6 +81,9 @@ for sym in ["AAPL", "^GSPC"]:
 import engine
 RANKING = engine.compute()
 
+import client
+CLIENT = client.compute()
+
 charts = {}
 for sym, a in analytics.items():
     name = "S&P 500 index" if sym == "^GSPC" else sym
@@ -195,6 +198,26 @@ sector_opts = "".join(f'<option value="{s}">{s}</option>' for s in sectors)
 n_cached = len(RANKING)
 n_total = sum(1 for l in open(os.path.join(HERE, "universe.txt")) if l.strip())
 
+cpos_rows = "".join(
+    f'<tr data-sym="{p["symbol"]}" data-px="{p["price"]}"><td><b>{p["symbol"]}</b></td>'
+    f'<td><input class="c-sh" type="number" value="{p["shares"]}" style="width:80px" onchange="crecompute()"></td>'
+    f'<td>${p["price"]:,.2f}</td><td class="c-val">${p["value"]:,.0f}</td><td class="c-w">{p["weight"]}%</td><td>{p.get("note","")}</td></tr>'
+    for p in CLIENT["positions"])
+cflag_items = "".join('<p class="flag">- ' + f + '</p>' for f in CLIENT["flags"])
+crank_rows = ""
+for r in CLIENT["client_ranking"]:
+    crank_rows += ('<tr data-vol="' + str(r["vol20"]) + '" data-sector="' + r["sector"] + '" data-score="' + str(r["score"]) + '">'
+        '<td class="cr">' + str(r["client_rank"]) + '</td><td><b>' + r["symbol"] + '</b></td><td>' + r["sector"] + '</td>'
+        '<td>' + format(r["score"], "+.3f") + '</td><td class="cm">x' + str(r["suit_mult"]) + '</td>'
+        '<td class="cs"><b>' + format(r["client_score"], "+.3f") + '</b></td>'
+        '<td>' + sig_badge(r["signal"]) + '</td><td class="cn">' + r["suit_note"] + '</td></tr>')
+_client_tpl = open(os.path.join(HERE, "client_section.html")).read()
+_client_html = (_client_tpl.replace("{{LIFE_STAGE}}", CLIENT["profile"]["life_stage"])
+    .replace("{{GOAL}}", CLIENT["profile"]["goal"]).replace("{{HORIZON}}", str(CLIENT["profile"]["horizon_months"]))
+    .replace("{{BOOK}}", format(CLIENT["book"], ",.0f")).replace("{{CPOS_ROWS}}", cpos_rows)
+    .replace("{{CFLAG_ITEMS}}", cflag_items).replace("{{CRANK_ROWS}}", crank_rows))
+_client_js = open(os.path.join(HERE, "client_js.js")).read().replace("{{BOOK}}", repr(CLIENT["book"]))
+
 ideas_rows = "".join(
     f'<tr data-theme="{i["theme"]}" data-conf="{i["conf"]}">'
     f'<td><b>{esc(i["t"])}</b></td><td>{i["theme"]}</td><td>{esc(i["thesis"])}</td>'
@@ -258,6 +281,7 @@ document.querySelectorAll('#ideas tbody tr').forEach(function(r){
 var ok=(!th||r.dataset.theme===th)&&(!cf||r.dataset.conf===cf)&&(!q||r.textContent.toLowerCase().includes(q));
 r.style.display=ok?'':'none';});}
 window.addEventListener('DOMContentLoaded',function(){show('screener');});
+{_client_js}
 function filt2(){var se=document.getElementById('s-sector').value,si=document.getElementById('s-signal').value,
 q=document.getElementById('s-q').value.toLowerCase();
 document.querySelectorAll('#screen tbody tr').forEach(function(r){
@@ -268,10 +292,11 @@ r.style.display=ok?'':'none';});}
 html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>StockTrak Research Terminal v0.1</title><style>{CSS}</style></head><body>
-<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.3</span></h1>
+<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.4</span></h1>
 <span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="screener" onclick="show('screener')">Screener</button>
+<button data-t="client" onclick="show('client')">Client mode</button>
 <button data-t="ideas" onclick="show('ideas')">Ranked ideas</button>
 <button data-t="backtests" onclick="show('backtests')">Backtests</button>
 <button data-t="risk" onclick="show('risk')">Portfolio risk</button>
@@ -289,6 +314,8 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <input id="s-q" oninput="filt2()" placeholder="Search symbol..."></div>
 <div class="card"><table id="screen"><thead><tr><th>#</th><th>Symbol</th><th>Sector</th><th>Score</th><th>1M</th><th>3M</th><th>Vol 20d</th><th>On Sharpe</th><th>Trend</th><th>52w hi</th><th>Signal</th><th>Data</th></tr></thead>
 <tbody>{screen_rows}</tbody></table></div></section>
+
+{_client_html}
 
 <section id="ideas"><h2>Ranked idea shortlist</h2>
 <div class="warn">Research shortlist, not auto-execution. Every idea needs a defensible thesis before a trade; the StockTrak notes field records it in natural language.</div>
@@ -320,7 +347,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <section id="casestudy"><h2>Case study - submission structure</h2>
 <div class="card"><p>Skeleton for the competition case-study report. Sections fill in from this terminal's logs as the competition runs.</p><ol>{case_items}</ol></div></section>
 
-<footer>StockTrak Research Terminal v0.3 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<footer>StockTrak Research Terminal v0.4 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
 <script>{JS}</script></body></html>"""
 
 out = os.path.join(HERE, "index.html")

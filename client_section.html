@@ -1,0 +1,12 @@
+<section id="client"><h2>Client mode - profile-driven suitability</h2>
+<div class="warn">Declared rules, not fitted parameters: the stated profile (tolerance, horizon, liquidity, constraints, sector preferences) maps to a volatility band and concentration caps; every symbol gets a suitability multiplier from where its realized volatility sits against the band. Suitability is never inferred from age alone, and flags keep their uncertainty. Adjust the profile or share counts - everything recomputes live.</div>
+<div class="card"><h3>Profile</h3><p>
+Life stage: <b>{{LIFE_STAGE}}</b> &middot; Goal: {{GOAL}} &middot;
+Risk tolerance: <select id="c-tol" onchange="crecompute()"><option value="high">high</option><option value="medium">medium</option><option value="low">low</option></select> &middot;
+Horizon (months): <input id="c-hor" type="number" value="{{HORIZON}}" style="width:60px" onchange="crecompute()"> &middot;
+Preferred sectors: <label><input type="checkbox" class="c-pref" value="Technology" checked onchange="crecompute()"> Tech</label> <label><input type="checkbox" class="c-pref" value="EventDriven" checked onchange="crecompute()"> Event</label> <label><input type="checkbox" class="c-pref" value="IndexETF" checked onchange="crecompute()"> Index ETF</label> <label><input type="checkbox" class="c-pref" value="Energy" onchange="crecompute()"> Energy</label> <label><input type="checkbox" class="c-pref" value="Health" onchange="crecompute()"> Health</label></p></div>
+<div class="card"><h3>Verified positions (book ${{BOOK}}) - edit share counts to test</h3>
+<table id="cpos"><thead><tr><th>Symbol</th><th>Shares</th><th>Last</th><th>Value</th><th>Weight</th><th>Note</th></tr></thead><tbody>{{CPOS_ROWS}}</tbody></table></div>
+<div class="card"><h3>Allocation &amp; risk flags</h3><div id="cflags">{{CFLAG_ITEMS}}</div></div>
+<div class="card"><h3>Client-suitable ranking</h3>
+<table id="crank"><thead><tr><th>#</th><th>Symbol</th><th>Sector</th><th>Base</th><th>Suitability</th><th>Client score</th><th>Signal</th><th>Note</th></tr></thead><tbody>{{CRANK_ROWS}}</tbody></table></div></section>
