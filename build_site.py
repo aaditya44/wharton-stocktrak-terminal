@@ -87,22 +87,22 @@ for sym, a in analytics.items():
 
 # ---------- content ----------
 PORTFOLIO = [
-    # symbol, theme, role, note
-    ("NVDA / AAPL", "Mega-cap tech", "Core quality", "Stayed green through the 09-17 Fed selloff; user wants to lean into these"),
-    ("SOXL", "Semis 3x leverage", "Momentum experiment", "Partial fill lesson: 9 of 125 filled first attempt; completion of 116 planned near close"),
+    ("NVDA (205 sh)", "Mega-cap tech", "Core leader", "Averaged up 65 sh @ $218.12 on 09-17 (Exp 7); +2.5% same session"),
+    ("SOXL (139 sh)", "Semis 3x leverage", "Momentum experiment", "130 sh @ $113.66 (Exp 6, half-sized on +9% gap) + 9 of 125 partial @ $115.07; 116-sh completion pending"),
+    ("HCWC (4,000 sh)", "Merger arb", "Event experiment", "User trade @ ~$13.77 ($55,080); -19.3% (-$10,640) day one; user instructed HOLD for merger outcome unless thesis breaks"),
     ("TQQQ", "Nasdaq 3x leverage", "Beta sleeve", "-2.2% in the 09-17 hawkish-Fed selloff; high gap risk"),
-    ("XLE / XOM", "Energy", "Geopolitics hedge", "-2.3% / -1.5% on 09-17; driven by Middle East and crude"),
+    ("XLE", "Energy", "Geopolitics hedge", "XOM leg SOLD 09-17 (59 sh ~$163.32): thesis broke after crude's third down day + Saudi rerouting; correct cut"),
     ("UUP", "US dollar", "Working hedge", "Gained during the 09-17 selloff; dampens equity beta"),
     ("GLD", "Gold", "Defensive ballast", "Low correlation sleeve"),
     ("ITA / LMT", "Defense", "Thematic", "Geopolitical escalation upside"),
     ("2.75% Feb-28 Treasury", "Rates", "User's own buy", "50 units (~$49k, ~16%) bought by Aaditya 09-16; rated 6/10 fit for an aggressive target"),
-    ("HCWC", "Merger arb", "Event experiment", "HOST merger spread watch; thesis breaks on delay/cancel news"),
+    ("AAPL", "Mega-cap tech", "Core quality", "Stayed green through the 09-17 selloff"),
 ]
 
 IDEAS = [
     dict(t="HCWC", theme="Event", thesis="HOST acquisition spread: price should converge toward deal terms as closing approaches",
          catalyst="Merger milestones, filings, closing date", entry="Near close, sized small", exit="Deal close, or immediately on delay/cancel news",
-         conf="Medium", downside="Deal break gaps the spread wide open overnight"),
+         conf="Medium", downside="Deal break gaps the spread wide open overnight; position already -19.3% day one and held by user instruction"),
     dict(t="SOXL", theme="Momentum", thesis="Semis relative strength; complete the 116-share tranche only while momentum holds",
          catalyst="Semis news, NVDA earnings halo, SOX index trend", entry="Pre-close window 30-15 min before 4pm ET",
          exit="20-40% spike rule, or pre-open exit if overnight news breaks the thesis", conf="Medium",
@@ -123,16 +123,24 @@ IDEAS = [
 
 EXPERIMENTS = [
     ("2026-09-16", "Mandate set", "High risk tolerance, heavy diversification, 30% ROI target pushed back as unrealistic for 9 days; risk-adjusted focus adopted", "Operating mandate"),
-    ("2026-09-17", "Fed stress test", "Hawkish presser drove slow selloff: TQQQ -2.2%, XLE -2.33%; UUP hedge and mega-cap quality worked", "Portfolio value $298,570 (-0.48%)"),
-    ("2026-09-17", "Partial-fill lesson", "SOXL order filled 9 of 125 shares; standing rule: verify actual filled quantity on every order before sizing the next", "Process fix adopted"),
+    ("2026-09-17", "Fed stress test", "Hawkish presser drove slow selloff: TQQQ -2.2%, XLE -2.33%; UUP hedge and mega-cap quality worked", "Hedge validated"),
+    ("2026-09-17", "Exp 6: semis momentum", "BUY 130 SOXL, half-sized because of a +9% gap", "+1.0% by 14:41; open"),
+    ("2026-09-17", "Exp 7: average up into leader", "BUY 65 NVDA @ $218.12 into strength", "+2.5% by 14:32; open, 205 sh total"),
+    ("2026-09-17", "HCWC merger event", "User bought 4,000 sh; same-day -19.3%", "HOLD per user instruction unless thesis-breaking news"),
+    ("2026-09-17", "Partial-fill lesson", "SOXL order filled 9 of 125 shares; standing rule: verify actual filled quantity on every order", "Process fix adopted"),
+    ("2026-09-17", "Exp 8: third-party signal labels", "Do published strong-buy/sell labels predict? INDP Signal #1 test", "+18.2% at 1 day; multi-day checkpoint pending"),
+    ("2026-09-17", "Exp 9: mean reversion", "Fallen spike names, 1-3% sizing, max 2-3 names", "Registered"),
     ("2026-09-18", "Overnight experiment", "Buy near close, monitor between sessions, reassess pre-open, exit after open (no-day-trading compliant)", "Approved; sizing autonomous"),
-    ("2026-09-18", "Standing autonomy", "User granted trade autonomy for the practice account; daily rhythm: pre-open brief 6:30pm IST, pre-close trades 1:00am IST, hourly in-market checks", "Mandate updated"),
+    ("2026-09-18", "Standing autonomy", "User granted trade autonomy; daily rhythm: pre-open brief 6:30pm IST, pre-close trades 1:00am IST, hourly in-market checks", "Mandate updated"),
 ]
 
 TRADES = [
     ("2026-09-16", "2.75% UST Feb-2028", "BUY", "50 units (~$49k)", "Executed by Aaditya himself at the open; reviewed 6/10 for an aggressive target"),
-    ("2026-09-17", "SOXL", "BUY", "9 of 125 filled", "Partial fill - exposed the verification gap now in the standing rules"),
-    ("2026-09-18", "SOXL", "BUY (planned)", "116 shares", "Completion tranche for the 1:00-1:15am IST pre-close window, momentum-conditional"),
+    ("2026-09-17 09:44 ET", "XOM", "SELL", "59 sh ~$163.32", "Conf 6EF52922. Energy thesis broke (crude third down day, Saudi rerouting); avoided further decline - correct cut"),
+    ("2026-09-17 09:46 ET", "SOXL", "BUY", "130 sh ~$113.66 ($14,774.80)", "Conf 92E51EB6. Exp 6 semis momentum, half-sized on +9% gap; +1.0% by 14:41"),
+    ("2026-09-17 09:46 ET", "NVDA", "BUY", "65 sh @ $218.12 ($14,177.80)", "Conf E741EA02. Exp 7 average up into strongest leader; +2.5% by 14:32; position now 205 sh"),
+    ("2026-09-17 10:46 ET", "HCWC", "BUY (user)", "4,000 sh ~$13.77 ($55,080)", "Host Digital AI merger thesis; -19.3% (-$10,640) same day; user instructed HOLD for merger outcome unless thesis-breaking news"),
+    ("2026-09-17 14:35 ET", "SOXL", "BUY", "9 of 125 filled ~$115.07 ($1,035.63)", "Conf 26365B54. Partial fill - exposed the verification gap now in the standing rules; 116-sh completion planned pre-close"),
 ]
 
 METHODOLOGY = [
@@ -263,7 +271,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <table><tr><th>ID</th><th>Hypothesis</th><th>Status</th></tr>{hyp_rows}</table></div></section>
 
 <section id="risk"><h2>Portfolio risk snapshot (as of 2026-09-17 close)</h2>
-<div class="warn">Portfolio value $298,570 (-0.48% on 09-17). Largest structural risks: overnight gaps in 3x leveraged sleeves (SOXL, TQQQ) and the HCWC merger event. Positions bought today cannot be sold today - gap risk is undiversifiable within a session.</div>
+<div class="warn">Positions verified through the 2026-09-17 session. Largest structural risks: HCWC event risk (~$44k after -19.3% on day one, user-mandated HOLD), overnight gaps in the 3x sleeves (SOXL 139 sh, TQQQ). Positions bought today cannot be sold today - gap risk is undiversifiable within a session. Positions bought today cannot be sold today - gap risk is undiversifiable within a session.</div>
 <div class="card"><table><tr><th>Sleeve</th><th>Theme</th><th>Role</th><th>Note</th></tr>{port_rows}</table></div></section>
 
 <section id="experiments"><h2>Experiment log</h2>
