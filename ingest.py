@@ -19,14 +19,16 @@ for line in open(os.path.join(HERE, "universe.txt")):
 
 print(f"{len(todo)} symbols still uncached")
 done = 0
+attempted = 0
 for sym in todo:
-    if done >= BATCH: break
+    if done >= BATCH or attempted >= BATCH + 2: break
+    attempted += 1
     enc = urllib.parse.quote(sym, safe="")
     url = f"https://query1.finance.yahoo.com/v8/finance/chart/{enc}?range=1y&interval=1d"
     ok = False
     for attempt in range(2):
-        out = subprocess.run(["tools", "web_fetch", "--url", url],
-                             capture_output=True, text=True, timeout=120).stdout
+        out = subprocess.run(["tools", "web_fetch", "--url", url, "--timeout", "20"],
+                             capture_output=True, text=True, timeout=30).stdout
         body = next((l.strip() for l in out.splitlines() if l.strip().startswith('{"chart"')), None)
         if body:
             res = json.loads(body)["chart"]["result"][0]
@@ -36,7 +38,7 @@ for sym in todo:
                 json.dump(rows, open(cache_path(sym), "w"))
                 print(f"{sym}: cached {len(rows)} bars"); ok = True; done += 1
                 break
-        time.sleep(4)
+        time.sleep(2)
     if not ok:
         print(f"{sym}: blocked this round")
-    time.sleep(6)  # polite spacing between symbols
+    time.sleep(3)  # polite spacing between symbols
