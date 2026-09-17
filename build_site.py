@@ -243,7 +243,7 @@ window.addEventListener('DOMContentLoaded',function(){show('ideas');});
 html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>StockTrak Research Terminal v0.1</title><style>{CSS}</style></head><body>
-<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.1</span></h1>
+<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.2</span></h1>
 <span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="ideas" onclick="show('ideas')">Ranked ideas</button>
@@ -285,7 +285,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <section id="casestudy"><h2>Case study - submission structure</h2>
 <div class="card"><p>Skeleton for the competition case-study report. Sections fill in from this terminal's logs as the competition runs.</p><ol>{case_items}</ol></div></section>
 
-<footer>StockTrak Research Terminal v0.1 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<footer>StockTrak Research Terminal v0.2 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
 <script>{JS}</script></body></html>"""
 
 out = os.path.join(HERE, "index.html")
