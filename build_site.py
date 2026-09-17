@@ -1,0 +1,285 @@
+#!/usr/bin/env python3
+"""build_site.py - generate the StockTrak Research Terminal (single self-contained index.html).
+
+Reads cached price bars from data/, computes the research analytics
+(overnight/intraday decomposition, day-of-week breakdown, equity curves),
+and emits one portable HTML file with client-side filtering. No external assets.
+"""
+import base64, csv, datetime as dt, io, json, math, os, statistics
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+DATA = os.path.join(HERE, "data")
+NOW = dt.datetime.now(dt.timezone(dt.timedelta(hours=5, minutes=30)))  # IST
+
+# ---------- analytics ----------
+def load_bars(symbol, rng="1y"):
+    p = os.path.join(DATA, f"bars_{symbol.replace('^','I_').replace('=','_')}_{rng}.json")
+    return json.load(open(p)) if os.path.exists(p) else None
+
+def decompose(rows):
+    out = []
+    for i in range(1, len(rows)):
+        t, o, c = rows[i][0], rows[i][1], rows[i][2]
+        pc = rows[i-1][2]
+        out.append((dt.datetime.fromtimestamp(t, dt.timezone.utc), math.log(o/pc), math.log(c/o)))
+    return out
+
+def st(xs):
+    if len(xs) < 30: return None
+    m = statistics.mean(xs)*252*100
+    v = statistics.pstdev(xs)*math.sqrt(252)*100
+    return dict(n=len(xs), mean=round(m,1), vol=round(v,1),
+                sharpe=round(m/v,2) if v else None,
+                hit=round(sum(1 for x in xs if x>0)/len(xs)*100))
+
+def cum_curve(pairs, idx):
+    curve, acc = [], 0.0
+    for p in pairs:
+        acc += p[idx]
+        curve.append((p[0], math.exp(acc)-1))
+    return curve
+
+def fig_b64(series, title, labels):
+    plt.style.use("dark_background")
+    fig, ax = plt.subplots(figsize=(7.2, 3.2), dpi=110)
+    for s, lab in zip(series, labels):
+        ax.plot([p[0] for p in s], [p[1]*100 for p in s], label=lab, linewidth=1.4)
+    ax.set_title(title, fontsize=10); ax.set_ylabel("cumulative %")
+    ax.legend(fontsize=8); ax.grid(alpha=.25)
+    fig.autofmt_xdate(); fig.tight_layout()
+    buf = io.BytesIO(); fig.savefig(buf, format="png"); plt.close(fig)
+    return base64.b64encode(buf.getvalue()).decode()
+
+DOW = ["Mon","Tue","Wed","Thu","Fri"]
+def dow_stats(pairs, idx):
+    by = {d: [] for d in range(5)}
+    for p in pairs:
+        if p[0].weekday() < 5: by[p[0].weekday()].append(p[idx])
+    out = []
+    for d in range(5):
+        xs = by[d]
+        if xs:
+            out.append((DOW[d], len(xs), round(statistics.mean(xs)*100, 3),
+                        round(sum(1 for x in xs if x > 0)/len(xs)*100)))
+    return out
+
+analytics = {}   # symbol -> dict
+for sym in ["AAPL", "^GSPC"]:
+    rows = load_bars(sym)
+    if not rows: continue
+    pairs = decompose(rows)
+    on = [p[1] for p in pairs]; intra = [p[2] for p in pairs]
+    analytics[sym] = dict(
+        n=len(rows), on=st(on), intra=st(intra),
+        on_curve=cum_curve(pairs, 1), in_curve=cum_curve(pairs, 2),
+        dow_on=dow_stats(pairs, 1), dow_in=dow_stats(pairs, 2))
+
+charts = {}
+for sym, a in analytics.items():
+    name = "S&P 500 index" if sym == "^GSPC" else sym
+    charts[sym] = fig_b64([a["on_curve"], a["in_curve"]],
+                          f"{name}: 1y cumulative return - overnight vs intraday",
+                          ["overnight (close to open)", "intraday (open to close)"])
+
+# ---------- content ----------
+PORTFOLIO = [
+    # symbol, theme, role, note
+    ("NVDA / AAPL", "Mega-cap tech", "Core quality", "Stayed green through the 09-17 Fed selloff; user wants to lean into these"),
+    ("SOXL", "Semis 3x leverage", "Momentum experiment", "Partial fill lesson: 9 of 125 filled first attempt; completion of 116 planned near close"),
+    ("TQQQ", "Nasdaq 3x leverage", "Beta sleeve", "-2.2% in the 09-17 hawkish-Fed selloff; high gap risk"),
+    ("XLE / XOM", "Energy", "Geopolitics hedge", "-2.3% / -1.5% on 09-17; driven by Middle East and crude"),
+    ("UUP", "US dollar", "Working hedge", "Gained during the 09-17 selloff; dampens equity beta"),
+    ("GLD", "Gold", "Defensive ballast", "Low correlation sleeve"),
+    ("ITA / LMT", "Defense", "Thematic", "Geopolitical escalation upside"),
+    ("2.75% Feb-28 Treasury", "Rates", "User's own buy", "50 units (~$49k, ~16%) bought by Aaditya 09-16; rated 6/10 fit for an aggressive target"),
+    ("HCWC", "Merger arb", "Event experiment", "HOST merger spread watch; thesis breaks on delay/cancel news"),
+]
+
+IDEAS = [
+    dict(t="HCWC", theme="Event", thesis="HOST acquisition spread: price should converge toward deal terms as closing approaches",
+         catalyst="Merger milestones, filings, closing date", entry="Near close, sized small", exit="Deal close, or immediately on delay/cancel news",
+         conf="Medium", downside="Deal break gaps the spread wide open overnight"),
+    dict(t="SOXL", theme="Momentum", thesis="Semis relative strength; complete the 116-share tranche only while momentum holds",
+         catalyst="Semis news, NVDA earnings halo, SOX index trend", entry="Pre-close window 30-15 min before 4pm ET",
+         exit="20-40% spike rule, or pre-open exit if overnight news breaks the thesis", conf="Medium",
+         downside="3x daily reset: a -10% overnight gap in semis is -30% here"),
+    dict(t="Overnight-gap basket", theme="Overnight", thesis="Research hypothesis H1: overnight returns dominate intraday for index-level exposure (JFE 2019 evidence)",
+         catalyst="Between-session news cycle", entry="Last 15-30 min of session", exit="First minutes after next open, never same-day (rules)",
+         conf="Research", downside="Weekend gaps compound ~3 days of news; keep experiment capped"),
+    dict(t="NVDA", theme="Quality", thesis="Mega-cap quality that stayed green in the Fed selloff; core holding",
+         catalyst="AI/datacenter news flow", entry="Hold / add on weakness", exit="Thesis review weekly, not on noise",
+         conf="High", downside="Crowded positioning; sharp but recoverable drawdowns"),
+    dict(t="UUP", theme="Hedge", thesis="Dollar strength persisted through the selloff; offsets equity beta",
+         catalyst="Fed path, rate differentials", entry="Hold", exit="When Fed turns dovish or equities stabilize",
+         conf="Medium", downside="Slow bleed if risk-on returns"),
+    dict(t="XLE", theme="Energy", thesis="Middle East escalation premium in crude",
+         catalyst="Geopolitics, OPEC", entry="Hold small", exit="De-escalation headlines",
+         conf="Low", downside="Gap down on any ceasefire headline"),
+]
+
+EXPERIMENTS = [
+    ("2026-09-16", "Mandate set", "High risk tolerance, heavy diversification, 30% ROI target pushed back as unrealistic for 9 days; risk-adjusted focus adopted", "Operating mandate"),
+    ("2026-09-17", "Fed stress test", "Hawkish presser drove slow selloff: TQQQ -2.2%, XLE -2.33%; UUP hedge and mega-cap quality worked", "Portfolio value $298,570 (-0.48%)"),
+    ("2026-09-17", "Partial-fill lesson", "SOXL order filled 9 of 125 shares; standing rule: verify actual filled quantity on every order before sizing the next", "Process fix adopted"),
+    ("2026-09-18", "Overnight experiment", "Buy near close, monitor between sessions, reassess pre-open, exit after open (no-day-trading compliant)", "Approved; sizing autonomous"),
+    ("2026-09-18", "Standing autonomy", "User granted trade autonomy for the practice account; daily rhythm: pre-open brief 6:30pm IST, pre-close trades 1:00am IST, hourly in-market checks", "Mandate updated"),
+]
+
+TRADES = [
+    ("2026-09-16", "2.75% UST Feb-2028", "BUY", "50 units (~$49k)", "Executed by Aaditya himself at the open; reviewed 6/10 for an aggressive target"),
+    ("2026-09-17", "SOXL", "BUY", "9 of 125 filled", "Partial fill - exposed the verification gap now in the standing rules"),
+    ("2026-09-18", "SOXL", "BUY (planned)", "116 shares", "Completion tranche for the 1:00-1:15am IST pre-close window, momentum-conditional"),
+]
+
+METHODOLOGY = [
+    ("Data sources (verified 2026-09-18)", "Yahoo Finance chart API via the agent fetch path for daily/intraday bars (per-symbol availability is inconsistent - ETFs often blocked; every successful pull is cached so history is never re-fetched). StockTrak account snapshots at scheduled checkpoints only - no aggressive scraping. SEC filings and news via web fetch/search at event time."),
+    ("Competition rules encoded", "$25 commission per trade, no short selling, no margin, no same-day exits (a position bought today cannot be sold today). Practice period resets 2026-09-25 16:00 ET; real competition starts 2026-09-28 09:30 ET; ~$300k starting value."),
+    ("Anti-overfitting", "Hypotheses pre-registered with an economic rationale before testing. Train/validation split plus walk-forward. Multiple-testing control across bucket grids. Minimum n=30 per cell or the cell is labeled anecdote. Max 2-3 parameters per rule. Every backtest carries $25/trade commission plus a slippage haircut. Effects must survive a half-sample split."),
+    ("Known limitations", "Only 2 symbols ingested so far (252 daily bars each); ETF fetch path is unreliable and being worked around. Five practice days left cannot produce statistical significance - live trading data validates, historical data discovers. Half of all backtest findings should be assumed to fail live."),
+]
+
+CASE_STUDY = [
+    "1. Objective and mandate (risk tolerance, rules, capital)",
+    "2. Research methodology (this document's data + safeguards sections)",
+    "3. Strategy hypotheses and rationale (H1-H5 register)",
+    "4. Dated experiment log and trade log (screenshots attached at submission)",
+    "5. Results: what the data supported, what it rejected, and why",
+    "6. Risk management: sizing, gap risk, no-day-trading compliance",
+    "7. Lessons and what changes for the real competition",
+]
+
+HYPOTHESES = [
+    ("H1", "Overnight returns dominate intraday at index level (Lou/Polk/Skouras, JFE 2019)", "TESTING - early data supportive for ^GSPC, not AAPL"),
+    ("H2", "3x leveraged ETFs (SOXL/TQQQ) bleed via daily-reset decay in sideways volatility", "REGISTERED"),
+    ("H3", "Day-of-week effects in our universe", "EXPECTED NULL - demonstrates discipline either way"),
+    ("H4", "Fed-day and event windows carry outsized overnight moves", "REGISTERED"),
+    ("H5", "Pre-close semis momentum continues into next open", "REGISTERED"),
+]
+
+# ---------- html ----------
+def esc(s): return s.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+
+def conf_badge(c):
+    col = {"High":"#2da44e","Medium":"#bf8700","Low":"#cf222e","Research":"#8250df"}[c]
+    return f'<span class="badge" style="background:{col}">{c}</span>'
+
+ideas_rows = "".join(
+    f'<tr data-theme="{i["theme"]}" data-conf="{i["conf"]}">'
+    f'<td><b>{esc(i["t"])}</b></td><td>{i["theme"]}</td><td>{esc(i["thesis"])}</td>'
+    f'<td>{esc(i["catalyst"])}</td><td>{esc(i["entry"])}</td><td>{esc(i["exit"])}</td>'
+    f'<td>{conf_badge(i["conf"])}</td><td>{esc(i["downside"])}</td></tr>' for i in IDEAS)
+
+backtest_blocks = ""
+for sym, a in analytics.items():
+    name = "S&P 500 (^GSPC)" if sym == "^GSPC" else sym
+    dow_rows = "".join(
+        f"<tr><td>{d}</td><td>{n}</td><td>{m:+.3f}%</td><td>{h}%</td></tr>"
+        for d, n, m, h in a["dow_on"])
+    backtest_blocks += f"""
+    <div class="card"><h3>{name} - 1 year, {a['n']} daily bars</h3>
+    <table><tr><th>Component</th><th>n</th><th>Ann. mean</th><th>Ann. vol</th><th>Sharpe</th><th>Hit rate</th></tr>
+    <tr><td>Overnight (close&rarr;open)</td><td>{a['on']['n']}</td><td>{a['on']['mean']:+.1f}%</td><td>{a['on']['vol']}%</td><td>{a['on']['sharpe']:+.2f}</td><td>{a['on']['hit']}%</td></tr>
+    <tr><td>Intraday (open&rarr;close)</td><td>{a['intra']['n']}</td><td>{a['intra']['mean']:+.1f}%</td><td>{a['intra']['vol']}%</td><td>{a['intra']['sharpe']:+.2f}</td><td>{a['intra']['hit']}%</td></tr></table>
+    <img class="chart" src="data:image/png;base64,{charts[sym]}" alt="equity curves">
+    <h4>Overnight mean return by weekday (H3, exploratory - not adjusted for multiple testing)</h4>
+    <table><tr><th>Weekday</th><th>n</th><th>Mean overnight</th><th>Hit</th></tr>{dow_rows}</table>
+    </div>"""
+
+exp_rows = "".join(f"<tr><td>{d}</td><td><b>{esc(t)}</b></td><td>{esc(x)}</td><td>{esc(o)}</td></tr>" for d, t, x, o in EXPERIMENTS)
+trade_rows = "".join(f"<tr><td>{d}</td><td>{esc(s)}</td><td>{esc(a)}</td><td>{esc(q)}</td><td>{esc(n)}</td></tr>" for d, s, a, q, n in TRADES)
+port_rows = "".join(f"<tr><td><b>{esc(s)}</b></td><td>{esc(t)}</td><td>{esc(r)}</td><td>{esc(n)}</td></tr>" for s, t, r, n in PORTFOLIO)
+meth_blocks = "".join(f'<div class="card"><h3>{esc(h)}</h3><p>{esc(b)}</p></div>' for h, b in METHODOLOGY)
+hyp_rows = "".join(f"<tr><td>{h}</td><td>{esc(t)}</td><td>{esc(s)}</td></tr>" for h, t, s in HYPOTHESES)
+case_items = "".join(f"<li>{esc(x)}</li>" for x in CASE_STUDY)
+themes = sorted({i["theme"] for i in IDEAS})
+theme_opts = "".join(f'<option value="{t}">{t}</option>' for t in themes)
+
+CSS = """
+body{background:#0d1117;color:#e6edf3;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0}
+header{padding:18px 26px;border-bottom:1px solid #30363d;display:flex;flex-wrap:wrap;gap:18px;align-items:baseline}
+header h1{font-size:20px;margin:0} header .sub{color:#8b949e;font-size:13px}
+nav{padding:0 26px;border-bottom:1px solid #30363d;display:flex;flex-wrap:wrap}
+nav button{background:none;border:none;color:#8b949e;padding:12px 14px;font-size:14px;cursor:pointer;border-bottom:2px solid transparent}
+nav button.active{color:#58a6ff;border-bottom-color:#58a6ff}
+section{display:none;padding:20px 26px} section.active{display:block}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 18px;margin-bottom:16px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #30363d;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#21262d} .badge{color:#fff;border-radius:10px;padding:2px 8px;font-size:11px}
+.chart{max-width:100%;border-radius:6px;margin:10px 0}
+.filters{margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap}
+.filters select,.filters input{background:#0d1117;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:6px 9px;font-size:13px}
+.warn{border-left:3px solid #bf8700;padding:8px 12px;background:#161b22;margin-bottom:16px;font-size:13px}
+h2{margin:0 0 14px;font-size:17px} h3{font-size:14px;margin:0 0 10px} h4{font-size:13px;margin:14px 0 6px}
+p{font-size:13px;line-height:1.55;margin:6px 0} ol{font-size:13px;line-height:1.7}
+footer{padding:16px 26px;color:#8b949e;font-size:12px;border-top:1px solid #30363d}
+"""
+
+JS = """
+function show(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelector('nav button[data-t="'+id+'"]').classList.add('active');}
+function filt(){var th=document.getElementById('f-theme').value,cf=document.getElementById('f-conf').value,
+q=document.getElementById('f-q').value.toLowerCase();
+document.querySelectorAll('#ideas tbody tr').forEach(function(r){
+var ok=(!th||r.dataset.theme===th)&&(!cf||r.dataset.conf===cf)&&(!q||r.textContent.toLowerCase().includes(q));
+r.style.display=ok?'':'none';});}
+window.addEventListener('DOMContentLoaded',function(){show('ideas');});
+"""
+
+html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StockTrak Research Terminal v0.1</title><style>{CSS}</style></head><body>
+<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.1</span></h1>
+<span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
+<nav>
+<button data-t="ideas" onclick="show('ideas')">Ranked ideas</button>
+<button data-t="backtests" onclick="show('backtests')">Backtests</button>
+<button data-t="risk" onclick="show('risk')">Portfolio risk</button>
+<button data-t="experiments" onclick="show('experiments')">Experiment log</button>
+<button data-t="trades" onclick="show('trades')">Trade log</button>
+<button data-t="methodology" onclick="show('methodology')">Methodology</button>
+<button data-t="casestudy" onclick="show('casestudy')">Case study</button>
+</nav>
+
+<section id="ideas"><h2>Ranked idea shortlist</h2>
+<div class="warn">Research shortlist, not auto-execution. Every idea needs a defensible thesis before a trade; the StockTrak notes field records it in natural language.</div>
+<div class="filters" id="ideas-f">
+<select id="f-theme" onchange="filt()"><option value="">All themes</option>{theme_opts}</select>
+<select id="f-conf" onchange="filt()"><option value="">All confidence</option><option>High</option><option>Medium</option><option>Low</option><option>Research</option></select>
+<input id="f-q" oninput="filt()" placeholder="Search thesis, catalyst, exit..."></div>
+<table id="ideas"><thead><tr><th>Idea</th><th>Theme</th><th>Thesis</th><th>Catalyst</th><th>Entry</th><th>Exit rule</th><th>Confidence</th><th>Expected downside</th></tr></thead>
+<tbody>{ideas_rows}</tbody></table></section>
+
+<section id="backtests"><h2>Backtests: overnight vs intraday decomposition (H1)</h2>
+<div class="warn">Historical discovery only: $25/trade commission and slippage apply to any traded version. Day-of-week rows are exploratory and unadjusted for multiple testing.</div>
+{backtest_blocks}
+<div class="card"><h3>Hypothesis register</h3>
+<table><tr><th>ID</th><th>Hypothesis</th><th>Status</th></tr>{hyp_rows}</table></div></section>
+
+<section id="risk"><h2>Portfolio risk snapshot (as of 2026-09-17 close)</h2>
+<div class="warn">Portfolio value $298,570 (-0.48% on 09-17). Largest structural risks: overnight gaps in 3x leveraged sleeves (SOXL, TQQQ) and the HCWC merger event. Positions bought today cannot be sold today - gap risk is undiversifiable within a session.</div>
+<div class="card"><table><tr><th>Sleeve</th><th>Theme</th><th>Role</th><th>Note</th></tr>{port_rows}</table></div></section>
+
+<section id="experiments"><h2>Experiment log</h2>
+<div class="card"><table><tr><th>Date</th><th>Experiment</th><th>What happened / design</th><th>Outcome / status</th></tr>{exp_rows}</table></div></section>
+
+<section id="trades"><h2>Trade log (dated, auditable)</h2>
+<div class="card"><table><tr><th>Date</th><th>Instrument</th><th>Side</th><th>Quantity</th><th>Note</th></tr>{trade_rows}</table></div></section>
+
+<section id="methodology"><h2>Methodology</h2>{meth_blocks}</section>
+
+<section id="casestudy"><h2>Case study - submission structure</h2>
+<div class="card"><p>Skeleton for the competition case-study report. Sections fill in from this terminal's logs as the competition runs.</p><ol>{case_items}</ol></div></section>
+
+<footer>StockTrak Research Terminal v0.1 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<script>{JS}</script></body></html>"""
+
+out = os.path.join(HERE, "index.html")
+open(out, "w").write(html)
+print("wrote", out, f"{len(html)/1024:.0f} KB")

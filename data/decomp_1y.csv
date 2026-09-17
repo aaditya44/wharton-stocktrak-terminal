@@ -1,0 +1,5 @@
+symbol,range,component,n,ann_mean_pct,ann_vol_pct,sharpe,hit_pct
+AAPL,1y,overnight,251,-1.3,20.2,-0.06,51
+AAPL,1y,intraday,251,13.3,26.7,0.5,51
+^GSPC,1y,overnight,251,5.8,9.5,0.61,59
+^GSPC,1y,intraday,251,7.4,15.7,0.47,52
