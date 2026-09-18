@@ -94,11 +94,11 @@ for sym, a in analytics.items():
 # ---------- content ----------
 PORTFOLIO = [
     ("NVDA (205 sh)", "Mega-cap tech", "Core leader (client-suitable)", "Averaged up 65 sh @ $218.12 on 09-17 (Exp 7); +$1,633 open at the 09-18 close - largest gainer"),
-    ("MSFT (30 sh)", "Mega-cap tech", "Client-suitable #1 + Exp 10 test", "10 sh @ $494.09 (Exp 10) + 20 sh @ $493.59 (client sleeve) on 09-18; closed $493.78, +$1 combined"),
-    ("RTX (52 sh)", "Defense", "Client-suitable #2", "09-18 entry @ $191.72; +$92 at the close"),
-    ("CVX (47 sh)", "Energy", "Client-suitable #3", "09-18 entry @ $210.61; -$63 at the close; energy exposure after the XOM cut"),
-    ("QQQ (14 sh)", "Index ETF", "Client-suitable #4", "09-18 entry @ $716.30; +$68 at the close"),
-    ("JNJ (37 sh)", "Health", "Client-suitable #5", "09-18 entry @ $269.77; +$40 at the close"),
+    ("MSFT (30 sh)", "Mega-cap tech", "Client-suitable #1 + Exp 10 test", "10 sh @ $494.09 (Exp 10) + 20 sh @ $493.59 (client sleeve) on 09-18; closed $493.80 vs $493.76 blended basis, +$1 combined"),
+    ("RTX (52 sh)", "Defense", "Client-suitable #2", "09-18 entry @ $191.72; closed $193.48 (+0.92%), +$92 at the close"),
+    ("CVX (47 sh)", "Energy", "Client-suitable #3", "09-18 entry @ $210.61; closed $209.26 (-0.64%), -$63 at the close; energy exposure after the XOM cut"),
+    ("QQQ (14 sh)", "Index ETF", "Client-suitable #4", "09-18 entry @ $716.30; closed $721.16 (+0.68%), +$68 at the close"),
+    ("JNJ (37 sh)", "Health", "Client-suitable #5", "09-18 entry @ $269.77; closed $270.84 (+0.40%), +$40 at the close"),
     ("INDP (500 sh)", "Small-cap signal", "Experiment (Exp 8)", "Trimmed 500 @ $3.80 on 09-18 by the user; +$210 open at the close; event cap blocks adds"),
     ("TQQQ", "Nasdaq 3x leverage", "Beta sleeve", "+$851 at the 09-18 close; high gap risk, sized accordingly"),
     ("GLD / UUP", "Gold + US dollar", "Defensive ballast / hedge", "GLD +$621 and UUP +$14 at the close; dampens equity beta"),
@@ -113,7 +113,7 @@ IDEAS = [
     dict(t="HCWC", theme="Event", thesis="HOST acquisition spread: price should converge toward deal terms as closing approaches",
          catalyst="Merger milestones, filings, closing date", entry="Near close, sized small", exit="Deal close, or immediately on delay/cancel news",
          conf="Medium", downside="Deal break gaps the spread wide open overnight; position already -19.3% day one and held by user instruction"),
-    dict(t="SOXL (exited)", theme="Momentum", thesis="Semis momentum experiment COMPLETED: full exit 09-18 10:00 ET @ $118.05, +$559 (+3.3%) round trip",
+    dict(t="SOXL (exited)", theme="Momentum", thesis="Semis momentum experiment COMPLETED: full exit 09-18 10:00 ET @ $117.88, +$559 (+3.3%) round trip",
          catalyst="Played out", entry="Done",
          exit="Executed into strength on the model AVOID signal", conf="Closed",
          downside="Lesson banked: 3x daily-reset products are trading vehicles, not holdings"),
@@ -189,7 +189,7 @@ EXPERIMENTS = [
     ("2026-09-17", "Partial-fill lesson", "SOXL order filled 9 of 125 shares; standing rule: verify actual filled quantity on every order", "Process fix adopted"),
     ("2026-09-17", "Exp 8: third-party signal labels", "Do published strong-buy/sell labels predict? INDP Signal #1 test", "+18.2% at 1 day; multi-day checkpoint pending"),
     ("2026-09-17", "Exp 9: mean reversion", "Fallen spike names, 1-3% sizing, max 2-3 names", "Registered"),
-    ("2026-09-18", "Exp 10: composite forward test", "Pre-registered 2026-09-18 01:40 IST, before entry: buy the model's #1 full-universe composite (MSFT, score +0.596) ~10:00 AM ET, ~15-20 sh within cash limits. Fixed weights 0.30 3m mom / 0.15 1m mom / 0.15 overnight Sharpe / 0.15 low-vol / 0.15 trend / 0.10 52w-high. Entry factor snapshot: 3m +31.5%, vol 21.4% (inside 40% band), overnight Sharpe -0.15 (disclosed weak factor)", "ENTERED 2026-09-18 9:55am ET: 10 sh @ $494.09, conf A50BD22B, full fill verified. No gap distortion (opened -0.88%). Weekend-locked. CLOSE MARK 2026-09-18: MSFT closed $493.78 = -$3.10 (-0.06%) vs the $494.09 entry - flat, no signal yet; +1d/+2d marks due at the 09-21 and 09-22 sessions"),
+    ("2026-09-18", "Exp 10: composite forward test", "Pre-registered 2026-09-18 01:40 IST, before entry: buy the model's #1 full-universe composite (MSFT, score +0.596) ~10:00 AM ET, ~15-20 sh within cash limits. Fixed weights 0.30 3m mom / 0.15 1m mom / 0.15 overnight Sharpe / 0.15 low-vol / 0.15 trend / 0.10 52w-high. Entry factor snapshot: 3m +31.5%, vol 21.4% (inside 40% band), overnight Sharpe -0.15 (disclosed weak factor)", "ENTERED 2026-09-18 9:55am ET: 10 sh @ $494.09, conf A50BD22B, full fill verified. No gap distortion (opened -0.88%). Weekend-locked. CLOSE MARK 2026-09-18: MSFT closed $493.80 (verified platform close) = -$0.29/sh (-0.06%) vs the $494.09 entry - flat, no signal yet; +1d/+2d marks due at the 09-21 and 09-22 sessions"),
     ("2026-09-18", "Overnight experiment", "Buy near close, monitor between sessions, reassess pre-open, exit after open (no-day-trading compliant)", "Approved; sizing autonomous"),
     ("2026-09-18", "Standing autonomy", "User granted trade autonomy; daily rhythm: pre-open brief 6:30pm IST, pre-close trades 1:00am IST, hourly in-market checks", "Mandate updated"),
     ("2026-09-18", "Algorithm rotation mandate", "User confirmed autonomous algorithm-driven buys/sells without per-trade approval, subject to live verification and constraints. AAPL protected core; HOST under separate conditional exit (platform has not processed the HCWC->HOST ticker change - exit armed, symbol not yet tradeable)", "Mandate updated; every fill logged for evaluation"),
@@ -207,7 +207,7 @@ TRADES = [
     ("2026-09-18 AM ET", "INDP", "SELL (user)", "500 of 1,000 sh @ $3.80 ($1,875 net)", "Conf 40A41699. User instructed the trim; de-risks the micro-cap sleeve, 500 sh remain"),
     ("2026-09-17 ~15:40 ET", "SOXL", "BUY", "8 sh ~$115.25 (~$922); 147 sh total, blended $114.04", "Platform qty-reduced from 116 near the close (known quirk - size earlier in session); position now ~147 sh"),
     ("2026-09-17 ~15:40 ET", "INTC", "BUY", "50 sh @ $109.50 ($5,475)", "Conf 520FCC3F. Exp 9 overnight-candidate entry; exit plan declared at entry: sell into strength next session"),
-    ("2026-09-18 09:55 ET", "MSFT", "BUY", "10 sh @ $494.09 ($4,940.90)", "Conf A50BD22B. Exp 10 composite forward test, rank #1/64 +0.596, vol 21.4% in-band; full fill, no reduction; weekend-locked"),    ("2026-09-18 10:00 ET", "SOXL", "SELL", "147 sh @ $118.05 ($17,328.36 net)", "Order 38B31FA0. Model's #68 AVOID exited into semis strength; +$559 (+3.3%) round trip; validates H2's exit-into-strength execution. Cash $22,685.90, 30/200 trades"),
+    ("2026-09-18 09:55 ET", "MSFT", "BUY", "10 sh @ $494.09 ($4,940.90)", "Conf A50BD22B. Exp 10 composite forward test, rank #1/64 +0.596, vol 21.4% in-band; full fill, no reduction; weekend-locked"),    ("2026-09-18 10:00 ET", "SOXL", "SELL", "147 sh @ $117.88 ($17,328.36 net)", "Order 38B31FA0. Model's #68 AVOID exited into semis strength; +$559 (+3.3%) round trip; validates H2's exit-into-strength execution. Cash $22,685.90, 30/200 trades"),
     ("2026-09-18 12:31 ET", "AAPL", "SELL", "100 sh @ $334.93 ($33,468 net)", "Conf EB3B94F6. Protection revoked by user instruction (WhatsApp 9:59:51 PM IST); algorithm AVOID signal - momentum/trend weakened vs peers; certainty-first mandate moves capital to strongest suitable names + reserve build. Round trip +$546 (+1.7% vs $329.22 cost). Full fill verified (posted ~45s after confirmation - logged as platform lesson)"),
     ("2026-09-18 12:46 ET", "MSFT", "BUY", "+20 sh @ $493.59 ($9,871.80); 30 sh total", "Conf 9D5D48F2. Client-suitable deployment, Laura top-5 #1; full fill"),
     ("2026-09-18 12:47 ET", "RTX", "BUY", "52 sh @ $191.72 ($9,969.44)", "Conf 64D247E5. Client-suitable deployment #2; full fill"),
@@ -229,7 +229,7 @@ DECISIONS = [
     ("2026-09-18", "REJECT", "INDP add rejected", "Event-risk cap 10%; already held 500 sh (+18.2%)", "Trading-agent relay 10:22 PM IST", "Trading Notes"),
     ("2026-09-18", "REJECT", "HOST sell deferred", "Position frozen: HCWC->HOST conversion not processed by StockTrak; $0 quote on both tickers; frozen $13.77 display is not actionable. Rule: sell at market the moment a verified tradeable position + real quote exists", "Trading-agent relays 8:47/9:46/10:02 PM IST", "Trading Notes"),
     ("2026-09-18", "TRADE", "AAPL sold 100 @ $334.93 (+$546, +1.7%) after protection revoked; proceeds + cash deployed into Laura top-5 sleeve: MSFT +20, RTX 52, CVX 47, QQQ 14, JNJ 37 (~$49.9k)", "Certainty-first mandate: weakest suitable-trend holding out, strongest client-suitable names in; every fill verified full-size in transaction history", "Trade log confs EB3B94F6, 9D5D48F2, 64D247E5, 4A877B9E, 9671D555, 5FE8127F", "Trading Notes"),
-    ("2026-09-18", "MARK", "Exp 10 close mark recorded: MSFT closed $493.78 vs $494.09 entry = -$3.10 (-0.06%) on the 10-sh test lot; +1d/+2d marks due 09-21/09-22", "Pre-registered evaluation protocol; close from the refreshed daily bar, consistent with the platform mark of +$1 on the full 30-sh MSFT position", "Experiment log Exp 10", "Trading Notes"),
+    ("2026-09-18", "MARK", "Exp 10 close mark recorded: MSFT closed $493.80 (verified platform close) vs $494.09 entry = -$0.29/sh (-0.06%) on the 10-sh test lot; full 30-sh position: blended basis $493.76, +$1 at the close; +1d/+2d marks due 09-21/09-22", "Pre-registered evaluation protocol; platform transaction-history values used over data-vendor approximations (Yahoo shows $493.78)", "Experiment log Exp 10", "Trading Notes"),
     ("2026-09-18", "DESIGN", "Two-sleeve architecture: growth sleeve + Treasury reserve sleeve; reserve target $430-440k nominal ladder by start-2033; glidepath ~80/20 toward 60/40 by 2031; reserve-coverage ratio + 3 de-risk triggers first-class", "PROVISIONAL diligence v1 (final 10h report pending): liability certainty dominates return chase at ~1.9% required blended return", "Portfolio risk tab; Case tab (PROVISIONAL labels)", "IPS + Final Report"),
     ("2026-09-18", "LESSON", "AAPL fill posted ~45s after the confirmation page", "An instant re-read of history can miss a completed order; verification reads wait for posting", "Trading-agent relay 10:02 PM IST", "Trading Notes"),
     ("2026-09-18", "TRADE", "INTC full exit: 50 sh @ $108.43 (conf 36CBB28B), realized -$104 incl. commissions (-1.9%)", "The 09-17 Exp 9 entry stayed weak and sits outside Laura's suitable sleeve; the standing pre-close rule cuts weak non-suitable positions. Semis exposure kept through NVDA (client-suitable, +$1,633 at the close)", "Trade log; verified platform close report", "Trading Notes"),
@@ -415,8 +415,8 @@ r.style.display=ok?'':'none';});}
 
 html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StockTrak Research Terminal v0.10</title><style>{CSS}</style></head><body>
-<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.10</span></h1>
+<title>StockTrak Research Terminal v0.10b</title><style>{CSS}</style></head><body>
+<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.10b</span></h1>
 <span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="screener" onclick="show('screener')">Screener</button>
@@ -485,7 +485,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <section id="casestudy"><h2>Client case - Laura Gao (Wharton 2026-2027){info('case')}</h2>
 <div class="card"><p>From the three official competition PDFs (case study, strategy roadmap, competition guide) supplied 2026-09-18. Competition documents override earlier generic assumptions.</p><ol>{case_items}</ol></div></section>
 
-<footer>StockTrak Research Terminal v0.10 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars through the 2026-09-18 US close, StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<footer>StockTrak Research Terminal v0.10b &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars through the 2026-09-18 US close, StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
 <script>{JS}</script></body></html>"""
 
 out = os.path.join(HERE, "index.html")
