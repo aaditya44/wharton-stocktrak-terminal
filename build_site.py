@@ -172,6 +172,8 @@ CASE_STUDY = [
     "EVALUATION (from the guide): NOT judged on returns, ranking, trade count, or beating other teams. Judged on one cohesive strategy connecting client goals -> research -> portfolio decisions -> recommendations. WInS P&L is demonstration evidence only; projections start from the case cash flows, not from WInS gains.",
     "DELIVERABLES (official schedule, all 5:00 PM ET): Trading Notes Analysis - 3 notes showing decisions that supported/tested/refined strategy - due Fri Oct 23, submissions open Mon Oct 12. Investment Policy Statement due Fri Nov 6, submissions open Mon Oct 26; trading ends and the portfolio freezes Nov 6, strategy may not be revised after. Final Report due Fri Dec 4, submissions open Nov 9. School Documentation also due Fri Dec 4, submissions open Nov 9.",
     "UNKNOWN PRESERVED: the approved WInS securities universe and detailed deliverable requirements live on SurveyMonkey Apply (Pages tab) - not in the supplied PDFs. Confirm before assuming every screened symbol is WInS-eligible.",
+    "DUE-DILIGENCE v1 (2026-09-18, research task report): Laura Gao is a REAL person - case facts verify against the public record (Wharton 2018 Statistics, ex-Twitter PM, Messy Roots 2022, Kirby's Lessons 2025, comics professor at California College of the Arts). The financial plan is the fictional layer. Required blended return ~1.9% - certainty problem, not a return chase. Reserve $430-440k nominal Treasury ladder at start-2033 (cheap to fund on the current tape: Fed 3.75-4.00%, 10Y ~5.0%, 30Y ~5.34%). Monte Carlo (20k paths): equity-heavy = 14% reserve-miss (rejected); conservative glidepath < 1%.",
+    "FULL AUTOMATION MANDATE (user instruction 2026-09-18 ~8:46 PM IST): the Laura Gao algorithm drives StockTrak buys/sells WITHOUT per-trade approval. Guardrails: live verification, competition rules, client-mode caps, AAPL protected, HOST paused pending his word, every fill logged with rationale for Trading Notes. Optimize explainable IPS consistency and Trading Notes quality ahead of raw 10-week P&L.",
     "HOW THIS TERMINAL MAPS: Screener = investable-universe evidence; Client mode = Laura's mandate and constraints applied to rankings; Experiment/Trade logs = Trading Notes raw material (each fill has a dated rationale); Backtests + Methodology = IPS evidence base.",
 ]
 
@@ -223,7 +225,7 @@ for r in CLIENT["client_ranking"]:
 _client_tpl = open(os.path.join(HERE, "client_section.html")).read()
 _client_html = (_client_tpl.replace("{{CLIENT_NAME}}", CLIENT["profile"].get("client_name","Client")).replace("{{LIFE_STAGE}}", CLIENT["profile"]["life_stage"])
     .replace("{{GOAL}}", CLIENT["profile"]["goal"]).replace("{{HORIZON}}", str(CLIENT["profile"]["horizon_months"]))
-    .replace("{{BOOK}}", format(CLIENT["book"], ",.0f")).replace("{{CPOS_ROWS}}", cpos_rows)
+    .replace("{{ARCHITECTURE}}", CLIENT["profile"].get("architecture","")).replace("{{MANDATE}}", CLIENT["profile"].get("mandate","")).replace("{{BOOK}}", format(CLIENT["book"], ",.0f")).replace("{{CPOS_ROWS}}", cpos_rows)
     .replace("{{CFLAG_ITEMS}}", cflag_items).replace("{{CRANK_ROWS}}", crank_rows))
 _client_js = open(os.path.join(HERE, "client_js.js")).read().replace("{{BOOK}}", repr(CLIENT["book"]))
 
@@ -341,7 +343,16 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <div class="card"><h3>Hypothesis register</h3>
 <table><tr><th>ID</th><th>Hypothesis</th><th>Status</th></tr>{hyp_rows}</table></div></section>
 
-<section id="risk"><h2>Portfolio risk snapshot (verified through the 2026-09-17 session)</h2>
+<section id="risk"><h2>Two-sleeve architecture &amp; reserve coverage</h2>
+<div class="warn">From the client due-diligence v1 (2026-09-18): Laura's mandate is LIABILITY-DRIVEN. Required blended return is only ~1.9% to fund the ten $50k payments - the problem is CERTAINTY, not growth. Architecture: a GROWTH sleeve and a RESERVE sleeve, gliding from ~80/20 toward ~60/40 by 2031. Reserve target at start-2033: $430-440k via a nominal Treasury ladder (the liability is not inflation-adjusted, so nominal Treasuries hedge it directly). Facility headroom at 2033: ~$155-220k on institutional return assumptions. Preliminary 2031 co-sponsor range: $100-250k (floor fundable in ~78-85% of Monte Carlo paths, ceiling ~19-31%; 20k paths). Staying equity-heavy leaves a 14% chance of missing the reserve - rejected; the conservative glidepath cuts it under 1%.</div>
+<div class="card"><h3>First-class metrics &amp; de-risk triggers</h3><ol>
+<li><b>Reserve-coverage ratio</b> = projected reserve assets at start-2033 / $430-440k target. Projected quarterly on the conservative path; must stay >= 1.00.</li>
+<li><b>De-risk trigger 1:</b> coverage projection &lt; 1.00 = shift 10pp from growth to reserve immediately.</li>
+<li><b>De-risk trigger 2:</b> portfolio drawdown &gt; 15% from peak = freeze growth adds until coverage recovers.</li>
+<li><b>De-risk trigger 3:</b> single name above its client-mode cap = trim to cap on next session.</li>
+<li><b>Glidepath checkpoints:</b> 2028 (after the $150k contribution), 2031 (before co-sponsor range is stated), 2033 (reserve set aside, ladder built).</li>
+</ol></div>
+<h3>Practice-book risk snapshot (verified through the 2026-09-18 session)</h3>
 <div class="warn">Positions verified through the 2026-09-17 session. Largest structural risks: HCWC event risk (~$44k after -19.3% on day one, user-mandated HOLD), overnight gaps in the 3x sleeves (SOXL 139 sh, TQQQ). Positions bought today cannot be sold today - gap risk is undiversifiable within a session.</div>
 <div class="card"><table><tr><th>Sleeve</th><th>Theme</th><th>Role</th><th>Note</th></tr>{port_rows}</table></div></section>
 

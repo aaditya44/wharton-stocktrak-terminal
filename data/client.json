@@ -10,7 +10,9 @@
   "sector_preferences": [
    "IndexETF",
    "Technology"
-  ]
+  ],
+  "architecture": "Two sleeves: growth + reserve, ~80/20 gliding to ~60/40 by 2031. Reserve target start-2033: $430-440k nominal Treasury ladder. Required blended return ~1.9% (certainty problem, not growth). De-risk: coverage<1.00 -> -10pp growth; drawdown>15% -> freeze adds; cap breach -> trim next session.",
+  "mandate": "FULL AUTOMATION (2026-09-18): algorithm buys/sells without per-trade approval, subject to live verification + caps. AAPL protected; HOST paused."
  },
  "rules": {
   "vol_band": 25,
