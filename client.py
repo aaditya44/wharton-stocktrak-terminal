@@ -34,13 +34,17 @@ PROFILE = {  # LAURA GAO - the assigned Wharton client (case study PDF, 2026-09-
 
 # Verified practice-book positions (feeds through 2026-09-18 20:10 IST; SOXL exited 10:00 ET).
 # Also held but not scored here: 50 units UST 2.750% 02/15/2028 (~$48,712, -0.14%; IEF/GOVT/TLT proxies neutral - HOLD)
-# and ~$22,686 cash after the SOXL exit. Counts unknown for older sleeves are flagged, not invented.
+# and $6,254.30 cash after the 09-18 client-suitable deployment (~$49.9k into MSFT/RTX/CVX/QQQ/JNJ); 36/200 trades used. AAPL sold 09-18 (+$546). Counts unknown for older sleeves are flagged, not invented.
 HOLDINGS = [
   {"symbol": "HCWC", "shares": 4000, "note": "merger closed; ticker change HCWC->HOST pending on StockTrak, price frozen at cost; no hold protection - actionable only once tradeable with verified live quote"},
   {"symbol": "NVDA", "shares": 205},
   {"symbol": "INDP", "shares": 500},
-  {"symbol": "INTC", "shares": 50},
-  {"symbol": "MSFT", "shares": 10, "note": "Exp 10 forward test, entered 09-18 @ $494.09, conf A50BD22B"},
+  {"symbol": "INTC", "shares": 50, "note": "Exp 9; pre-close cut decision pending 09-18 ~1:00 AM IST"},
+  {"symbol": "MSFT", "shares": 30, "note": "Exp 10 (10 sh @ $494.09 conf A50BD22B) + client-suitable add 20 @ $493.59 conf 9D5D48F2"},
+  {"symbol": "RTX", "shares": 52, "note": "client-suitable deployment 09-18 @ $191.72 conf 64D247E5"},
+  {"symbol": "CVX", "shares": 47, "note": "client-suitable deployment 09-18 @ $210.61 conf 4A877B9E"},
+  {"symbol": "QQQ", "shares": 14, "note": "client-suitable deployment 09-18 @ $716.30 conf 9671D555"},
+  {"symbol": "JNJ", "shares": 37, "note": "client-suitable deployment 09-18 @ $269.77 conf 5FE8127F"},
 ]
 
 def load(sym):
@@ -93,7 +97,7 @@ def compute():
             flags.append(f"{p['symbol']} event-driven position ~{p['weight']}% of book exceeds the {rules['event_cap']}% event cap; gap risk is binary")
     if PROFILE["horizon_months"] <= 3:
         flags.append("Horizon is ~10 weeks: error tolerance is compressed - prefer liquid names and pre-defined exits over positions that need time to work")
-    flags.append(f"Verified positions cover ${total_verified:,.0f} of a ${book:,.0f} book; unverified sleeves (UUP/GLD/TQQQ/AAPL/XLE/ITA/LMT/TLT/Treasury) are excluded from concentration math - confirm exact counts in StockTrak")
+    flags.append(f"Verified positions cover ${total_verified:,.0f} of a ${book:,.0f} book; unverified sleeves (UUP/GLD/TQQQ/XLE/ITA/LMT/TLT/Treasury) are excluded from concentration math - confirm exact counts in StockTrak")
     flags.append("Indicative analysis for a simulated competition account, not personalized financial advice; suitability follows the stated profile, never age alone")
 
     out = {"profile": PROFILE, "rules": rules, "book": book,

@@ -140,6 +140,7 @@ EXPERIMENTS = [
     ("2026-09-18", "Overnight experiment", "Buy near close, monitor between sessions, reassess pre-open, exit after open (no-day-trading compliant)", "Approved; sizing autonomous"),
     ("2026-09-18", "Standing autonomy", "User granted trade autonomy; daily rhythm: pre-open brief 6:30pm IST, pre-close trades 1:00am IST, hourly in-market checks", "Mandate updated"),
     ("2026-09-18", "Algorithm rotation mandate", "User confirmed autonomous algorithm-driven buys/sells without per-trade approval, subject to live verification and constraints. AAPL protected core; HOST under separate conditional exit (platform has not processed the HCWC->HOST ticker change - exit armed, symbol not yet tradeable)", "Mandate updated; every fill logged for evaluation"),
+    ("2026-09-18", "Client-suitable deployment", "Laura top-5 sleeve (MSFT/RTX/CVX/QQQ/JNJ) deployed ~$49.9k after AAPL exit, per user 'carry out the model's suggestions' (10:15 PM IST). REJECTED with logged reasons: PLTR (vol 50.3% > 40% client band - unsuitable), INDP add (event-risk cap 10%, already 500 sh), HOST (frozen/untradeable - no real quote). User reiterated: PLTR stays excluded unless Laura's suitability rules change", "Executed; all 5 fills verified full-size"),
     ("2026-09-18", "All legacy protections removed", "User instruction 2026-09-18 ~10:00 PM IST: AAPL protection and all prior personal-position protections are REMOVED. The entire portfolio is governed only by the Laura Gao client mandate - any position may be bought, trimmed, or sold when the client-suitable model and live evidence support it. HOST carries no hold protection either, but execution still requires a verified tradeable converted position and a real quote (the HCWC->HOST ticker change is still not processed; the frozen $13.77 display is not actionable)", "Mandate updated; objective = liability certainty + suitable growth, full explainability"),
 ]
 
@@ -154,6 +155,29 @@ TRADES = [
     ("2026-09-18 pre-close ET", "SOXL", "BUY", "8 sh ~$115.25 (~$922); 147 sh total, blended $114.04", "Platform qty-reduced from 116 near the close (known quirk - size earlier in session); position now ~147 sh"),
     ("2026-09-18 pre-close ET", "INTC", "BUY", "50 sh @ $109.50 ($5,475)", "Conf 520FCC3F. Exp 9 semis/foundry momentum entry"),
     ("2026-09-18 09:55 ET", "MSFT", "BUY", "10 sh @ $494.09 ($4,940.90)", "Conf A50BD22B. Exp 10 composite forward test, rank #1/64 +0.596, vol 21.4% in-band; full fill, no reduction; weekend-locked"),    ("2026-09-18 10:00 ET", "SOXL", "SELL", "147 sh @ $118.05 ($17,328.36 net)", "Order 38B31FA0. Model's #68 AVOID exited into semis strength; +$559 (+3.3%) round trip; validates H2's exit-into-strength execution. Cash $22,685.90, 30/200 trades"),
+    ("2026-09-18 12:31 ET", "AAPL", "SELL", "100 sh @ $334.93 ($33,468 net)", "Conf EB3B94F6. Protection revoked by user instruction (WhatsApp 9:59:51 PM IST); algorithm AVOID signal - momentum/trend weakened vs peers; certainty-first mandate moves capital to strongest suitable names + reserve build. Round trip +$546 (+1.7% vs $329.22 cost). Full fill verified (posted ~45s after confirmation - logged as platform lesson)"),
+    ("2026-09-18 12:46 ET", "MSFT", "BUY", "+20 sh @ $493.59 ($9,871.80); 30 sh total", "Conf 9D5D48F2. Client-suitable deployment, Laura top-5 #1; full fill"),
+    ("2026-09-18 12:47 ET", "RTX", "BUY", "52 sh @ $191.72 ($9,969.44)", "Conf 64D247E5. Client-suitable deployment #2; full fill"),
+    ("2026-09-18 12:48 ET", "CVX", "BUY", "47 sh @ $210.61 ($9,898.67)", "Conf 4A877B9E. Client-suitable deployment #3; full fill"),
+    ("2026-09-18 12:48 ET", "QQQ", "BUY", "14 sh @ $716.30 ($10,028.20)", "Conf 9671D555. Client-suitable deployment #4; full fill"),
+    ("2026-09-18 12:49 ET", "JNJ", "BUY", "37 sh @ $269.77 ($9,981.49)", "Conf 5FE8127F. Client-suitable deployment #5; full fill. ~$49.9k deployed incl. commissions; cash $6,254.30, trades 36/200"),
+]
+
+
+DECISIONS = [
+    ("2026-09-16", "DESIGN", "Fixed a-priori factor weights declared before testing: 0.30 3m momentum / 0.15 1m momentum / 0.15 overnight-return Sharpe / 0.15 low-vol / 0.15 trend / 0.10 52w-high proximity", "First defense against overfitting - no fitted parameters", "Methodology tab; H1-H5 pre-registration", "IPS + Final Report"),
+    ("2026-09-16", "DATA", "Yahoo Finance daily bars cached per symbol (never re-fetched history); StockTrak snapshots at scheduled checkpoints only; SEC filings/news via web fetch at event time", "Reproducibility + no aggressive scraping of the competition platform", "browser_ingest.sh rail; 69 cached 1y bar files through 2026-09-18", "IPS + Final Report"),
+    ("2026-09-17", "LESSON", "SOXL partial fill (9 of 125) exposed a verification gap", "Standing rule adopted: verify actual filled quantity on every order from transaction history, never the order ticket", "Trade log 2026-09-17 14:35 ET", "Trading Notes"),
+    ("2026-09-17", "LESSON", "Near-close large order (SOXL 116) qty-reduced by the platform", "Standing rule: size orders earlier in the session near the close", "Trade log 2026-09-18 pre-close", "Trading Notes"),
+    ("2026-09-18", "MANDATE", "Full automation granted: algorithm buys/sells without per-trade approval (~8:46 PM IST), then ALL legacy protections removed (~10:00 PM IST, verified WhatsApp wamid...E0NDREM0UA 9:59:51 PM)", "Full portfolio governed only by the Laura Gao client mandate; objective = liability certainty + suitable growth, IPS consistency ahead of raw P&L", "Case tab mandate string; experiment-log rows", "IPS + Final Report"),
+    ("2026-09-18", "SIGNAL", "Post-open full-universe re-rank through 2026-09-18 open: MSFT #1 +0.565, PLTR #2 +0.530, RTX #3, CVX #4, INDP #5; SOXL #68 AVOID; Laura client top-5: MSFT, RTX, CVX, QQQ, JNJ", "Fixed-weight composite over 68/68 ingested symbols; client filter applies vol band <=40% and event caps", "Screener + Client mode tabs (live recompute)", "Trading Notes"),
+    ("2026-09-18", "REJECT", "PLTR rejected despite composite #2", "Vol 50.3% exceeds the 40% client suitability band; user confirmed PLTR stays excluded unless Laura's suitability rules change", "Trading-agent relay 10:22 PM IST", "Trading Notes"),
+    ("2026-09-18", "REJECT", "INDP add rejected", "Event-risk cap 10%; already held 500 sh (+18.2%)", "Trading-agent relay 10:22 PM IST", "Trading Notes"),
+    ("2026-09-18", "REJECT", "HOST sell deferred", "Position frozen: HCWC->HOST conversion not processed by StockTrak; $0 quote on both tickers; frozen $13.77 display is not actionable. Rule: sell at market the moment a verified tradeable position + real quote exists", "Trading-agent relays 8:47/9:46/10:02 PM IST", "Trading Notes"),
+    ("2026-09-18", "TRADE", "AAPL sold 100 @ $334.93 (+$546, +1.7%) after protection revoked; proceeds + cash deployed into Laura top-5 sleeve: MSFT +20, RTX 52, CVX 47, QQQ 14, JNJ 37 (~$49.9k)", "Certainty-first mandate: weakest suitable-trend holding out, strongest client-suitable names in; every fill verified full-size in transaction history", "Trade log confs EB3B94F6, 9D5D48F2, 64D247E5, 4A877B9E, 9671D555, 5FE8127F", "Trading Notes"),
+    ("2026-09-18", "MARK", "Exp 10 (MSFT composite forward test) open marks: entry $494.09; close/+1d/+2d marks pending - first close mark after 2026-09-18 US close", "Pre-registered evaluation protocol; marks recorded against entry with factor snapshot", "Experiment log Exp 10", "Trading Notes"),
+    ("2026-09-18", "DESIGN", "Two-sleeve architecture: growth sleeve + Treasury reserve sleeve; reserve target $430-440k nominal ladder by start-2033; glidepath ~80/20 toward 60/40 by 2031; reserve-coverage ratio + 3 de-risk triggers first-class", "PROVISIONAL diligence v1 (final 10h report pending): liability certainty dominates return chase at ~1.9% required blended return", "Portfolio risk tab; Case tab (PROVISIONAL labels)", "IPS + Final Report"),
+    ("2026-09-18", "LESSON", "AAPL fill posted ~45s after the confirmation page", "An instant re-read of history can miss a completed order; verification reads wait for posting", "Trading-agent relay 10:02 PM IST", "Trading Notes"),
 ]
 
 METHODOLOGY = [
@@ -253,6 +277,7 @@ for sym, a in analytics.items():
     </div>"""
 
 exp_rows = "".join(f"<tr><td>{d}</td><td><b>{esc(t)}</b></td><td>{esc(x)}</td><td>{esc(o)}</td></tr>" for d, t, x, o in EXPERIMENTS)
+dec_rows = "".join(f"<tr><td>{esc(d)}</td><td><b>{esc(t)}</b></td><td>{esc(sub)}</td><td>{esc(rat)}</td><td>{esc(ev)}</td><td>{esc(del_)}</td></tr>" for d, t, sub, rat, ev, del_ in DECISIONS)
 trade_rows = "".join(f"<tr><td>{d}</td><td>{esc(s)}</td><td>{esc(a)}</td><td>{esc(q)}</td><td>{esc(n)}</td></tr>" for d, s, a, q, n in TRADES)
 port_rows = "".join(f"<tr><td><b>{esc(s)}</b></td><td>{esc(t)}</td><td>{esc(r)}</td><td>{esc(n)}</td></tr>" for s, t, r, n in PORTFOLIO)
 meth_blocks = "".join(f'<div class="card"><h3>{esc(h)}</h3><p>{esc(b)}</p></div>' for h, b in METHODOLOGY)
@@ -314,6 +339,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <button data-t="risk" onclick="show('risk')">Portfolio risk</button>
 <button data-t="experiments" onclick="show('experiments')">Experiment log</button>
 <button data-t="trades" onclick="show('trades')">Trade log</button>
+<button data-t="decisions" onclick="show('decisions')">Decision log</button>
 <button data-t="methodology" onclick="show('methodology')">Methodology</button>
 <button data-t="casestudy" onclick="show('casestudy')">Case study</button>
 </nav>
@@ -363,6 +389,9 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <section id="trades"><h2>Trade log (dated, auditable)</h2>
 <div class="card"><table><tr><th>Date</th><th>Instrument</th><th>Side</th><th>Quantity</th><th>Note</th></tr>{trade_rows}</table></div></section>
 
+<section id="decisions"><h2>Decision log - audit spine for Trading Notes / IPS / Final Report</h2>
+<p class="note">Every model design choice, data source, signal, trade, rejected candidate, fill, P&amp;L mark, mandate change and lesson, dated, with rationale, evidence pointer and the deliverable it feeds. User instruction 2026-09-18 10:28 PM IST: exhaustive reusable documentation, Laura-only mandate.</p>
+<div class="card"><table><thead><tr><th>Date</th><th>Type</th><th>Decision</th><th>Rationale</th><th>Evidence</th><th>Feeds</th></tr></thead><tbody>{dec_rows}</tbody></table></div></section>
 <section id="methodology"><h2>Methodology</h2>{meth_blocks}</section>
 
 <section id="casestudy"><h2>Client case - Laura Gao (Wharton 2026-2027)</h2>
