@@ -152,7 +152,7 @@ TRADES = [
     ("2026-09-18 AM ET", "INDP", "SELL (user)", "500 of 1,000 sh @ $3.80 ($1,875 net)", "Conf 40A41699. User instructed the trim; de-risks the micro-cap sleeve, 500 sh remain"),
     ("2026-09-18 pre-close ET", "SOXL", "BUY", "8 sh ~$115.25 (~$922); 147 sh total, blended $114.04", "Platform qty-reduced from 116 near the close (known quirk - size earlier in session); position now ~147 sh"),
     ("2026-09-18 pre-close ET", "INTC", "BUY", "50 sh @ $109.50 ($5,475)", "Conf 520FCC3F. Exp 9 semis/foundry momentum entry"),
-    ("2026-09-18 09:55 ET", "MSFT", "BUY", "10 sh @ $494.09 ($4,940.90)", "Conf A50BD22B. Exp 10 composite forward test, rank #1/64 +0.596, vol 21.4% in-band; full fill, no reduction; weekend-locked"),
+    ("2026-09-18 09:55 ET", "MSFT", "BUY", "10 sh @ $494.09 ($4,940.90)", "Conf A50BD22B. Exp 10 composite forward test, rank #1/64 +0.596, vol 21.4% in-band; full fill, no reduction; weekend-locked"),    ("2026-09-18 10:00 ET", "SOXL", "SELL", "147 sh @ $118.05 ($17,328.36 net)", "Order 38B31FA0. Model's #68 AVOID exited into semis strength; +$559 (+3.3%) round trip; validates H2's exit-into-strength execution. Cash $22,685.90, 30/200 trades"),
 ]
 
 METHODOLOGY = [
@@ -163,13 +163,16 @@ METHODOLOGY = [
 ]
 
 CASE_STUDY = [
-    "1. Objective and mandate (risk tolerance, rules, capital)",
-    "2. Research methodology (this document's data + safeguards sections)",
-    "3. Strategy hypotheses and rationale (H1-H5 register)",
-    "4. Dated experiment log and trade log (screenshots attached at submission)",
-    "5. Results: what the data supported, what it rejected, and why",
-    "6. Risk management: sizing, gap risk, no-day-trading compliance",
-    "7. Lessons and what changes for the real competition",
+    "CLIENT (from the official case study PDF, 2026-09-18): Laura Gao - bestselling author, illustrator, entrepreneur, educator (born Wuhan, raised Texas; Wharton Statistics 2018; ex-tech PM; The Wuhan I Know 2020; Messy Roots). Living expenses covered outside the portfolio.",
+    "CASH FLOWS: $300,000 invested at the start of 2027; +$150,000 at the start of 2028; no other additions or withdrawals before 2033.",
+    "PRIMARY LIABILITY: ten annual $50,000 operating payments for a Taiwan creative residency, 2033-2042, fixed (not inflation-adjusted), funded by the portfolio with a HIGH DEGREE OF CERTAINTY - no reliance on co-sponsors for this. At the start of 2033 an operating reserve is set aside; we must recommend its size, composition, and glide path, and define what 'high certainty' means with assumptions.",
+    "SECONDARY GOAL: a responsible 2033 facility contribution from the remaining portfolio - no predetermined size; preserve financial flexibility; explain favorable/unfavorable market outcomes.",
+    "2031 CO-SPONSOR COMMUNICATION: recommend a credible dollar range for the 2033 contribution with a stated confidence level, plus draft fundraising language. The range must not impair the operating commitment.",
+    "RISK POSTURE (verbatim case): she took 'thoughtful risks' as an entrepreneur but wants a recommended balance between pursuing growth and protecting the capital required for her goals. Mapping this to a vol band is OUR assumption, flagged in Client mode - not a case fact.",
+    "EVALUATION (from the guide): NOT judged on returns, ranking, trade count, or beating other teams. Judged on one cohesive strategy connecting client goals -> research -> portfolio decisions -> recommendations. WInS P&L is demonstration evidence only; projections start from the case cash flows, not from WInS gains.",
+    "DELIVERABLES + DATES: Trading Notes Analysis (3 notes showing decisions that supported/tested/refined strategy) due Oct 23 (end Week 4); Investment Policy Statement due Nov 6 (end Week 6), trading ends and portfolio frozen; Final Report Dec 4. After the IPS the strategy may not be revised.",
+    "UNKNOWN PRESERVED: the approved WInS securities universe and detailed deliverable requirements live on SurveyMonkey Apply (Pages tab) - not in the supplied PDFs. Confirm before assuming every screened symbol is WInS-eligible.",
+    "HOW THIS TERMINAL MAPS: Screener = investable-universe evidence; Client mode = Laura's mandate and constraints applied to rankings; Experiment/Trade logs = Trading Notes raw material (each fill has a dated rationale); Backtests + Methodology = IPS evidence base.",
 ]
 
 HYPOTHESES = [
@@ -218,7 +221,7 @@ for r in CLIENT["client_ranking"]:
         '<td class="cs"><b>' + format(r["client_score"], "+.3f") + '</b></td>'
         '<td>' + sig_badge(r["signal"]) + '</td><td class="cn">' + r["suit_note"] + '</td></tr>')
 _client_tpl = open(os.path.join(HERE, "client_section.html")).read()
-_client_html = (_client_tpl.replace("{{LIFE_STAGE}}", CLIENT["profile"]["life_stage"])
+_client_html = (_client_tpl.replace("{{CLIENT_NAME}}", CLIENT["profile"].get("client_name","Client")).replace("{{LIFE_STAGE}}", CLIENT["profile"]["life_stage"])
     .replace("{{GOAL}}", CLIENT["profile"]["goal"]).replace("{{HORIZON}}", str(CLIENT["profile"]["horizon_months"]))
     .replace("{{BOOK}}", format(CLIENT["book"], ",.0f")).replace("{{CPOS_ROWS}}", cpos_rows)
     .replace("{{CFLAG_ITEMS}}", cflag_items).replace("{{CRANK_ROWS}}", crank_rows))
@@ -297,8 +300,8 @@ r.style.display=ok?'':'none';});}
 
 html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StockTrak Research Terminal v0.4</title><style>{CSS}</style></head><body>
-<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.4</span></h1>
+<title>StockTrak Research Terminal v0.5</title><style>{CSS}</style></head><body>
+<header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.5</span></h1>
 <span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="screener" onclick="show('screener')">Screener</button>
@@ -350,10 +353,10 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 
 <section id="methodology"><h2>Methodology</h2>{meth_blocks}</section>
 
-<section id="casestudy"><h2>Case study - submission structure</h2>
-<div class="card"><p>Skeleton for the competition case-study report. Sections fill in from this terminal's logs as the competition runs.</p><ol>{case_items}</ol></div></section>
+<section id="casestudy"><h2>Client case - Laura Gao (Wharton 2026-2027)</h2>
+<div class="card"><p>From the three official competition PDFs (case study, strategy roadmap, competition guide) supplied 2026-09-18. Competition documents override earlier generic assumptions.</p><ol>{case_items}</ol></div></section>
 
-<footer>StockTrak Research Terminal v0.4 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<footer>StockTrak Research Terminal v0.5 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars (cached 2026-09-18), StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
 <script>{JS}</script></body></html>"""
 
 out = os.path.join(HERE, "index.html")

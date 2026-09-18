@@ -19,22 +19,23 @@ RULES = {
   "low":    {"vol_band": 15, "single_name_cap": 7,  "leveraged_cap": 0,  "event_cap": 5},
 }
 
-PROFILE = {  # Aaditya's stated profile (from the 2026-09-16 mandate; editable in the UI)
-  "life_stage": "student, early career",
-  "goal": "maximize learning + risk-adjusted return in the competition",
-  "horizon_months": 2,
-  "risk_tolerance": "high",
-  "liquidity_need": "none (simulated capital)",
-  "constraints": "StockTrak rules: $25/trade, no shorts, no margin, no same-day exits. AAPL is a protected core holding (user instruction 2026-09-18) - excluded from rotation sells regardless of signal.",
-  "sector_preferences": ["Technology", "EventDriven", "IndexETF"],
+PROFILE = {  # LAURA GAO - the assigned Wharton client (case study PDF, 2026-09-18). Competition documents override prior generic assumptions.
+  "client_name": "Laura Gao (assigned competition client)",
+  "life_stage": "author, illustrator, entrepreneur, educator (Wharton Statistics 2018; ex-tech PM)",
+  "goal": "Fund ten annual $50k residency operating payments 2033-2042 with high certainty (operating reserve), then a responsible 2033 facility contribution, preserving flexibility",
+  "horizon_months": 76,
+  "risk_tolerance": "medium",
+  "liquidity_need": "none until 2033 (living expenses covered outside portfolio); then $50k/yr fixed 2033-2042",
+  "constraints": "Case: $300k start-2027 + $150k start-2028, no other flows before 2033. Practice book rules: $25/trade, no shorts, no margin, no same-day exits. AAPL protected core holding (user instruction 2026-09-18). ASSUMPTION (team judgment, not case fact): her stated 'balance between growth and protecting capital for goals' maps to the medium band; her exact risk capacity/tolerance split is an open research item for the due-diligence report.",
+  "sector_preferences": ["IndexETF", "Technology"],
 }
 
-# Verified positions (from nightly feeds through 2026-09-18 01:10 IST). Counts unknown for
-# older sleeves are omitted and flagged as unverified rather than invented.
+# Verified practice-book positions (feeds through 2026-09-18 20:10 IST; SOXL exited 10:00 ET).
+# Also held but not scored here: 50 units UST 2.750% 02/15/2028 (~$48,712, -0.14%; IEF/GOVT/TLT proxies neutral - HOLD)
+# and ~$22,686 cash after the SOXL exit. Counts unknown for older sleeves are flagged, not invented.
 HOLDINGS = [
   {"symbol": "HCWC", "shares": 4000, "note": "merger closed; ticker change HCWC->HOST pending on StockTrak, price frozen at cost; conditional exit armed"},
   {"symbol": "NVDA", "shares": 205},
-  {"symbol": "SOXL", "shares": 147},
   {"symbol": "INDP", "shares": 500},
   {"symbol": "INTC", "shares": 50},
   {"symbol": "MSFT", "shares": 10, "note": "Exp 10 forward test, entered 09-18 @ $494.09, conf A50BD22B"},
