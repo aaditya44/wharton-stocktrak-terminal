@@ -32,14 +32,13 @@ PROFILE = {  # LAURA GAO - the assigned Wharton client (case study PDF, 2026-09-
   "mandate": "FULL AUTOMATION (2026-09-18): algorithm buys/sells without per-trade approval, subject to live verification + caps. All legacy protections removed ~10:00 PM IST - no protected positions; HOST executes only once the converted position is tradeable with a verified live quote.",
 }
 
-# Verified practice-book positions (feeds through 2026-09-18 20:10 IST; SOXL exited 10:00 ET).
+# Verified practice-book positions (through the 2026-09-18 US close; SOXL exited 10:00 ET, INTC exited late session conf 36CBB28B).
 # Also held but not scored here: 50 units UST 2.750% 02/15/2028 (~$48,712, -0.14%; IEF/GOVT/TLT proxies neutral - HOLD)
-# and $6,254.30 cash after the 09-18 client-suitable deployment (~$49.9k into MSFT/RTX/CVX/QQQ/JNJ); 36/200 trades used. AAPL sold 09-18 (+$546). Counts unknown for older sleeves are flagged, not invented.
+# and $11,650.80 cash after the 09-18 client-suitable deployment (~$49.9k into MSFT/RTX/CVX/QQQ/JNJ) plus the INTC exit; 37/200 trades used. AAPL sold 09-18 (+$546). Counts unknown for older sleeves are flagged, not invented.
 HOLDINGS = [
   {"symbol": "HCWC", "shares": 4000, "note": "merger closed; ticker change HCWC->HOST pending on StockTrak, price frozen at cost; no hold protection - actionable only once tradeable with verified live quote"},
   {"symbol": "NVDA", "shares": 205},
   {"symbol": "INDP", "shares": 500},
-  {"symbol": "INTC", "shares": 50, "note": "Exp 9; pre-close cut decision pending 09-18 ~1:00 AM IST"},
   {"symbol": "MSFT", "shares": 30, "note": "Exp 10 (10 sh @ $494.09 conf A50BD22B) + client-suitable add 20 @ $493.59 conf 9D5D48F2"},
   {"symbol": "RTX", "shares": 52, "note": "client-suitable deployment 09-18 @ $191.72 conf 64D247E5"},
   {"symbol": "CVX", "shares": 47, "note": "client-suitable deployment 09-18 @ $210.61 conf 4A877B9E"},
