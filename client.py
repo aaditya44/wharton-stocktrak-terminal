@@ -25,7 +25,7 @@ PROFILE = {  # Aaditya's stated profile (from the 2026-09-16 mandate; editable i
   "horizon_months": 2,
   "risk_tolerance": "high",
   "liquidity_need": "none (simulated capital)",
-  "constraints": "StockTrak rules: $25/trade, no shorts, no margin, no same-day exits",
+  "constraints": "StockTrak rules: $25/trade, no shorts, no margin, no same-day exits. AAPL is a protected core holding (user instruction 2026-09-18) - excluded from rotation sells regardless of signal.",
   "sector_preferences": ["Technology", "EventDriven", "IndexETF"],
 }
 
