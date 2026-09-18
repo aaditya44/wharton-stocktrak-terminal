@@ -26,17 +26,17 @@ PROFILE = {  # LAURA GAO - the assigned Wharton client (case study PDF, 2026-09-
   "horizon_months": 76,
   "risk_tolerance": "medium",
   "liquidity_need": "none until 2033 (living expenses covered outside portfolio); then $50k/yr fixed 2033-2042",
-  "constraints": "Case: $300k start-2027 + $150k start-2028, no other flows before 2033. Practice book rules: $25/trade, no shorts, no margin, no same-day exits. AAPL protected core holding (user instruction 2026-09-18). ASSUMPTION (team judgment, not case fact): her stated 'balance between growth and protecting capital for goals' maps to the medium band; her exact risk capacity/tolerance split is an open research item for the due-diligence report.",
+  "constraints": "Case: $300k start-2027 + $150k start-2028, no other flows before 2033. Practice book rules: $25/trade, no shorts, no margin, no same-day exits. UPDATE (user instruction 2026-09-18 ~10:00 PM IST): all legacy personal-position protections removed - AAPL is no longer protected; every position is governed only by this client mandate. ASSUMPTION (team judgment, not case fact): her stated 'balance between growth and protecting capital for goals' maps to the medium band; her exact risk capacity/tolerance split is an open research item for the due-diligence report.",
   "sector_preferences": ["IndexETF", "Technology"],
   "architecture": "PROVISIONAL (v1 draft; final report due Sat 3 PM IST): Two sleeves: growth + reserve, ~80/20 gliding to ~60/40 by 2031. Reserve target start-2033: $430-440k nominal Treasury ladder. Required blended return ~1.9% (certainty problem, not growth). De-risk: coverage<1.00 -> -10pp growth; drawdown>15% -> freeze adds; cap breach -> trim next session.",
-  "mandate": "FULL AUTOMATION (2026-09-18): algorithm buys/sells without per-trade approval, subject to live verification + caps. AAPL protected; HOST paused.",
+  "mandate": "FULL AUTOMATION (2026-09-18): algorithm buys/sells without per-trade approval, subject to live verification + caps. All legacy protections removed ~10:00 PM IST - no protected positions; HOST executes only once the converted position is tradeable with a verified live quote.",
 }
 
 # Verified practice-book positions (feeds through 2026-09-18 20:10 IST; SOXL exited 10:00 ET).
 # Also held but not scored here: 50 units UST 2.750% 02/15/2028 (~$48,712, -0.14%; IEF/GOVT/TLT proxies neutral - HOLD)
 # and ~$22,686 cash after the SOXL exit. Counts unknown for older sleeves are flagged, not invented.
 HOLDINGS = [
-  {"symbol": "HCWC", "shares": 4000, "note": "merger closed; ticker change HCWC->HOST pending on StockTrak, price frozen at cost; conditional exit armed"},
+  {"symbol": "HCWC", "shares": 4000, "note": "merger closed; ticker change HCWC->HOST pending on StockTrak, price frozen at cost; no hold protection - actionable only once tradeable with verified live quote"},
   {"symbol": "NVDA", "shares": 205},
   {"symbol": "INDP", "shares": 500},
   {"symbol": "INTC", "shares": 50},
