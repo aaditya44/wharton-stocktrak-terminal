@@ -28,7 +28,7 @@ PROFILE = {  # LAURA GAO - the assigned Wharton client (case study PDF, 2026-09-
   "liquidity_need": "none until 2033 (living expenses covered outside portfolio); then $50k/yr fixed 2033-2042",
   "constraints": "Case: $300k start-2027 + $150k start-2028, no other flows before 2033. Practice book rules: $25/trade, no shorts, no margin, no same-day exits. AAPL protected core holding (user instruction 2026-09-18). ASSUMPTION (team judgment, not case fact): her stated 'balance between growth and protecting capital for goals' maps to the medium band; her exact risk capacity/tolerance split is an open research item for the due-diligence report.",
   "sector_preferences": ["IndexETF", "Technology"],
-  "architecture": "Two sleeves: growth + reserve, ~80/20 gliding to ~60/40 by 2031. Reserve target start-2033: $430-440k nominal Treasury ladder. Required blended return ~1.9% (certainty problem, not growth). De-risk: coverage<1.00 -> -10pp growth; drawdown>15% -> freeze adds; cap breach -> trim next session.",
+  "architecture": "PROVISIONAL (v1 draft; final report due Sat 3 PM IST): Two sleeves: growth + reserve, ~80/20 gliding to ~60/40 by 2031. Reserve target start-2033: $430-440k nominal Treasury ladder. Required blended return ~1.9% (certainty problem, not growth). De-risk: coverage<1.00 -> -10pp growth; drawdown>15% -> freeze adds; cap breach -> trim next session.",
   "mandate": "FULL AUTOMATION (2026-09-18): algorithm buys/sells without per-trade approval, subject to live verification + caps. AAPL protected; HOST paused.",
 }
 
