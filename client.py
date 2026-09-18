@@ -68,7 +68,7 @@ def compute():
     for i, r in enumerate(client_ranking): r["client_rank"] = i + 1
 
     # portfolio diagnostics over verified positions
-    book = 291406.0  # verified 09-18 3:40pm ET
+    book = 291889.07  # verified 09-18 close ET; cash $10,348.44; 28/200 trades
     positions, total_verified = [], 0.0
     for h in HOLDINGS:
         px = last_close(h["symbol"])

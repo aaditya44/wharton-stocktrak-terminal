@@ -148,8 +148,8 @@ TRADES = [
     ("2026-09-17 09:46 ET", "NVDA", "BUY", "65 sh @ $218.12 ($14,177.80)", "Conf E741EA02. Exp 7 average up into strongest leader; +2.5% by 14:32; position now 205 sh"),
     ("2026-09-17 10:46 ET", "HCWC", "BUY (user)", "4,000 sh ~$13.77 ($55,080)", "Host Digital AI merger thesis; -19.3% (-$10,640) same day; user instructed HOLD for merger outcome unless thesis-breaking news"),
     ("2026-09-17 14:35 ET", "SOXL", "BUY", "9 of 125 filled ~$115.07 ($1,035.63)", "Conf 26365B54. Partial fill - exposed the verification gap now in the standing rules; 116-sh completion planned pre-close"),
-    ("2026-09-18 AM ET", "INDP", "SELL (user)", "500 of 1,000 sh @ $3.85 ($1,925)", "Conf 40A41699. User instructed the trim; de-risks the micro-cap sleeve, 500 sh remain"),
-    ("2026-09-18 pre-close ET", "SOXL", "BUY", "8 sh ~$115.25 (~$922)", "Platform qty-reduced from 116 near the close (known quirk - size earlier in session); position now ~147 sh"),
+    ("2026-09-18 AM ET", "INDP", "SELL (user)", "500 of 1,000 sh @ $3.80 ($1,875 net)", "Conf 40A41699. User instructed the trim; de-risks the micro-cap sleeve, 500 sh remain"),
+    ("2026-09-18 pre-close ET", "SOXL", "BUY", "8 sh ~$115.25 (~$922); 147 sh total, blended $114.04", "Platform qty-reduced from 116 near the close (known quirk - size earlier in session); position now ~147 sh"),
     ("2026-09-18 pre-close ET", "INTC", "BUY", "50 sh @ $109.50 ($5,475)", "Conf 520FCC3F. Exp 9 semis/foundry momentum entry"),
 ]
 
