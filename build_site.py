@@ -485,7 +485,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <section id="casestudy"><h2>Client case - Laura Gao (Wharton 2026-2027){info('case')}</h2>
 <div class="card"><p>From the three official competition PDFs (case study, strategy roadmap, competition guide) supplied 2026-09-18. Competition documents override earlier generic assumptions.</p><ol>{case_items}</ol></div></section>
 
-<footer>StockTrak Research Terminal v0.9 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars through the 2026-09-18 US close, StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<footer>StockTrak Research Terminal v0.10 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars through the 2026-09-18 US close, StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
 <script>{JS}</script></body></html>"""
 
 out = os.path.join(HERE, "index.html")
