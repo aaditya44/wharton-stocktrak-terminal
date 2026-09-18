@@ -32,11 +32,12 @@ PROFILE = {  # Aaditya's stated profile (from the 2026-09-16 mandate; editable i
 # Verified positions (from nightly feeds through 2026-09-18 01:10 IST). Counts unknown for
 # older sleeves are omitted and flagged as unverified rather than invented.
 HOLDINGS = [
-  {"symbol": "HCWC", "shares": 4000, "note": "user trade 09-17, held per instruction"},
+  {"symbol": "HCWC", "shares": 4000, "note": "merger closed; ticker change HCWC->HOST pending on StockTrak, price frozen at cost; conditional exit armed"},
   {"symbol": "NVDA", "shares": 205},
   {"symbol": "SOXL", "shares": 147},
   {"symbol": "INDP", "shares": 500},
   {"symbol": "INTC", "shares": 50},
+  {"symbol": "MSFT", "shares": 10, "note": "Exp 10 forward test, entered 09-18 @ $494.09, conf A50BD22B"},
 ]
 
 def load(sym):

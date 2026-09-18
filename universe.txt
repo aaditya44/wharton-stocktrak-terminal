@@ -62,3 +62,7 @@ GLD MacroETF
 TLT MacroETF
 HCWC EventDriven
 INDP EventDriven
+VTI IndexETF
+EFA IndexETF
+IEF MacroETF
+GOVT MacroETF

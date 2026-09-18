@@ -23,7 +23,7 @@
   {
    "symbol": "HCWC",
    "shares": 4000,
-   "note": "user trade 09-17, held per instruction",
+   "note": "merger closed; ticker change HCWC->HOST pending on StockTrak, price frozen at cost; conditional exit armed",
    "price": 11.3,
    "value": 45200,
    "weight": 15.5
@@ -50,6 +50,14 @@
    "weight": 1.9
   },
   {
+   "symbol": "MSFT",
+   "shares": 10,
+   "note": "Exp 10 forward test, entered 09-18 @ $494.09, conf A50BD22B",
+   "price": 498.15,
+   "value": 4982,
+   "weight": 1.7
+  },
+  {
    "symbol": "INDP",
    "shares": 500,
    "price": 3.87,
@@ -63,7 +71,7 @@
   "NVDA is ~15.4% of book - above the 15% single-name cap for a high-tolerance profile",
   "SOXL is a 3x leveraged ETF at ~5.8% of book - leveraged sleeve cap is 15%",
   "Horizon is ~10 weeks: error tolerance is compressed - prefer liquid names and pre-defined exits over positions that need time to work",
-  "Verified positions cover $114,589 of a $291,889 book; unverified sleeves (UUP/GLD/TQQQ/AAPL/XLE/ITA/LMT/TLT/Treasury) are excluded from concentration math - confirm exact counts in StockTrak",
+  "Verified positions cover $119,571 of a $291,889 book; unverified sleeves (UUP/GLD/TQQQ/AAPL/XLE/ITA/LMT/TLT/Treasury) are excluded from concentration math - confirm exact counts in StockTrak",
   "Indicative analysis for a simulated competition account, not personalized financial advice; suitability follows the stated profile, never age alone"
  ],
  "client_ranking": [

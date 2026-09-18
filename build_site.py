@@ -136,9 +136,10 @@ EXPERIMENTS = [
     ("2026-09-17", "Partial-fill lesson", "SOXL order filled 9 of 125 shares; standing rule: verify actual filled quantity on every order", "Process fix adopted"),
     ("2026-09-17", "Exp 8: third-party signal labels", "Do published strong-buy/sell labels predict? INDP Signal #1 test", "+18.2% at 1 day; multi-day checkpoint pending"),
     ("2026-09-17", "Exp 9: mean reversion", "Fallen spike names, 1-3% sizing, max 2-3 names", "Registered"),
-    ("2026-09-18", "Exp 10: composite forward test", "Pre-registered 2026-09-18 01:40 IST, before entry: buy the model's #1 full-universe composite (MSFT, score +0.596) ~10:00 AM ET, ~15-20 sh within cash limits. Fixed weights 0.30 3m mom / 0.15 1m mom / 0.15 overnight Sharpe / 0.15 low-vol / 0.15 trend / 0.10 52w-high. Entry factor snapshot: 3m +31.5%, vol 21.4% (inside 40% band), overnight Sharpe -0.15 (disclosed weak factor)", "Registered; entry fill, then marks at close / +1d / +2d"),
+    ("2026-09-18", "Exp 10: composite forward test", "Pre-registered 2026-09-18 01:40 IST, before entry: buy the model's #1 full-universe composite (MSFT, score +0.596) ~10:00 AM ET, ~15-20 sh within cash limits. Fixed weights 0.30 3m mom / 0.15 1m mom / 0.15 overnight Sharpe / 0.15 low-vol / 0.15 trend / 0.10 52w-high. Entry factor snapshot: 3m +31.5%, vol 21.4% (inside 40% band), overnight Sharpe -0.15 (disclosed weak factor)", "ENTERED 2026-09-18 9:55am ET: 10 sh @ $494.09, conf A50BD22B, full fill verified. No gap distortion (opened -0.88%). Weekend-locked. Marks pending: close / +1d / +2d"),
     ("2026-09-18", "Overnight experiment", "Buy near close, monitor between sessions, reassess pre-open, exit after open (no-day-trading compliant)", "Approved; sizing autonomous"),
     ("2026-09-18", "Standing autonomy", "User granted trade autonomy; daily rhythm: pre-open brief 6:30pm IST, pre-close trades 1:00am IST, hourly in-market checks", "Mandate updated"),
+    ("2026-09-18", "Algorithm rotation mandate", "User confirmed autonomous algorithm-driven buys/sells without per-trade approval, subject to live verification and constraints. AAPL protected core; HOST under separate conditional exit (platform has not processed the HCWC->HOST ticker change - exit armed, symbol not yet tradeable)", "Mandate updated; every fill logged for evaluation"),
 ]
 
 TRADES = [
@@ -151,6 +152,7 @@ TRADES = [
     ("2026-09-18 AM ET", "INDP", "SELL (user)", "500 of 1,000 sh @ $3.80 ($1,875 net)", "Conf 40A41699. User instructed the trim; de-risks the micro-cap sleeve, 500 sh remain"),
     ("2026-09-18 pre-close ET", "SOXL", "BUY", "8 sh ~$115.25 (~$922); 147 sh total, blended $114.04", "Platform qty-reduced from 116 near the close (known quirk - size earlier in session); position now ~147 sh"),
     ("2026-09-18 pre-close ET", "INTC", "BUY", "50 sh @ $109.50 ($5,475)", "Conf 520FCC3F. Exp 9 semis/foundry momentum entry"),
+    ("2026-09-18 09:55 ET", "MSFT", "BUY", "10 sh @ $494.09 ($4,940.90)", "Conf A50BD22B. Exp 10 composite forward test, rank #1/64 +0.596, vol 21.4% in-band; full fill, no reduction; weekend-locked"),
 ]
 
 METHODOLOGY = [
