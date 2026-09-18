@@ -8,7 +8,7 @@ nav{padding:0 26px;border-bottom:1px solid #30363d;display:flex;flex-wrap:wrap}
 nav button{background:none;border:none;color:#8b949e;padding:12px 14px;font-size:14px;cursor:pointer;border-bottom:2px solid transparent}
 nav button.active{color:#58a6ff;border-bottom-color:#58a6ff}
 section{display:none;padding:20px 26px} section.active{display:block}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 18px;margin-bottom:16px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 18px;margin-bottom:16px;overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:13px}
 th,td{border:1px solid #30363d;padding:6px 9px;text-align:left;vertical-align:top}
 th{background:#21262d} .badge{color:#fff;border-radius:10px;padding:2px 8px;font-size:11px}
@@ -25,10 +25,12 @@ p{font-size:13px;line-height:1.55;margin:6px 0} ol{font-size:13px;line-height:1.
 .tip.open{display:block}
 .plain{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:8px 12px;font-size:12.5px;color:#c9d1d9;margin-bottom:12px}
 .plain b{color:#58a6ff}
+@media (pointer:coarse){.info{width:20px;height:20px;line-height:18px;font-size:12px}}
+@media (max-width:700px){header{padding:12px 14px}section{padding:14px}.card{padding:12px}table{font-size:12px}nav{overflow-x:auto;white-space:nowrap}}
 footer{padding:16px 26px;color:#8b949e;font-size:12px;border-top:1px solid #30363d}
 </style></head><body>
 <header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v0.9</span></h1>
-<span class="sub">Wharton competition practice account &middot; generated 2026-09-18 23:52 IST &middot; all statistics from cached daily bars, sources dated</span></header>
+<span class="sub">Wharton competition practice account &middot; generated 2026-09-18 23:53 IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="screener" onclick="show('screener')">Screener</button>
 <button data-t="client" onclick="show('client')">Client mode</button>
