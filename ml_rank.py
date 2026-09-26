@@ -16,7 +16,7 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ST = os.path.dirname(HERE)
-DATA = os.path.join(ST, "data")
+DATA = os.path.join(HERE, "data") if os.path.isdir(os.path.join(HERE, "data")) else os.path.join(os.path.dirname(HERE), "data")
 HOR = int(os.environ.get("ML_HOR", "21"))
 MINHIST = 130
 LAM = float(os.environ.get("ML_LAM", "10"))
