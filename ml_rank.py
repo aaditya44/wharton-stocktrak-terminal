@@ -15,7 +15,8 @@ import json, math, os, glob
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DATA = os.path.join(HERE, "data")
+ST = os.path.dirname(HERE)
+DATA = os.path.join(ST, "data")
 HOR = int(os.environ.get("ML_HOR", "21"))
 MINHIST = 130
 LAM = float(os.environ.get("ML_LAM", "10"))
@@ -163,11 +164,35 @@ def main():
     json.dump(weights_hist, open(os.path.join(DATA,"ml_weights_history.json"),"w"), indent=1)
     # latest-date ranking with per-name contributions
     d = dates[-1]
+    # stale-symbol inclusion: symbols whose latest bar is 1-3 days behind the ranking
+    # date (exchange holiday / missed ingest) still rank, scored on their own latest
+    # features standardized against the ranking-date cross-section.
+    STALE_MAX = 3
     matured = [dd for dd in dates if dpos[dd] <= dpos[d]-HOR-1 and dd in gramS]
     S = sum((gramS[dd] for dd in matured), np.zeros((8,8)))
     b = sum((gramb[dd] for dd in matured), np.zeros(8))
     w = np.linalg.solve(S + LAM*np.eye(8), b)
     syml, Xz = Xz_by_date[d]
+    # ranking-date standardization stats (rebuilt on the 8-col design)
+    syml_d, Xl_d, _ = by_date[d]
+    X_d = np.array(Xl_d); spyv_d, spyr_d = spy_map.get(d, (0.0,0.0))
+    X8_d = np.column_stack([X_d, X_d[:,0]*spyv_d, X_d[:,3]*spyr_d])
+    mu_d, sd_d = X8_d.mean(axis=0), X8_d.std(axis=0); sd_d[sd_d==0]=1.0
+    extra = []  # (symbol, Xz row, staleness)
+    seen = set(syml)
+    for dd in dates[-(STALE_MAX+1):-1][::-1]:
+        syl, Xl2, _ = by_date[dd]
+        spyv_s, spyr_s = spy_map.get(dd, (0.0,0.0))
+        for s2, xr in zip(syl, Xl2):
+            if s2 in seen: continue
+            seen.add(s2)
+            x8 = np.concatenate([xr, [xr[0]*spyv_s, xr[3]*spyr_s]])
+            extra.append((s2, (x8-mu_d)/sd_d, int(d-dd)))
+    if extra:
+        syml = syml + [e[0] for e in extra]
+        Xz = np.vstack([Xz, np.array([e[1] for e in extra])])
+        print(f"stale-filled: {len(extra)} symbols on 1-{STALE_MAX}d-old bars")
+    stale_of = {e[0]: e[2] for e in extra}
     ml = Xz@w; fx = Xz[:,:6]@FIXED_W[:6]
     WB = float(os.environ.get("ML_BLEND", "0.5"))
     if val["ml_beats_fixed"]:
@@ -178,7 +203,7 @@ def main():
     rows = []
     for i,s in enumerate(syml):
         if not os.environ.get("ML_RANK_INTL") and s.endswith((".NS",".L",".HK",".TO",".DE",".PA",".MI",".MC",".AS",".BR")): continue  # training pool only; default ranking is US-tradable
-        rows.append(dict(symbol=s, ml=round(float(zc(ml)[i]),3),
+        rows.append(dict(symbol=s, stale=stale_of.get(s,0), ml=round(float(zc(ml)[i]),3),
                          fixed=round(float(zc(fx)[i]),3),
                          blend=round(float(blend[i]),3),
                          top_contrib=sorted(zip(FEATS, [round(float(c),2) for c in contrib[i]]),
