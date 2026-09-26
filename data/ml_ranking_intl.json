@@ -15,9 +15,9 @@
   {
    "symbol": "POLICYBZR.NS",
    "stale": 0,
-   "ml": 6.789,
+   "ml": 6.79,
    "fixed": -5.533,
-   "blend": 6.789,
+   "blend": 6.79,
    "top_contrib": [
     [
      "vol20",
@@ -36,9 +36,9 @@
   {
    "symbol": "MRNA",
    "stale": 0,
-   "ml": 6.567,
+   "ml": 6.568,
    "fixed": 8.012,
-   "blend": 6.567,
+   "blend": 6.568,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -99,9 +99,9 @@
   {
    "symbol": "SOXL",
    "stale": 0,
-   "ml": 5.497,
+   "ml": 5.496,
    "fixed": -1.59,
-   "blend": 5.497,
+   "blend": 5.496,
    "top_contrib": [
     [
      "vol20",
@@ -120,9 +120,9 @@
   {
    "symbol": "VICR",
    "stale": 0,
-   "ml": 5.376,
+   "ml": 5.375,
    "fixed": 0.054,
-   "blend": 5.376,
+   "blend": 5.375,
    "top_contrib": [
     [
      "vol20",
@@ -288,9 +288,9 @@
   {
    "symbol": "SEI",
    "stale": 0,
-   "ml": 3.98,
+   "ml": 3.979,
    "fixed": 1.042,
-   "blend": 3.98,
+   "blend": 3.979,
    "top_contrib": [
     [
      "vol20",
@@ -393,9 +393,9 @@
   {
    "symbol": "FIVN",
    "stale": 0,
-   "ml": 3.735,
+   "ml": 3.736,
    "fixed": 2.49,
-   "blend": 3.735,
+   "blend": 3.736,
    "top_contrib": [
     [
      "vol20",
@@ -666,9 +666,9 @@
   {
    "symbol": "FORM",
    "stale": 0,
-   "ml": 3.213,
+   "ml": 3.212,
    "fixed": 0.358,
-   "blend": 3.213,
+   "blend": 3.212,
    "top_contrib": [
     [
      "vol20",
@@ -1065,9 +1065,9 @@
   {
    "symbol": "ATRC",
    "stale": 0,
-   "ml": 2.627,
+   "ml": 2.628,
    "fixed": 4.341,
-   "blend": 2.627,
+   "blend": 2.628,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -1107,9 +1107,9 @@
   {
    "symbol": "GNRC",
    "stale": 0,
-   "ml": 2.547,
+   "ml": 2.546,
    "fixed": -1.004,
-   "blend": 2.547,
+   "blend": 2.546,
    "top_contrib": [
     [
      "vol20",
@@ -1128,9 +1128,9 @@
   {
    "symbol": "PENG",
    "stale": 0,
-   "ml": 2.547,
+   "ml": 2.546,
    "fixed": -0.49,
-   "blend": 2.547,
+   "blend": 2.546,
    "top_contrib": [
     [
      "vol20",
@@ -1149,9 +1149,9 @@
   {
    "symbol": "RMBS",
    "stale": 0,
-   "ml": 2.546,
+   "ml": 2.545,
    "fixed": -0.221,
-   "blend": 2.546,
+   "blend": 2.545,
    "top_contrib": [
     [
      "vol20",
@@ -1201,7 +1201,7 @@
     ],
     [
      "ret_3m",
-     -0.1
+     -0.09
     ],
     [
      "ret_1m",
@@ -1485,9 +1485,9 @@
   {
    "symbol": "GLW",
    "stale": 0,
-   "ml": 2.279,
+   "ml": 2.278,
    "fixed": -1.148,
-   "blend": 2.279,
+   "blend": 2.278,
    "top_contrib": [
     [
      "vol20",
@@ -1695,9 +1695,9 @@
   {
    "symbol": "MTSI",
    "stale": 0,
-   "ml": 2.108,
+   "ml": 2.107,
    "fixed": -1.099,
-   "blend": 2.108,
+   "blend": 2.107,
    "top_contrib": [
     [
      "vol20",
@@ -1966,27 +1966,6 @@
    ]
   },
   {
-   "symbol": "AMKR",
-   "stale": 0,
-   "ml": 1.932,
-   "fixed": -1.205,
-   "blend": 1.932,
-   "top_contrib": [
-    [
-     "vol20",
-     0.26
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.1
-    ],
-    [
-     "ret_3m",
-     0.03
-    ]
-   ]
-  },
-  {
    "symbol": "PAYTM.NS",
    "stale": 0,
    "ml": 1.932,
@@ -2008,11 +1987,32 @@
    ]
   },
   {
+   "symbol": "AMKR",
+   "stale": 0,
+   "ml": 1.931,
+   "fixed": -1.205,
+   "blend": 1.931,
+   "top_contrib": [
+    [
+     "vol20",
+     0.26
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.1
+    ],
+    [
+     "ret_3m",
+     0.03
+    ]
+   ]
+  },
+  {
    "symbol": "VRT",
    "stale": 0,
-   "ml": 1.921,
+   "ml": 1.92,
    "fixed": -1.037,
-   "blend": 1.921,
+   "blend": 1.92,
    "top_contrib": [
     [
      "vol20",
@@ -2892,9 +2892,9 @@
   {
    "symbol": "ICHR",
    "stale": 0,
-   "ml": 1.63,
+   "ml": 1.629,
    "fixed": -2.167,
-   "blend": 1.63,
+   "blend": 1.629,
    "top_contrib": [
     [
      "vol20",
@@ -3291,9 +3291,9 @@
   {
    "symbol": "MU",
    "stale": 0,
-   "ml": 1.468,
+   "ml": 1.467,
    "fixed": 0.731,
-   "blend": 1.468,
+   "blend": 1.467,
    "top_contrib": [
     [
      "vol20",
@@ -3396,9 +3396,9 @@
   {
    "symbol": "2269.HK",
    "stale": 0,
-   "ml": 1.429,
+   "ml": 1.43,
    "fixed": 2.624,
-   "blend": 1.429,
+   "blend": 1.43,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -3730,6 +3730,27 @@
    ]
   },
   {
+   "symbol": "MAN",
+   "stale": 0,
+   "ml": 1.36,
+   "fixed": 1.395,
+   "blend": 1.36,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     0.2
+    ],
+    [
+     "ret_3m",
+     -0.06
+    ],
+    [
+     "vol20",
+     0.05
+    ]
+   ]
+  },
+  {
    "symbol": "ORCL",
    "stale": 0,
    "ml": 1.36,
@@ -3747,27 +3768,6 @@
     [
      "ret3m_x_spyvol",
      -0.02
-    ]
-   ]
-  },
-  {
-   "symbol": "MAN",
-   "stale": 0,
-   "ml": 1.359,
-   "fixed": 1.395,
-   "blend": 1.359,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     0.2
-    ],
-    [
-     "ret_3m",
-     -0.06
-    ],
-    [
-     "vol20",
-     0.05
     ]
    ]
   },
@@ -3942,9 +3942,9 @@
   {
    "symbol": "PAYC",
    "stale": 0,
-   "ml": 1.32,
+   "ml": 1.321,
    "fixed": 2.964,
-   "blend": 1.32,
+   "blend": 1.321,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -4087,6 +4087,27 @@
    ]
   },
   {
+   "symbol": "TDW",
+   "stale": 0,
+   "ml": 1.288,
+   "fixed": 0.731,
+   "blend": 1.288,
+   "top_contrib": [
+    [
+     "vol20",
+     0.11
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.09
+    ],
+    [
+     "ret_3m",
+     -0.03
+    ]
+   ]
+  },
+  {
    "symbol": "BTRW.L",
    "stale": 1,
    "ml": 1.288,
@@ -4104,27 +4125,6 @@
     [
      "vol20_x_spyret",
      0.02
-    ]
-   ]
-  },
-  {
-   "symbol": "TDW",
-   "stale": 0,
-   "ml": 1.287,
-   "fixed": 0.731,
-   "blend": 1.287,
-   "top_contrib": [
-    [
-     "vol20",
-     0.11
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.09
-    ],
-    [
-     "ret_3m",
-     -0.03
     ]
    ]
   },
@@ -4404,9 +4404,9 @@
   {
    "symbol": "VOW.DE",
    "stale": 1,
-   "ml": 1.217,
+   "ml": 1.218,
    "fixed": -1.555,
-   "blend": 1.217,
+   "blend": 1.218,
    "top_contrib": [
     [
      "vol20",
@@ -4488,9 +4488,9 @@
   {
    "symbol": "MFSL.NS",
    "stale": 0,
-   "ml": 1.178,
+   "ml": 1.177,
    "fixed": -0.901,
-   "blend": 1.178,
+   "blend": 1.177,
    "top_contrib": [
     [
      "vol20",
@@ -4782,9 +4782,9 @@
   {
    "symbol": "ADSK",
    "stale": 0,
-   "ml": 1.109,
+   "ml": 1.11,
    "fixed": -1.391,
-   "blend": 1.109,
+   "blend": 1.11,
    "top_contrib": [
     [
      "vol20",
@@ -4887,9 +4887,9 @@
   {
    "symbol": "AAF.L",
    "stale": 1,
-   "ml": 1.083,
+   "ml": 1.084,
    "fixed": -0.591,
-   "blend": 1.083,
+   "blend": 1.084,
    "top_contrib": [
     [
      "vol20",
@@ -5391,9 +5391,9 @@
   {
    "symbol": "LODHA.NS",
    "stale": 0,
-   "ml": 1.014,
+   "ml": 1.015,
    "fixed": 0.775,
-   "blend": 1.014,
+   "blend": 1.015,
    "top_contrib": [
     [
      "vol20",
@@ -5452,6 +5452,27 @@
    ]
   },
   {
+   "symbol": "HP",
+   "stale": 0,
+   "ml": 0.994,
+   "fixed": -0.029,
+   "blend": 0.994,
+   "top_contrib": [
+    [
+     "vol20",
+     0.1
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.05
+    ],
+    [
+     "ret_3m",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "KALYANKJIL.NS",
    "stale": 0,
    "ml": 0.994,
@@ -5469,27 +5490,6 @@
     [
      "vol20",
      0.03
-    ]
-   ]
-  },
-  {
-   "symbol": "HP",
-   "stale": 0,
-   "ml": 0.993,
-   "fixed": -0.029,
-   "blend": 0.993,
-   "top_contrib": [
-    [
-     "vol20",
-     0.1
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.05
-    ],
-    [
-     "ret_3m",
-     -0.02
     ]
    ]
   },
@@ -5790,9 +5790,9 @@
   {
    "symbol": "ESI",
    "stale": 0,
-   "ml": 0.941,
+   "ml": 0.94,
    "fixed": -0.63,
-   "blend": 0.941,
+   "blend": 0.94,
    "top_contrib": [
     [
      "vol20",
@@ -6838,6 +6838,27 @@
    ]
   },
   {
+   "symbol": "APH",
+   "stale": 0,
+   "ml": 0.786,
+   "fixed": 0.749,
+   "blend": 0.786,
+   "top_contrib": [
+    [
+     "vol20",
+     0.08
+    ],
+    [
+     "ret_1m",
+     0.02
+    ],
+    [
+     "hi52",
+     -0.01
+    ]
+   ]
+  },
+  {
    "symbol": "NEM",
    "stale": 0,
    "ml": 0.786,
@@ -6855,27 +6876,6 @@
     [
      "ret_3m",
      -0.03
-    ]
-   ]
-  },
-  {
-   "symbol": "APH",
-   "stale": 0,
-   "ml": 0.785,
-   "fixed": 0.749,
-   "blend": 0.785,
-   "top_contrib": [
-    [
-     "vol20",
-     0.08
-    ],
-    [
-     "ret_1m",
-     0.02
-    ],
-    [
-     "hi52",
-     -0.01
     ]
    ]
   },
@@ -7069,27 +7069,6 @@
    ]
   },
   {
-   "symbol": "DKS",
-   "stale": 0,
-   "ml": 0.76,
-   "fixed": -1.809,
-   "blend": 0.76,
-   "top_contrib": [
-    [
-     "vol20",
-     0.14
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.14
-    ],
-    [
-     "ret_3m",
-     0.04
-    ]
-   ]
-  },
-  {
    "symbol": "IGV",
    "stale": 0,
    "ml": 0.76,
@@ -7107,6 +7086,27 @@
     [
      "ret_3m",
      -0.02
+    ]
+   ]
+  },
+  {
+   "symbol": "DKS",
+   "stale": 0,
+   "ml": 0.759,
+   "fixed": -1.809,
+   "blend": 0.759,
+   "top_contrib": [
+    [
+     "vol20",
+     0.14
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.14
+    ],
+    [
+     "ret_3m",
+     0.04
     ]
    ]
   },
@@ -7596,9 +7596,9 @@
   {
    "symbol": "HDFCLIFE.NS",
    "stale": 0,
-   "ml": 0.703,
+   "ml": 0.702,
    "fixed": -0.777,
-   "blend": 0.703,
+   "blend": 0.702,
    "top_contrib": [
     [
      "vol20",
@@ -7869,9 +7869,9 @@
   {
    "symbol": "WHR",
    "stale": 0,
-   "ml": 0.679,
+   "ml": 0.678,
    "fixed": -2.875,
-   "blend": 0.679,
+   "blend": 0.678,
    "top_contrib": [
     [
      "vol20",
@@ -8058,9 +8058,9 @@
   {
    "symbol": "CHRD",
    "stale": 0,
-   "ml": 0.659,
+   "ml": 0.66,
    "fixed": -0.01,
-   "blend": 0.659,
+   "blend": 0.66,
    "top_contrib": [
     [
      "vol20",
@@ -8121,9 +8121,9 @@
   {
    "symbol": "VSH",
    "stale": 0,
-   "ml": 0.652,
+   "ml": 0.651,
    "fixed": -2.068,
-   "blend": 0.652,
+   "blend": 0.651,
    "top_contrib": [
     [
      "vol20",
@@ -8184,9 +8184,9 @@
   {
    "symbol": "CACI",
    "stale": 0,
-   "ml": 0.64,
+   "ml": 0.641,
    "fixed": 2.04,
-   "blend": 0.64,
+   "blend": 0.641,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -8373,9 +8373,9 @@
   {
    "symbol": "SGI",
    "stale": 0,
-   "ml": 0.619,
+   "ml": 0.618,
    "fixed": -1.012,
-   "blend": 0.619,
+   "blend": 0.618,
    "top_contrib": [
     [
      "vol20",
@@ -9318,9 +9318,9 @@
   {
    "symbol": "GPK",
    "stale": 0,
-   "ml": 0.514,
+   "ml": 0.513,
    "fixed": -2.295,
-   "blend": 0.514,
+   "blend": 0.513,
    "top_contrib": [
     [
      "vol20",
@@ -9400,27 +9400,6 @@
    ]
   },
   {
-   "symbol": "APP",
-   "stale": 0,
-   "ml": 0.509,
-   "fixed": -2.067,
-   "blend": 0.509,
-   "top_contrib": [
-    [
-     "vol20",
-     0.11
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.11
-    ],
-    [
-     "ret_3m",
-     0.04
-    ]
-   ]
-  },
-  {
    "symbol": "LAURUSLABS.NS",
    "stale": 0,
    "ml": 0.509,
@@ -9438,6 +9417,27 @@
     [
      "ret_1m",
      0.02
+    ]
+   ]
+  },
+  {
+   "symbol": "APP",
+   "stale": 0,
+   "ml": 0.508,
+   "fixed": -2.067,
+   "blend": 0.508,
+   "top_contrib": [
+    [
+     "vol20",
+     0.11
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.11
+    ],
+    [
+     "ret_3m",
+     0.03
     ]
    ]
   },
@@ -9673,27 +9673,6 @@
    ]
   },
   {
-   "symbol": "VVV",
-   "stale": 0,
-   "ml": 0.481,
-   "fixed": -1.675,
-   "blend": 0.481,
-   "top_contrib": [
-    [
-     "vol20",
-     0.12
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.09
-    ],
-    [
-     "ret_3m",
-     0.03
-    ]
-   ]
-  },
-  {
    "symbol": "ITT",
    "stale": 0,
    "ml": 0.48,
@@ -9711,6 +9690,27 @@
     [
      "ret_3m",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "VVV",
+   "stale": 0,
+   "ml": 0.48,
+   "fixed": -1.675,
+   "blend": 0.48,
+   "top_contrib": [
+    [
+     "vol20",
+     0.12
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.09
+    ],
+    [
+     "ret_3m",
+     0.03
     ]
    ]
   },
@@ -10431,9 +10431,9 @@
   {
    "symbol": "JBL",
    "stale": 0,
-   "ml": 0.405,
+   "ml": 0.404,
    "fixed": -0.198,
-   "blend": 0.405,
+   "blend": 0.404,
    "top_contrib": [
     [
      "vol20",
@@ -10599,9 +10599,9 @@
   {
    "symbol": "ADYEN.AS",
    "stale": 1,
-   "ml": 0.391,
+   "ml": 0.392,
    "fixed": -1.871,
-   "blend": 0.391,
+   "blend": 0.392,
    "top_contrib": [
     [
      "vol20",
@@ -11248,6 +11248,27 @@
    ]
   },
   {
+   "symbol": "PTGX",
+   "stale": 0,
+   "ml": 0.353,
+   "fixed": 0.431,
+   "blend": 0.353,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     0.06
+    ],
+    [
+     "ret_3m",
+     -0.02
+    ],
+    [
+     "vol20",
+     0.02
+    ]
+   ]
+  },
+  {
    "symbol": "KN",
    "stale": 0,
    "ml": 0.352,
@@ -11286,27 +11307,6 @@
     [
      "trend",
      -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "PTGX",
-   "stale": 0,
-   "ml": 0.352,
-   "fixed": 0.431,
-   "blend": 0.352,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     0.06
-    ],
-    [
-     "ret_3m",
-     -0.02
-    ],
-    [
-     "vol20",
-     0.02
     ]
    ]
   },
@@ -11880,9 +11880,9 @@
   {
    "symbol": "0288.HK",
    "stale": 0,
-   "ml": 0.312,
+   "ml": 0.311,
    "fixed": -1.175,
-   "blend": 0.312,
+   "blend": 0.311,
    "top_contrib": [
     [
      "vol20",
@@ -11962,27 +11962,6 @@
    ]
   },
   {
-   "symbol": "ESAB",
-   "stale": 0,
-   "ml": 0.307,
-   "fixed": -1.439,
-   "blend": 0.307,
-   "top_contrib": [
-    [
-     "vol20",
-     0.09
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.09
-    ],
-    [
-     "ret_3m",
-     0.03
-    ]
-   ]
-  },
-  {
    "symbol": "LYB",
    "stale": 0,
    "ml": 0.307,
@@ -12021,6 +12000,27 @@
     [
      "ret_1m",
      -0.03
+    ]
+   ]
+  },
+  {
+   "symbol": "ESAB",
+   "stale": 0,
+   "ml": 0.306,
+   "fixed": -1.439,
+   "blend": 0.306,
+   "top_contrib": [
+    [
+     "vol20",
+     0.09
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.09
+    ],
+    [
+     "ret_3m",
+     0.03
     ]
    ]
   },
@@ -12111,9 +12111,9 @@
   {
    "symbol": "TMUS",
    "stale": 0,
-   "ml": 0.304,
+   "ml": 0.303,
    "fixed": -0.836,
-   "blend": 0.304,
+   "blend": 0.303,
    "top_contrib": [
     [
      "vol20",
@@ -12405,9 +12405,9 @@
   {
    "symbol": "ALGT",
    "stale": 0,
-   "ml": 0.284,
+   "ml": 0.283,
    "fixed": -1.707,
-   "blend": 0.284,
+   "blend": 0.283,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -12804,9 +12804,9 @@
   {
    "symbol": "KALU",
    "stale": 0,
-   "ml": 0.244,
+   "ml": 0.243,
    "fixed": -1.129,
-   "blend": 0.244,
+   "blend": 0.243,
    "top_contrib": [
     [
      "vol20",
@@ -12825,9 +12825,9 @@
   {
    "symbol": "DE",
    "stale": 0,
-   "ml": 0.239,
+   "ml": 0.24,
    "fixed": 0.538,
-   "blend": 0.239,
+   "blend": 0.24,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -12972,9 +12972,9 @@
   {
    "symbol": "CHDN",
    "stale": 0,
-   "ml": 0.23,
+   "ml": 0.229,
    "fixed": -0.897,
-   "blend": 0.23,
+   "blend": 0.229,
    "top_contrib": [
     [
      "vol20",
@@ -13390,27 +13390,6 @@
    ]
   },
   {
-   "symbol": "ICICIGI.NS",
-   "stale": 0,
-   "ml": 0.207,
-   "fixed": 0.201,
-   "blend": 0.207,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.03
-    ],
-    [
-     "vol20",
-     0.02
-    ],
-    [
-     "trend",
-     0.02
-    ]
-   ]
-  },
-  {
    "symbol": "GLEN.L",
    "stale": 1,
    "ml": 0.207,
@@ -13428,6 +13407,27 @@
     [
      "ret_3m",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "ICICIGI.NS",
+   "stale": 0,
+   "ml": 0.206,
+   "fixed": 0.201,
+   "blend": 0.206,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.03
+    ],
+    [
+     "vol20",
+     0.02
+    ],
+    [
+     "trend",
+     0.02
     ]
    ]
   },
@@ -13917,9 +13917,9 @@
   {
    "symbol": "JKCEMENT.NS",
    "stale": 0,
-   "ml": 0.17,
+   "ml": 0.169,
    "fixed": -0.223,
-   "blend": 0.17,
+   "blend": 0.169,
    "top_contrib": [
     [
      "vol20",
@@ -15051,9 +15051,9 @@
   {
    "symbol": "DASH",
    "stale": 0,
-   "ml": 0.11,
+   "ml": 0.111,
    "fixed": -1.046,
-   "blend": 0.11,
+   "blend": 0.111,
    "top_contrib": [
     [
      "vol20",
@@ -15324,9 +15324,9 @@
   {
    "symbol": "TDC",
    "stale": 0,
-   "ml": 0.093,
+   "ml": 0.092,
    "fixed": -0.061,
-   "blend": 0.093,
+   "blend": 0.092,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -15595,6 +15595,27 @@
    ]
   },
   {
+   "symbol": "TPC",
+   "stale": 0,
+   "ml": 0.076,
+   "fixed": 0.06,
+   "blend": 0.076,
+   "top_contrib": [
+    [
+     "vol20",
+     0.02
+    ],
+    [
+     "trend",
+     -0.02
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.02
+    ]
+   ]
+  },
+  {
    "symbol": "DGX",
    "stale": 0,
    "ml": 0.075,
@@ -15612,27 +15633,6 @@
     [
      "vol20",
      -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "TPC",
-   "stale": 0,
-   "ml": 0.075,
-   "fixed": 0.06,
-   "blend": 0.075,
-   "top_contrib": [
-    [
-     "vol20",
-     0.02
-    ],
-    [
-     "trend",
-     -0.02
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.02
     ]
    ]
   },
@@ -15826,27 +15826,6 @@
    ]
   },
   {
-   "symbol": "RL",
-   "stale": 0,
-   "ml": 0.06,
-   "fixed": 0.285,
-   "blend": 0.06,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.04
-    ],
-    [
-     "vol20",
-     0.02
-    ],
-    [
-     "trend",
-     0.02
-    ]
-   ]
-  },
-  {
    "symbol": "KTB",
    "stale": 0,
    "ml": 0.059,
@@ -15863,6 +15842,27 @@
     ],
     [
      "ret_3m",
+     0.02
+    ]
+   ]
+  },
+  {
+   "symbol": "RL",
+   "stale": 0,
+   "ml": 0.059,
+   "fixed": 0.285,
+   "blend": 0.059,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.04
+    ],
+    [
+     "vol20",
+     0.02
+    ],
+    [
+     "trend",
      0.02
     ]
    ]
@@ -16225,6 +16225,27 @@
    ]
   },
   {
+   "symbol": "FTDR",
+   "stale": 0,
+   "ml": 0.041,
+   "fixed": -0.519,
+   "blend": 0.041,
+   "top_contrib": [
+    [
+     "ret_1m",
+     -0.02
+    ],
+    [
+     "vol20",
+     0.02
+    ],
+    [
+     "ret_3m",
+     -0.0
+    ]
+   ]
+  },
+  {
    "symbol": "SHEL.L",
    "stale": 1,
    "ml": 0.041,
@@ -16248,9 +16269,9 @@
   {
    "symbol": "ENRIN.NS",
    "stale": 0,
-   "ml": 0.04,
+   "ml": 0.039,
    "fixed": 1.023,
-   "blend": 0.04,
+   "blend": 0.039,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -16263,27 +16284,6 @@
     [
      "ret_3m",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "FTDR",
-   "stale": 0,
-   "ml": 0.04,
-   "fixed": -0.519,
-   "blend": 0.04,
-   "top_contrib": [
-    [
-     "ret_1m",
-     -0.02
-    ],
-    [
-     "vol20",
-     0.02
-    ],
-    [
-     "ret_3m",
-     -0.0
     ]
    ]
   },
@@ -16708,27 +16708,6 @@
    ]
   },
   {
-   "symbol": "WMS",
-   "stale": 0,
-   "ml": 0.008,
-   "fixed": -0.146,
-   "blend": 0.008,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.04
-    ],
-    [
-     "trend",
-     0.02
-    ],
-    [
-     "ret_3m",
-     0.01
-    ]
-   ]
-  },
-  {
    "symbol": "IREDA.NS",
    "stale": 0,
    "ml": 0.007,
@@ -16741,6 +16720,27 @@
     ],
     [
      "hi52",
+     0.02
+    ],
+    [
+     "ret_3m",
+     0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "WMS",
+   "stale": 0,
+   "ml": 0.007,
+   "fixed": -0.146,
+   "blend": 0.007,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.04
+    ],
+    [
+     "trend",
      0.02
     ],
     [
@@ -17611,6 +17611,27 @@
    ]
   },
   {
+   "symbol": "MEDP",
+   "stale": 0,
+   "ml": -0.033,
+   "fixed": 0.601,
+   "blend": -0.033,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     0.06
+    ],
+    [
+     "vol20",
+     -0.03
+    ],
+    [
+     "ret_3m",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "FCFS",
    "stale": 0,
    "ml": -0.034,
@@ -17628,27 +17649,6 @@
     [
      "trend",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "MEDP",
-   "stale": 0,
-   "ml": -0.034,
-   "fixed": 0.601,
-   "blend": -0.034,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     0.06
-    ],
-    [
-     "vol20",
-     -0.03
-    ],
-    [
-     "ret_3m",
-     -0.02
     ]
    ]
   },
@@ -17674,27 +17674,6 @@
    ]
   },
   {
-   "symbol": "RRX",
-   "stale": 0,
-   "ml": -0.036,
-   "fixed": -1.548,
-   "blend": -0.036,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.09
-    ],
-    [
-     "vol20",
-     0.06
-    ],
-    [
-     "ret_3m",
-     0.03
-    ]
-   ]
-  },
-  {
    "symbol": "EMR",
    "stale": 0,
    "ml": -0.037,
@@ -17712,6 +17691,27 @@
     [
      "ret_3m",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "RRX",
+   "stale": 0,
+   "ml": -0.037,
+   "fixed": -1.548,
+   "blend": -0.037,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.09
+    ],
+    [
+     "vol20",
+     0.06
+    ],
+    [
+     "ret_3m",
+     0.03
     ]
    ]
   },
@@ -18180,9 +18180,9 @@
   {
    "symbol": "AROC",
    "stale": 0,
-   "ml": -0.065,
+   "ml": -0.066,
    "fixed": -0.873,
-   "blend": -0.065,
+   "blend": -0.066,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -18810,9 +18810,9 @@
   {
    "symbol": "BA.L",
    "stale": 1,
-   "ml": -0.097,
+   "ml": -0.096,
    "fixed": 0.301,
-   "blend": -0.097,
+   "blend": -0.096,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -18873,9 +18873,9 @@
   {
    "symbol": "ICUI",
    "stale": 0,
-   "ml": -0.101,
+   "ml": -0.1,
    "fixed": -0.11,
-   "blend": -0.101,
+   "blend": -0.1,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -20104,8 +20104,8 @@
      0.01
     ],
     [
-     "hi52",
-     0.01
+     "ret_1m",
+     -0.0
     ]
    ]
   },
@@ -20278,27 +20278,6 @@
    ]
   },
   {
-   "symbol": "DECK",
-   "stale": 0,
-   "ml": -0.171,
-   "fixed": -1.749,
-   "blend": -0.171,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.08
-    ],
-    [
-     "ret_3m",
-     0.02
-    ],
-    [
-     "ret_1m",
-     -0.02
-    ]
-   ]
-  },
-  {
    "symbol": "DIS",
    "stale": 0,
    "ml": -0.171,
@@ -20320,6 +20299,48 @@
    ]
   },
   {
+   "symbol": "DECK",
+   "stale": 0,
+   "ml": -0.172,
+   "fixed": -1.749,
+   "blend": -0.172,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.08
+    ],
+    [
+     "ret_3m",
+     0.02
+    ],
+    [
+     "ret_1m",
+     -0.02
+    ]
+   ]
+  },
+  {
+   "symbol": "VNT",
+   "stale": 0,
+   "ml": -0.172,
+   "fixed": -0.221,
+   "blend": -0.172,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     0.03
+    ],
+    [
+     "vol20",
+     -0.02
+    ],
+    [
+     "ret_3m",
+     -0.01
+    ]
+   ]
+  },
+  {
    "symbol": "NHC",
    "stale": 0,
    "ml": -0.173,
@@ -20333,27 +20354,6 @@
     [
      "ret3m_x_spyvol",
      0.04
-    ],
-    [
-     "ret_3m",
-     -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "VNT",
-   "stale": 0,
-   "ml": -0.173,
-   "fixed": -0.221,
-   "blend": -0.173,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     0.03
-    ],
-    [
-     "vol20",
-     -0.02
     ],
     [
      "ret_3m",
@@ -20719,27 +20719,6 @@
    ]
   },
   {
-   "symbol": "UBL.NS",
-   "stale": 0,
-   "ml": -0.194,
-   "fixed": 0.57,
-   "blend": -0.194,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.02
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.02
-    ],
-    [
-     "ret_3m",
-     0.01
-    ]
-   ]
-  },
-  {
    "symbol": "XYL",
    "stale": 0,
    "ml": -0.194,
@@ -20757,6 +20736,27 @@
     [
      "ret_1m",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "UBL.NS",
+   "stale": 0,
+   "ml": -0.195,
+   "fixed": 0.57,
+   "blend": -0.195,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.02
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.02
+    ],
+    [
+     "ret_3m",
+     0.01
     ]
    ]
   },
@@ -20868,9 +20868,9 @@
   {
    "symbol": "MNG.L",
    "stale": 1,
-   "ml": -0.202,
+   "ml": -0.201,
    "fixed": 0.095,
-   "blend": -0.202,
+   "blend": -0.201,
    "top_contrib": [
     [
      "vol20",
@@ -20992,6 +20992,27 @@
    ]
   },
   {
+   "symbol": "CTAS",
+   "stale": 0,
+   "ml": -0.215,
+   "fixed": 0.138,
+   "blend": -0.215,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     0.06
+    ],
+    [
+     "vol20",
+     -0.05
+    ],
+    [
+     "ret_3m",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "NWSA",
    "stale": 0,
    "ml": -0.215,
@@ -21009,27 +21030,6 @@
     [
      "ret_3m",
      -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "CTAS",
-   "stale": 0,
-   "ml": -0.216,
-   "fixed": 0.138,
-   "blend": -0.216,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     0.06
-    ],
-    [
-     "vol20",
-     -0.05
-    ],
-    [
-     "ret_3m",
-     -0.02
     ]
    ]
   },
@@ -21729,9 +21729,9 @@
   {
    "symbol": "0762.HK",
    "stale": 0,
-   "ml": -0.251,
+   "ml": -0.252,
    "fixed": -0.277,
-   "blend": -0.251,
+   "blend": -0.252,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -22105,6 +22105,27 @@
    ]
   },
   {
+   "symbol": "M&MFIN.NS",
+   "stale": 0,
+   "ml": -0.267,
+   "fixed": 0.185,
+   "blend": -0.267,
+   "top_contrib": [
+    [
+     "ret_1m",
+     -0.02
+    ],
+    [
+     "vol20",
+     -0.02
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.02
+    ]
+   ]
+  },
+  {
    "symbol": "SBAC",
    "stale": 0,
    "ml": -0.267,
@@ -22142,27 +22163,6 @@
     ],
     [
      "hi52",
-     0.02
-    ]
-   ]
-  },
-  {
-   "symbol": "M&MFIN.NS",
-   "stale": 0,
-   "ml": -0.268,
-   "fixed": 0.185,
-   "blend": -0.268,
-   "top_contrib": [
-    [
-     "ret_1m",
-     -0.02
-    ],
-    [
-     "vol20",
-     -0.02
-    ],
-    [
-     "ret3m_x_spyvol",
      0.02
     ]
    ]
@@ -22210,6 +22210,27 @@
    ]
   },
   {
+   "symbol": "BMRN",
+   "stale": 0,
+   "ml": -0.271,
+   "fixed": -0.089,
+   "blend": -0.271,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.03
+    ],
+    [
+     "ret_1m",
+     -0.01
+    ],
+    [
+     "trend",
+     -0.01
+    ]
+   ]
+  },
+  {
    "symbol": "IHG.L",
    "stale": 1,
    "ml": -0.271,
@@ -22227,27 +22248,6 @@
     [
      "ret_3m",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "BMRN",
-   "stale": 0,
-   "ml": -0.272,
-   "fixed": -0.089,
-   "blend": -0.272,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.03
-    ],
-    [
-     "ret_1m",
-     -0.01
-    ],
-    [
-     "trend",
-     -0.01
     ]
    ]
   },
@@ -22464,9 +22464,9 @@
   {
    "symbol": "ITCHOTELS.NS",
    "stale": 0,
-   "ml": -0.281,
+   "ml": -0.282,
    "fixed": 0.998,
-   "blend": -0.281,
+   "blend": -0.282,
    "top_contrib": [
     [
      "vol20",
@@ -22683,12 +22683,12 @@
      -0.07
     ],
     [
-     "ret_1m",
-     -0.03
-    ],
-    [
      "vol20",
      0.03
+    ],
+    [
+     "ret_3m",
+     0.02
     ]
    ]
   },
@@ -23218,6 +23218,27 @@
    ]
   },
   {
+   "symbol": "NWS",
+   "stale": 0,
+   "ml": -0.299,
+   "fixed": 0.198,
+   "blend": -0.299,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     0.04
+    ],
+    [
+     "vol20",
+     -0.03
+    ],
+    [
+     "trend",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "BAYN.DE",
    "stale": 1,
    "ml": -0.299,
@@ -23277,27 +23298,6 @@
     [
      "ret_3m",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "NWS",
-   "stale": 0,
-   "ml": -0.3,
-   "fixed": 0.198,
-   "blend": -0.3,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     0.04
-    ],
-    [
-     "vol20",
-     -0.03
-    ],
-    [
-     "trend",
-     -0.02
     ]
    ]
   },
@@ -23659,6 +23659,48 @@
    ]
   },
   {
+   "symbol": "GPC",
+   "stale": 0,
+   "ml": -0.313,
+   "fixed": -0.086,
+   "blend": -0.313,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.06
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.04
+    ],
+    [
+     "ret_3m",
+     -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "TORNTPHARM.NS",
+   "stale": 0,
+   "ml": -0.313,
+   "fixed": 1.25,
+   "blend": -0.313,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.05
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.03
+    ],
+    [
+     "ret_3m",
+     -0.01
+    ]
+   ]
+  },
+  {
    "symbol": "CCL.B.TO",
    "stale": 1,
    "ml": -0.313,
@@ -23701,27 +23743,6 @@
    ]
   },
   {
-   "symbol": "GPC",
-   "stale": 0,
-   "ml": -0.314,
-   "fixed": -0.086,
-   "blend": -0.314,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.06
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.04
-    ],
-    [
-     "ret_3m",
-     -0.01
-    ]
-   ]
-  },
-  {
    "symbol": "KNSL",
    "stale": 0,
    "ml": -0.314,
@@ -23738,27 +23759,6 @@
     ],
     [
      "trend",
-     -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "TORNTPHARM.NS",
-   "stale": 0,
-   "ml": -0.314,
-   "fixed": 1.25,
-   "blend": -0.314,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.05
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.03
-    ],
-    [
-     "ret_3m",
      -0.01
     ]
    ]
@@ -24373,27 +24373,6 @@
    ]
   },
   {
-   "symbol": "WAL",
-   "stale": 0,
-   "ml": -0.332,
-   "fixed": 0.24,
-   "blend": -0.332,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.04
-    ],
-    [
-     "trend",
-     0.01
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.01
-    ]
-   ]
-  },
-  {
    "symbol": "CRH",
    "stale": 0,
    "ml": -0.333,
@@ -24415,11 +24394,32 @@
    ]
   },
   {
-   "symbol": "WMT",
+   "symbol": "WAL",
    "stale": 0,
    "ml": -0.333,
-   "fixed": -0.066,
+   "fixed": 0.24,
    "blend": -0.333,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.04
+    ],
+    [
+     "trend",
+     0.01
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "WMT",
+   "stale": 0,
+   "ml": -0.334,
+   "fixed": -0.066,
+   "blend": -0.334,
    "top_contrib": [
     [
      "vol20",
@@ -24709,6 +24709,27 @@
    ]
   },
   {
+   "symbol": "CRISIL.NS",
+   "stale": 0,
+   "ml": -0.35,
+   "fixed": 0.974,
+   "blend": -0.35,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.06
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.04
+    ],
+    [
+     "trend",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "MDT",
    "stale": 0,
    "ml": -0.35,
@@ -24726,27 +24747,6 @@
     [
      "ret_3m",
      -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "CRISIL.NS",
-   "stale": 0,
-   "ml": -0.351,
-   "fixed": 0.974,
-   "blend": -0.351,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.06
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.04
-    ],
-    [
-     "trend",
-     -0.02
     ]
    ]
   },
@@ -24900,9 +24900,9 @@
   {
    "symbol": "NCLH",
    "stale": 0,
-   "ml": -0.355,
+   "ml": -0.356,
    "fixed": -1.72,
-   "blend": -0.355,
+   "blend": -0.356,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -24940,11 +24940,32 @@
    ]
   },
   {
-   "symbol": "LICI.NS",
+   "symbol": "ULS",
    "stale": 0,
    "ml": -0.358,
-   "fixed": 0.74,
+   "fixed": -1.473,
    "blend": -0.358,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.11
+    ],
+    [
+     "ret_3m",
+     0.03
+    ],
+    [
+     "vol20",
+     0.03
+    ]
+   ]
+  },
+  {
+   "symbol": "LICI.NS",
+   "stale": 0,
+   "ml": -0.359,
+   "fixed": 0.74,
+   "blend": -0.359,
    "top_contrib": [
     [
      "vol20",
@@ -24963,9 +24984,9 @@
   {
    "symbol": "PHIN",
    "stale": 0,
-   "ml": -0.358,
+   "ml": -0.359,
    "fixed": -1.048,
-   "blend": -0.358,
+   "blend": -0.359,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -24978,27 +24999,6 @@
     [
      "ret_1m",
      -0.02
-    ]
-   ]
-  },
-  {
-   "symbol": "ULS",
-   "stale": 0,
-   "ml": -0.358,
-   "fixed": -1.473,
-   "blend": -0.358,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.11
-    ],
-    [
-     "ret_3m",
-     0.03
-    ],
-    [
-     "vol20",
-     0.03
     ]
    ]
   },
@@ -25339,6 +25339,27 @@
    ]
   },
   {
+   "symbol": "TVSMOTOR.NS",
+   "stale": 0,
+   "ml": -0.377,
+   "fixed": 1.181,
+   "blend": -0.377,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     0.07
+    ],
+    [
+     "vol20",
+     -0.06
+    ],
+    [
+     "ret_3m",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "LLOY.L",
    "stale": 1,
    "ml": -0.377,
@@ -25356,27 +25377,6 @@
     [
      "hi52",
      -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "TVSMOTOR.NS",
-   "stale": 0,
-   "ml": -0.378,
-   "fixed": 1.181,
-   "blend": -0.378,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     0.07
-    ],
-    [
-     "vol20",
-     -0.06
-    ],
-    [
-     "ret_3m",
-     -0.02
     ]
    ]
   },
@@ -26181,9 +26181,9 @@
   {
    "symbol": "VMC",
    "stale": 0,
-   "ml": -0.41,
+   "ml": -0.411,
    "fixed": -0.502,
-   "blend": -0.41,
+   "blend": -0.411,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -26998,6 +26998,27 @@
    ]
   },
   {
+   "symbol": "MSI",
+   "stale": 0,
+   "ml": -0.439,
+   "fixed": 1.019,
+   "blend": -0.439,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.08
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.05
+    ],
+    [
+     "ret_3m",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "HLN.L",
    "stale": 1,
    "ml": -0.439,
@@ -27015,27 +27036,6 @@
     [
      "trend",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "MSI",
-   "stale": 0,
-   "ml": -0.44,
-   "fixed": 1.019,
-   "blend": -0.44,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.08
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.05
-    ],
-    [
-     "ret_3m",
-     -0.02
     ]
    ]
   },
@@ -27126,9 +27126,9 @@
   {
    "symbol": "MMM",
    "stale": 0,
-   "ml": -0.446,
+   "ml": -0.445,
    "fixed": 0.014,
-   "blend": -0.446,
+   "blend": -0.445,
    "top_contrib": [
     [
      "vol20",
@@ -27523,27 +27523,6 @@
    ]
   },
   {
-   "symbol": "COLB",
-   "stale": 0,
-   "ml": -0.459,
-   "fixed": 0.24,
-   "blend": -0.459,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.05
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.02
-    ],
-    [
-     "ret_3m",
-     0.01
-    ]
-   ]
-  },
-  {
    "symbol": "RELIANCE.NS",
    "stale": 0,
    "ml": -0.459,
@@ -27561,6 +27540,27 @@
     [
      "ret3m_x_spyvol",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "COLB",
+   "stale": 0,
+   "ml": -0.46,
+   "fixed": 0.24,
+   "blend": -0.46,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.05
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.02
+    ],
+    [
+     "ret_3m",
+     0.01
     ]
    ]
   },
@@ -27922,27 +27922,6 @@
    ]
   },
   {
-   "symbol": "0291.HK",
-   "stale": 0,
-   "ml": -0.471,
-   "fixed": 0.039,
-   "blend": -0.471,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.05
-    ],
-    [
-     "vol20",
-     -0.04
-    ],
-    [
-     "ret_3m",
-     0.02
-    ]
-   ]
-  },
-  {
    "symbol": "RS",
    "stale": 0,
    "ml": -0.471,
@@ -27981,6 +27960,27 @@
     [
      "ret_3m",
      0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "0291.HK",
+   "stale": 0,
+   "ml": -0.472,
+   "fixed": 0.039,
+   "blend": -0.472,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.05
+    ],
+    [
+     "vol20",
+     -0.04
+    ],
+    [
+     "ret_3m",
+     0.02
     ]
    ]
   },
@@ -28323,9 +28323,9 @@
   {
    "symbol": "WSO",
    "stale": 0,
-   "ml": -0.489,
+   "ml": -0.49,
    "fixed": -1.476,
-   "blend": -0.489,
+   "blend": -0.49,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -28447,6 +28447,27 @@
    ]
   },
   {
+   "symbol": "0322.HK",
+   "stale": 0,
+   "ml": -0.496,
+   "fixed": 0.077,
+   "blend": -0.496,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.05
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.05
+    ],
+    [
+     "ret_3m",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "BIOCON.NS",
    "stale": 0,
    "ml": -0.496,
@@ -28506,27 +28527,6 @@
     [
      "ret_3m",
      0.02
-    ]
-   ]
-  },
-  {
-   "symbol": "0322.HK",
-   "stale": 0,
-   "ml": -0.497,
-   "fixed": 0.077,
-   "blend": -0.497,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.05
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.05
-    ],
-    [
-     "ret_3m",
-     -0.02
     ]
    ]
   },
@@ -28722,9 +28722,9 @@
   {
    "symbol": "MARUTI.NS",
    "stale": 0,
-   "ml": -0.508,
+   "ml": -0.509,
    "fixed": 0.138,
-   "blend": -0.508,
+   "blend": -0.509,
    "top_contrib": [
     [
      "vol20",
@@ -29268,9 +29268,9 @@
   {
    "symbol": "HD",
    "stale": 0,
-   "ml": -0.53,
+   "ml": -0.531,
    "fixed": -0.503,
-   "blend": -0.53,
+   "blend": -0.531,
    "top_contrib": [
     [
      "vol20",
@@ -29938,6 +29938,27 @@
    ]
   },
   {
+   "symbol": "ABT",
+   "stale": 0,
+   "ml": -0.549,
+   "fixed": -0.486,
+   "blend": -0.549,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.07
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.03
+    ],
+    [
+     "ret_1m",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "1113.HK",
    "stale": 0,
    "ml": -0.55,
@@ -29955,27 +29976,6 @@
     [
      "ret_1m",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "ABT",
-   "stale": 0,
-   "ml": -0.55,
-   "fixed": -0.486,
-   "blend": -0.55,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.07
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.03
-    ],
-    [
-     "ret_1m",
-     -0.02
     ]
    ]
   },
@@ -30820,27 +30820,6 @@
    ]
   },
   {
-   "symbol": "PG",
-   "stale": 0,
-   "ml": -0.587,
-   "fixed": 0.504,
-   "blend": -0.587,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.1
-    ],
-    [
-     "trend",
-     0.02
-    ],
-    [
-     "ret_1m",
-     0.01
-    ]
-   ]
-  },
-  {
    "symbol": "AMBUJACEM.NS",
    "stale": 0,
    "ml": -0.588,
@@ -30883,6 +30862,48 @@
    ]
   },
   {
+   "symbol": "FRPT",
+   "stale": 0,
+   "ml": -0.588,
+   "fixed": -1.564,
+   "blend": -0.588,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.05
+    ],
+    [
+     "ret_1m",
+     -0.04
+    ],
+    [
+     "hi52",
+     0.02
+    ]
+   ]
+  },
+  {
+   "symbol": "PG",
+   "stale": 0,
+   "ml": -0.588,
+   "fixed": 0.504,
+   "blend": -0.588,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.1
+    ],
+    [
+     "trend",
+     0.02
+    ],
+    [
+     "ret_1m",
+     0.01
+    ]
+   ]
+  },
+  {
    "symbol": "0101.HK",
    "stale": 0,
    "ml": -0.589,
@@ -30900,27 +30921,6 @@
     [
      "ret_3m",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "FRPT",
-   "stale": 0,
-   "ml": -0.589,
-   "fixed": -1.564,
-   "blend": -0.589,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.05
-    ],
-    [
-     "ret_1m",
-     -0.04
-    ],
-    [
-     "hi52",
-     0.02
     ]
    ]
   },
@@ -30948,9 +30948,9 @@
   {
    "symbol": "MWA",
    "stale": 0,
-   "ml": -0.59,
+   "ml": -0.591,
    "fixed": -0.274,
-   "blend": -0.59,
+   "blend": -0.591,
    "top_contrib": [
     [
      "ret3m_x_spyvol",
@@ -31177,27 +31177,6 @@
    ]
   },
   {
-   "symbol": "DOV",
-   "stale": 0,
-   "ml": -0.599,
-   "fixed": 0.157,
-   "blend": -0.599,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.05
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.05
-    ],
-    [
-     "trend",
-     0.02
-    ]
-   ]
-  },
-  {
    "symbol": "NLCINDIA.NS",
    "stale": 0,
    "ml": -0.599,
@@ -31236,6 +31215,27 @@
     [
      "hi52",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "DOV",
+   "stale": 0,
+   "ml": -0.6,
+   "fixed": 0.157,
+   "blend": -0.6,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.05
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.05
+    ],
+    [
+     "trend",
+     0.02
     ]
    ]
   },
@@ -31786,6 +31786,27 @@
    ]
   },
   {
+   "symbol": "V",
+   "stale": 0,
+   "ml": -0.624,
+   "fixed": 0.123,
+   "blend": -0.624,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.08
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.04
+    ],
+    [
+     "trend",
+     -0.02
+    ]
+   ]
+  },
+  {
    "symbol": "KMI",
    "stale": 0,
    "ml": -0.625,
@@ -31823,27 +31844,6 @@
     ],
     [
      "ret_1m",
-     -0.02
-    ]
-   ]
-  },
-  {
-   "symbol": "V",
-   "stale": 0,
-   "ml": -0.625,
-   "fixed": 0.123,
-   "blend": -0.625,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.08
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.04
-    ],
-    [
-     "trend",
      -0.02
     ]
    ]
@@ -32668,27 +32668,6 @@
    ]
   },
   {
-   "symbol": "MIDD",
-   "stale": 0,
-   "ml": -0.666,
-   "fixed": -0.906,
-   "blend": -0.666,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.07
-    ],
-    [
-     "vol20",
-     -0.03
-    ],
-    [
-     "ret_3m",
-     0.02
-    ]
-   ]
-  },
-  {
    "symbol": "TCBI",
    "stale": 0,
    "ml": -0.666,
@@ -32727,6 +32706,27 @@
     [
      "ret3m_x_spyvol",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "MIDD",
+   "stale": 0,
+   "ml": -0.667,
+   "fixed": -0.906,
+   "blend": -0.667,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.07
+    ],
+    [
+     "vol20",
+     -0.03
+    ],
+    [
+     "ret_3m",
+     0.02
     ]
    ]
   },
@@ -32836,27 +32836,6 @@
    ]
   },
   {
-   "symbol": "EXP",
-   "stale": 0,
-   "ml": -0.67,
-   "fixed": -0.949,
-   "blend": -0.67,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.08
-    ],
-    [
-     "vol20",
-     -0.05
-    ],
-    [
-     "ret_3m",
-     0.02
-    ]
-   ]
-  },
-  {
    "symbol": "TROW",
    "stale": 0,
    "ml": -0.67,
@@ -32916,6 +32895,27 @@
     [
      "hi52",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "EXP",
+   "stale": 0,
+   "ml": -0.671,
+   "fixed": -0.949,
+   "blend": -0.671,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.08
+    ],
+    [
+     "vol20",
+     -0.05
+    ],
+    [
+     "ret_3m",
+     0.02
     ]
    ]
   },
@@ -34201,6 +34201,27 @@
    ]
   },
   {
+   "symbol": "ATR",
+   "stale": 0,
+   "ml": -0.741,
+   "fixed": -0.104,
+   "blend": -0.741,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.08
+    ],
+    [
+     "ret_1m",
+     -0.01
+    ],
+    [
+     "vol20_x_spyret",
+     -0.01
+    ]
+   ]
+  },
+  {
    "symbol": "ESGV",
    "stale": 0,
    "ml": -0.741,
@@ -34281,27 +34302,6 @@
     [
      "ret_3m",
      0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "ATR",
-   "stale": 0,
-   "ml": -0.742,
-   "fixed": -0.104,
-   "blend": -0.742,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.08
-    ],
-    [
-     "ret_1m",
-     -0.01
-    ],
-    [
-     "vol20_x_spyret",
-     -0.01
     ]
    ]
   },
@@ -34392,9 +34392,9 @@
   {
    "symbol": "AIZ",
    "stale": 0,
-   "ml": -0.749,
+   "ml": -0.748,
    "fixed": 0.216,
-   "blend": -0.749,
+   "blend": -0.748,
    "top_contrib": [
     [
      "vol20",
@@ -35104,6 +35104,27 @@
    ]
   },
   {
+   "symbol": "0002.HK",
+   "stale": 0,
+   "ml": -0.791,
+   "fixed": 0.643,
+   "blend": -0.791,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.09
+    ],
+    [
+     "ret3m_x_spyvol",
+     0.02
+    ],
+    [
+     "trend",
+     -0.01
+    ]
+   ]
+  },
+  {
    "symbol": "HAS",
    "stale": 0,
    "ml": -0.791,
@@ -35141,27 +35162,6 @@
     ],
     [
      "hi52",
-     -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "0002.HK",
-   "stale": 0,
-   "ml": -0.792,
-   "fixed": 0.643,
-   "blend": -0.792,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.09
-    ],
-    [
-     "ret3m_x_spyvol",
-     0.02
-    ],
-    [
-     "trend",
      -0.01
     ]
    ]
@@ -35818,27 +35818,6 @@
    ]
   },
   {
-   "symbol": "JBTM",
-   "stale": 0,
-   "ml": -0.827,
-   "fixed": -1.079,
-   "blend": -0.827,
-   "top_contrib": [
-    [
-     "ret3m_x_spyvol",
-     -0.07
-    ],
-    [
-     "vol20",
-     -0.06
-    ],
-    [
-     "ret_3m",
-     0.02
-    ]
-   ]
-  },
-  {
    "symbol": "GBCI",
    "stale": 0,
    "ml": -0.828,
@@ -35856,6 +35835,27 @@
     [
      "ret_3m",
      0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "JBTM",
+   "stale": 0,
+   "ml": -0.828,
+   "fixed": -1.079,
+   "blend": -0.828,
+   "top_contrib": [
+    [
+     "ret3m_x_spyvol",
+     -0.07
+    ],
+    [
+     "vol20",
+     -0.06
+    ],
+    [
+     "ret_3m",
+     0.02
     ]
    ]
   },
@@ -36744,9 +36744,9 @@
   {
    "symbol": "DFIV",
    "stale": 0,
-   "ml": -0.865,
+   "ml": -0.864,
    "fixed": 0.915,
-   "blend": -0.865,
+   "blend": -0.864,
    "top_contrib": [
     [
      "vol20",
@@ -36758,6 +36758,27 @@
     ],
     [
      "ret_3m",
+     -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "ESGD",
+   "stale": 0,
+   "ml": -0.865,
+   "fixed": 0.375,
+   "blend": -0.865,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.1
+    ],
+    [
+     "trend",
+     -0.01
+    ],
+    [
+     "hi52",
      -0.01
     ]
    ]
@@ -36779,27 +36800,6 @@
     ],
     [
      "trend",
-     -0.01
-    ]
-   ]
-  },
-  {
-   "symbol": "ESGD",
-   "stale": 0,
-   "ml": -0.866,
-   "fixed": 0.375,
-   "blend": -0.866,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.1
-    ],
-    [
-     "trend",
-     -0.01
-    ],
-    [
-     "hi52",
      -0.01
     ]
    ]
@@ -36870,9 +36870,9 @@
   {
    "symbol": "FNDE",
    "stale": 0,
-   "ml": -0.872,
+   "ml": -0.871,
    "fixed": 0.659,
-   "blend": -0.872,
+   "blend": -0.871,
    "top_contrib": [
     [
      "vol20",
@@ -38298,9 +38298,9 @@
   {
    "symbol": "BYD",
    "stale": 0,
-   "ml": -0.939,
+   "ml": -0.94,
    "fixed": -0.636,
-   "blend": -0.939,
+   "blend": -0.94,
    "top_contrib": [
     [
      "vol20",
@@ -39852,9 +39852,9 @@
   {
    "symbol": "IGF",
    "stale": 0,
-   "ml": -1.072,
+   "ml": -1.073,
    "fixed": 0.987,
-   "blend": -1.072,
+   "blend": -1.073,
    "top_contrib": [
     [
      "vol20",
@@ -40501,27 +40501,6 @@
    ]
   },
   {
-   "symbol": "AEP",
-   "stale": 0,
-   "ml": -1.133,
-   "fixed": 0.569,
-   "blend": -1.133,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.11
-    ],
-    [
-     "ret3m_x_spyvol",
-     -0.05
-    ],
-    [
-     "ret_3m",
-     0.01
-    ]
-   ]
-  },
-  {
    "symbol": "IEF",
    "stale": 0,
    "ml": -1.133,
@@ -40539,6 +40518,27 @@
     [
      "hi52",
      -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "AEP",
+   "stale": 0,
+   "ml": -1.134,
+   "fixed": 0.569,
+   "blend": -1.134,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.11
+    ],
+    [
+     "ret3m_x_spyvol",
+     -0.05
+    ],
+    [
+     "ret_3m",
+     0.01
     ]
    ]
   },
@@ -40965,9 +40965,9 @@
   {
    "symbol": "PYLD",
    "stale": 0,
-   "ml": -1.171,
+   "ml": -1.172,
    "fixed": 1.029,
-   "blend": -1.171,
+   "blend": -1.172,
    "top_contrib": [
     [
      "vol20",
@@ -41616,9 +41616,9 @@
   {
    "symbol": "SDY",
    "stale": 0,
-   "ml": -1.215,
+   "ml": -1.214,
    "fixed": 0.553,
-   "blend": -1.215,
+   "blend": -1.214,
    "top_contrib": [
     [
      "vol20",
@@ -41803,27 +41803,6 @@
    ]
   },
   {
-   "symbol": "SPIB",
-   "stale": 0,
-   "ml": -1.23,
-   "fixed": 1.561,
-   "blend": -1.23,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.17
-    ],
-    [
-     "trend",
-     0.03
-    ],
-    [
-     "hi52",
-     -0.01
-    ]
-   ]
-  },
-  {
    "symbol": "UUP",
    "stale": 0,
    "ml": -1.23,
@@ -41858,6 +41837,27 @@
     [
      "trend",
      -0.01
+    ],
+    [
+     "hi52",
+     -0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "SPIB",
+   "stale": 0,
+   "ml": -1.231,
+   "fixed": 1.561,
+   "blend": -1.231,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.17
+    ],
+    [
+     "trend",
+     0.03
     ],
     [
      "hi52",
@@ -42286,27 +42286,6 @@
    ]
   },
   {
-   "symbol": "VGSH",
-   "stale": 0,
-   "ml": -1.289,
-   "fixed": 1.361,
-   "blend": -1.289,
-   "top_contrib": [
-    [
-     "vol20",
-     -0.18
-    ],
-    [
-     "trend",
-     0.03
-    ],
-    [
-     "vol20_x_spyret",
-     -0.02
-    ]
-   ]
-  },
-  {
    "symbol": "DCC.L",
    "stale": 1,
    "ml": -1.289,
@@ -42324,6 +42303,27 @@
     [
      "ret_1m",
      0.01
+    ]
+   ]
+  },
+  {
+   "symbol": "VGSH",
+   "stale": 0,
+   "ml": -1.29,
+   "fixed": 1.361,
+   "blend": -1.29,
+   "top_contrib": [
+    [
+     "vol20",
+     -0.18
+    ],
+    [
+     "trend",
+     0.03
+    ],
+    [
+     "vol20_x_spyret",
+     -0.02
     ]
    ]
   },

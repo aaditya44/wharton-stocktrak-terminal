@@ -1,5 +1,5 @@
 {
- "date": "2026-09-26 22:50 UTC",
+ "date": "2026-09-26 22:59 UTC",
  "mode": "unified",
  "weights": [
   {
@@ -161,7 +161,7 @@
  "intl_picks": [
   {
    "symbol": "POLICYBZR.NS",
-   "model": 6.789,
+   "model": 6.79,
    "stale": 0,
    "why": "20-day volatility helps (+0.95); momentum x market fear drags (-0.09); vol x market direction helps (+0.08)"
   },
