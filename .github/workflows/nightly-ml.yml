@@ -18,7 +18,7 @@ jobs:
       - run: pip install numpy matplotlib
       - name: Ingest bars, re-fit ML, rebuild site
         run: python3 nightly_ml.py
-        timeout-minutes: 55
+        timeout-minutes: 120
       - name: Commit refreshed snapshot + site
         run: |
           git config user.name "nightly-ml[bot]"
