@@ -56,6 +56,8 @@ def zc(x):
     s = x.std()
     return (x - x.mean())/(s if s>0 else 1.0)
 
+EXCLUDE = {"HCWC"}  # sim-side frozen-quote traps: real Yahoo data, untradeable on StockTrak
+
 def main():
     syms = sorted(os.path.basename(p)[5:-8] for p in glob.glob(os.path.join(DATA,"bars_*_1y.json")))
     spy = load_bars("SPY")
@@ -68,6 +70,7 @@ def main():
     by_date = {}
     nloaded = 0
     for s in syms:
+        if s in EXCLUDE: continue
         a = load_bars(s)
         if a is None: continue
         tail = a[-20:,2]
@@ -194,9 +197,9 @@ def main():
         print(f"stale-filled: {len(extra)} symbols on 1-{STALE_MAX}d-old bars")
     stale_of = {e[0]: e[2] for e in extra}
     ml = Xz@w; fx = Xz[:,:6]@FIXED_W[:6]
-    WB = float(os.environ.get("ML_BLEND", "0.5"))
+    WB = float(os.environ.get("ML_BLEND", "1.0"))
     if val["ml_beats_fixed"]:
-        blend = WB*zc(ml)+(1-WB)*zc(fx); mode=f"blend{int(WB*100)}"  # 0.75 split-half favored (H2 IC rises with ML weight); default 0.5 until user signs off on the bigger turnover
+        blend = WB*zc(ml)+(1-WB)*zc(fx); mode=("unified" if WB==1.0 else f"blend{int(WB*100)}")  # 0.75 split-half favored (H2 IC rises with ML weight); default 0.5 until user signs off on the bigger turnover
     else:
         blend = zc(fx); mode="fixed_fallback"
     contrib = Xz*w
@@ -212,7 +215,7 @@ def main():
     if os.environ.get("ML_RANK_INTL"):
         outname = "ml_ranking_intl.json"
     else:
-        outname = "ml_ranking.json" if WB==0.5 else f"ml_ranking_b{int(WB*100)}.json"
+        outname = "ml_ranking.json" if WB==1.0 else f"ml_ranking_b{int(WB*100)}.json"
     json.dump(dict(date=int(d), mode=mode, weights={f:round(float(wi),3) for f,wi in zip(FEATS,w)},
                    rows=rows), open(os.path.join(DATA,outname),"w"), indent=1)
     print(json.dumps(val, indent=1))
