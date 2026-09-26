@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """make_ml_snapshot.py - convert ML artifacts into data/ml_snapshot.json for the site.
 
-Reads: data/ml_ranking.json (US blend50), data/ml_ranking_intl.json (all markets),
+Reads: data/ml_ranking.json (US, unified single-model), data/ml_ranking_intl.json (all markets),
        data/ml_validation.json, data/ml_weights_history.json (latest learned weights)
 Writes: data/ml_snapshot.json - picks, scores, learned weights, plain-English why.
 """
@@ -39,7 +39,7 @@ def main():
         weights.append(dict(factor=f, name=name, plain=plain, weight=latest_w.get(f, 0.0)))
     picks = []
     for r in rank["rows"][:15]:
-        picks.append(dict(symbol=r["symbol"], blend=r["blend"], ml=r["ml"], tracker=r["fixed"], why=why(r)))
+        picks.append(dict(symbol=r["symbol"], model=r["blend"], benchmark=r["fixed"], stale=r.get("stale",0), why=why(r)))
     intl = []
     ipath = os.path.join(DATA, "ml_ranking_intl.json")
     if os.path.exists(ipath):
@@ -47,12 +47,12 @@ def main():
         seen = 0
         for r in irank["rows"]:
             if r["symbol"].endswith((".NS",".HK",".L",".TO",".DE",".PA",".MI",".MC",".AS",".BR")):
-                intl.append(dict(symbol=r["symbol"], blend=r["blend"], why=why(r)))
+                intl.append(dict(symbol=r["symbol"], model=r["blend"], stale=r.get("stale",0), why=why(r)))
                 seen += 1
             if seen >= 10: break
     snap = dict(
         date=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-        mode=rank.get("mode","blend50"),
+        mode=rank.get("mode","unified"),
         weights=weights,
         picks=picks, intl_picks=intl,
         validation=dict(
