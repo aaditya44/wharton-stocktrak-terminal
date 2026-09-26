@@ -1,0 +1,22 @@
+{
+ "window": 20,
+ "n_dates": 350,
+ "recent_factor_ics": {
+  "ret_3m": -0.021,
+  "ret_1m": 0.015,
+  "on_sharpe": -0.05,
+  "vol20": 0.006,
+  "trend": 0.067,
+  "hi52": -0.008
+ },
+ "recent_fixed_ic": -0.006,
+ "full_factor_ics": {
+  "ret_3m": 0.028,
+  "ret_1m": 0.036,
+  "on_sharpe": 0.018,
+  "vol20": 0.13,
+  "trend": -0.001,
+  "hi52": -0.065
+ },
+ "full_fixed_ic": -0.015
+}

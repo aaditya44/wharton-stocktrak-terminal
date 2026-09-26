@@ -1,0 +1,52 @@
+{
+ "oos_dates": 286,
+ "horizon": 21,
+ "lam": 10.0,
+ "feats": [
+  "ret_3m",
+  "ret_1m",
+  "on_sharpe",
+  "vol20",
+  "trend",
+  "hi52",
+  "ret3m_x_spyvol",
+  "vol20_x_spyret"
+ ],
+ "ic_ml_mean": 0.0946,
+ "ic_ml_std": 0.1595,
+ "ic_fixed_mean": -0.0013,
+ "ic_fixed_std": 0.1366,
+ "ic_ml_tstat": 9.87,
+ "ic_fixed_tstat": -0.16,
+ "blend_curve": {
+  "0.0": -0.0013,
+  "0.25": 0.029,
+  "0.5": 0.0699,
+  "0.75": 0.0924,
+  "1.0": 0.0946
+ },
+ "blend_halves": {
+  "0.0": [
+   0.0512,
+   -0.0536
+  ],
+  "0.25": [
+   0.0935,
+   -0.0349
+  ],
+  "0.5": [
+   0.1404,
+   -0.0
+  ],
+  "0.75": [
+   0.1542,
+   0.0311
+  ],
+  "1.0": [
+   0.1419,
+   0.0477
+  ]
+ },
+ "ml_beats_fixed": true,
+ "blend_note": "blend 50/50 only if ml_beats_fixed else pure fixed tracker"
+}

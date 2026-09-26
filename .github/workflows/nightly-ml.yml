@@ -1,0 +1,28 @@
+name: Nightly ML re-fit
+on:
+  schedule:
+    - cron: '30 21 * * *'   # 5:30pm ET after the US close
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install numpy matplotlib
+      - name: Ingest bars, re-fit ML, rebuild site
+        run: python3 nightly_ml.py
+        timeout-minutes: 55
+      - name: Commit refreshed snapshot + site
+        run: |
+          git config user.name "nightly-ml[bot]"
+          git config user.email "nightly-ml[bot]@users.noreply.github.com"
+          git add index.html data/ml_snapshot.json data/ml_validation.json data/ml_weights_history.json data/ml_ranking.json data/ml_ranking_intl.json
+          git diff --cached --quiet || git commit -m "nightly ML re-fit: $(date -u +%Y-%m-%d)"
+          git push

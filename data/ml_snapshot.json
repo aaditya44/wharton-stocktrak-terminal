@@ -1,0 +1,227 @@
+{
+ "date": "2026-09-26 12:39 UTC",
+ "mode": "blend50",
+ "weights": [
+  {
+   "factor": "ret_3m",
+   "name": "3-month momentum",
+   "plain": "how much the stock rose over the last 3 months",
+   "weight": -0.014
+  },
+  {
+   "factor": "ret_1m",
+   "name": "1-month momentum",
+   "plain": "how much the stock rose over the last month",
+   "weight": 0.017
+  },
+  {
+   "factor": "on_sharpe",
+   "name": "overnight quality",
+   "plain": "consistency of overnight (close-to-open) returns",
+   "weight": -0.001
+  },
+  {
+   "factor": "vol20",
+   "name": "20-day volatility",
+   "plain": "how jumpy the stock has been over the last month",
+   "weight": 0.116
+  },
+  {
+   "factor": "trend",
+   "name": "trend consistency",
+   "plain": "share of recent days spent above the 50-day average",
+   "weight": 0.009
+  },
+  {
+   "factor": "hi52",
+   "name": "52-week-high distance",
+   "plain": "how close the price is to its 52-week high",
+   "weight": -0.013
+  },
+  {
+   "factor": "ret3m_x_spyvol",
+   "name": "momentum x market fear",
+   "plain": "3-month momentum scaled by market volatility",
+   "weight": -0.059
+  },
+  {
+   "factor": "vol20_x_spyret",
+   "name": "vol x market direction",
+   "plain": "own volatility scaled by recent market return",
+   "weight": -0.002
+  }
+ ],
+ "picks": [
+  {
+   "symbol": "MRNA",
+   "blend": 7.108,
+   "ml": 6.313,
+   "tracker": 7.902,
+   "why": "momentum x market fear helps (+0.67); 20-day volatility helps (+0.30); 3-month momentum drags (-0.21)"
+  },
+  {
+   "symbol": "SDGR",
+   "blend": 4.282,
+   "ml": 6.051,
+   "tracker": 2.513,
+   "why": "20-day volatility helps (+0.52); momentum x market fear helps (+0.25); 1-month momentum helps (+0.12)"
+  },
+  {
+   "symbol": "RNG",
+   "blend": 3.756,
+   "ml": 3.31,
+   "tracker": 4.201,
+   "why": "momentum x market fear helps (+0.36); 20-day volatility helps (+0.15); 3-month momentum drags (-0.11)"
+  },
+  {
+   "symbol": "P",
+   "blend": 3.574,
+   "ml": 3.899,
+   "tracker": 3.249,
+   "why": "20-day volatility helps (+0.28); momentum x market fear helps (+0.28); 3-month momentum drags (-0.09)"
+  },
+  {
+   "symbol": "ATRC",
+   "blend": 3.405,
+   "ml": 2.535,
+   "tracker": 4.275,
+   "why": "momentum x market fear helps (+0.32); 3-month momentum drags (-0.10); 20-day volatility helps (+0.08)"
+  },
+  {
+   "symbol": "OKTA",
+   "blend": 3.384,
+   "ml": 3.555,
+   "tracker": 3.213,
+   "why": "20-day volatility helps (+0.24); momentum x market fear helps (+0.20); 1-month momentum helps (+0.11)"
+  },
+  {
+   "symbol": "CVI",
+   "blend": 3.06,
+   "ml": 2.374,
+   "tracker": 3.746,
+   "why": "momentum x market fear helps (+0.31); 3-month momentum drags (-0.10); 1-month momentum helps (+0.07)"
+  },
+  {
+   "symbol": "FIVN",
+   "blend": 3.018,
+   "ml": 3.553,
+   "tracker": 2.483,
+   "why": "20-day volatility helps (+0.27); momentum x market fear helps (+0.23); 3-month momentum drags (-0.07)"
+  },
+  {
+   "symbol": "PLTR",
+   "blend": 2.754,
+   "ml": 2.459,
+   "tracker": 3.05,
+   "why": "momentum x market fear helps (+0.23); 20-day volatility helps (+0.13); 3-month momentum drags (-0.07)"
+  },
+  {
+   "symbol": "CRWD",
+   "blend": 2.731,
+   "ml": 3.665,
+   "tracker": 1.798,
+   "why": "20-day volatility helps (+0.30); momentum x market fear helps (+0.15); 1-month momentum helps (+0.08)"
+  },
+  {
+   "symbol": "PBF",
+   "blend": 2.706,
+   "ml": 2.872,
+   "tracker": 2.539,
+   "why": "momentum x market fear helps (+0.24); 20-day volatility helps (+0.19); 3-month momentum drags (-0.08)"
+  },
+  {
+   "symbol": "MXL",
+   "blend": 2.681,
+   "ml": 4.301,
+   "tracker": 1.06,
+   "why": "20-day volatility helps (+0.42); 1-month momentum helps (+0.12); vol x market direction helps (+0.03)"
+  },
+  {
+   "symbol": "DELL",
+   "blend": 2.661,
+   "ml": 4.117,
+   "tracker": 1.206,
+   "why": "20-day volatility helps (+0.40); momentum x market fear helps (+0.14); 1-month momentum helps (+0.06)"
+  },
+  {
+   "symbol": "HPE",
+   "blend": 2.602,
+   "ml": 3.81,
+   "tracker": 1.394,
+   "why": "20-day volatility helps (+0.36); momentum x market fear helps (+0.15); 3-month momentum drags (-0.05)"
+  },
+  {
+   "symbol": "VICR",
+   "blend": 2.596,
+   "ml": 5.071,
+   "tracker": 0.12,
+   "why": "20-day volatility helps (+0.55); 1-month momentum helps (+0.11); momentum x market fear drags (-0.04)"
+  }
+ ],
+ "intl_picks": [
+  {
+   "symbol": "0992.HK",
+   "blend": 3.342,
+   "why": "momentum x market fear helps (+0.26); 20-day volatility helps (+0.25); 3-month momentum drags (-0.08)"
+  },
+  {
+   "symbol": "2269.HK",
+   "blend": 1.982,
+   "why": "momentum x market fear helps (+0.17); 20-day volatility helps (+0.06); 3-month momentum drags (-0.05)"
+  },
+  {
+   "symbol": "PAYTM.NS",
+   "blend": 1.934,
+   "why": "momentum x market fear helps (+0.16); 20-day volatility helps (+0.12); 3-month momentum drags (-0.05)"
+  },
+  {
+   "symbol": "2359.HK",
+   "blend": 1.792,
+   "why": "momentum x market fear helps (+0.13); 3-month momentum drags (-0.04); 20-day volatility helps (+0.03)"
+  },
+  {
+   "symbol": "CLS.TO",
+   "blend": 1.684,
+   "why": "20-day volatility helps (+0.28); 1-month momentum helps (+0.06); vol x market direction helps (+0.02)"
+  },
+  {
+   "symbol": "KALYANKJIL.NS",
+   "blend": 1.41,
+   "why": "momentum x market fear helps (+0.17); 3-month momentum drags (-0.05); 20-day volatility helps (+0.03)"
+  },
+  {
+   "symbol": "APLAPOLLO.NS",
+   "blend": 1.377,
+   "why": "momentum x market fear helps (+0.08); 20-day volatility helps (+0.04); 3-month momentum drags (-0.03)"
+  },
+  {
+   "symbol": "LAURUSLABS.NS",
+   "blend": 1.342,
+   "why": "momentum x market fear helps (+0.11); 3-month momentum drags (-0.04); 1-month momentum helps (+0.02)"
+  },
+  {
+   "symbol": "SHOP.TO",
+   "blend": 1.296,
+   "why": "20-day volatility helps (+0.23); momentum x market fear helps (+0.10); 3-month momentum drags (-0.03)"
+  },
+  {
+   "symbol": "APARINDS.NS",
+   "blend": 1.225,
+   "why": "20-day volatility helps (+0.12); momentum x market fear helps (+0.05); 3-month momentum drags (-0.02)"
+  }
+ ],
+ "validation": {
+  "oos_days": 286,
+  "ic_ml": 0.0946,
+  "ic_fixed": -0.0013,
+  "tstat": 9.87,
+  "blend_curve": {
+   "0.0": -0.0013,
+   "0.25": 0.029,
+   "0.5": 0.0699,
+   "0.75": 0.0924,
+   "1.0": 0.0946
+  }
+ },
+ "note": "Walk-forward ridge, 21-day horizon, purged training; re-fits nightly."
+}

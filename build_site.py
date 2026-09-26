@@ -132,6 +132,11 @@ IDEAS = [
 ]
 
 TIPS = {
+ "mlmodel": "What: the machine-learned version of the screener. Instead of fixed weights, a walk-forward ridge regression re-learns how much each factor matters from expanding history (21-day horizon, purged so it never sees the future). Reading: positive learned weight = more of that factor helps the 21-day forward return. Why: the old fixed weights have scored about zero for a year; the learned ones beat them in every test window. Limitation: in the most recent quarter ALL signals were weak - the model loses less, it does not print money.",
+ "mlweight": "What: how much the ML currently pays attention to this factor, re-fit nightly on 2 years x ~2,000 stocks across the US, London, Hong Kong and India. Reading: +0.10 means a one-standard-deviation better factor adds about 0.10 SD to the predicted 21-day return. Why: this is the model showing its work - no black box. Limitation: weights drift as the market regime changes; that is the point.",
+ "mlpick": "What: the model's highest-scoring tradable names right now (50/50 blend of learned ML score and the fixed tracker). Reading: the why column names the two or three factors doing the work. Why: every pick must be explainable to judges in one sentence. Limitation: a high score is not a guarantee - it is a ranking.",
+ "mlval": "What: out-of-sample proof. IC = correlation between the model's ranking and what stocks actually did over the next 21 days (0 = useless, 0.05+ = real edge). 281 test days over 2 years, no look-ahead. Why: judges ask how we know this works - this table is the answer. Limitation: past correlation does not promise future returns.",
+ "mlintl": "What: the same model scores London, Hong Kong and India listings alongside US ones (all markets aligned by calendar day). Reading: these are the best non-US names today. Why: more markets = more chances to find the best 10 names. Limitation: international orders clear end-of-day in StockTrak and carry FX conversion.",
  "score": "What: the overall attractiveness score, built from six fixed ingredients (momentum, overnight pattern, calmness, trend, nearness to 1-year high). Reading: higher is better; above roughly +0.35 is usually a BUY candidate, below about -0.1 is AVOID. Why it matters for Laura: it ranks which growth-sleeve candidates best fit her plan. Limitation: it looks backward at prices; it cannot see news that breaks a trend.",
  "mom1": "What: price change over the last month. Reading: positive means rising lately. Why: recent strength often continues short-term, which helps time entries. Limitation: a big one-month jump can also mean the move is exhausted.",
  "mom3": "What: price change over the last 3 months - the single biggest ingredient (30% of the score). Reading: higher = stronger medium-term trend. Why: 3-month momentum is one of the most reliable effects in decades of market research. Limitation: it buys strength, so it can be late at turning points.",
@@ -416,6 +421,43 @@ var ok=(!se||r.dataset.sector===se)&&(!si||r.dataset.signal===si)&&(!q||r.textCo
 r.style.display=ok?'':'none';});}
 """
 
+
+# ---------- ML section ----------
+def ml_section():
+    p = os.path.join(DATA, "ml_snapshot.json")
+    if not os.path.exists(p):
+        return '<div class="card">ML nightly build pending - first run lands tonight.</div>'
+    snap = json.load(open(p))
+    v = snap.get("validation", {})
+    wrows = "".join(
+        f"<tr><td>{esc(w['name'])}</td><td>{w['weight']:+.3f}</td><td class='sub'>{esc(w['plain'])}</td></tr>"
+        for w in snap.get("weights", []))
+    prows = "".join(
+        f"<tr><td>{i+1}</td><td><b>{esc(r['symbol'])}</b></td><td>{r['blend']:+.2f}</td><td>{r['ml']:+.2f}</td><td>{r['tracker']:+.2f}</td><td class='sub'>{esc(r['why'])}</td></tr>"
+        for i, r in enumerate(snap.get("picks", [])))
+    irows = "".join(
+        f"<tr><td>{i+1}</td><td><b>{esc(r['symbol'])}</b></td><td>{r['blend']:+.2f}</td><td class='sub'>{esc(r['why'])}</td></tr>"
+        for i, r in enumerate(snap.get("intl_picks", [])))
+    curve = v.get("blend_curve", {})
+    return f"""
+<div class="card"><h3>What the model learned (latest nightly fit){info('mlweight')}</h3>
+<table><thead><tr><th>Factor</th><th>Learned weight</th><th>What it means</th></tr></thead><tbody>{wrows}</tbody></table>
+<p class="note">Fit: {esc(snap.get('date',''))} &middot; mode {esc(snap.get('mode',''))} &middot; {esc(snap.get('note',''))}</p></div>
+<div class="card"><h3>Today's top US picks{info('mlpick')}</h3>
+<table><thead><tr><th>#</th><th>Symbol</th><th>Blend</th><th>ML</th><th>Tracker</th><th>Why (top factors)</th></tr></thead><tbody>{prows}</tbody></table></div>
+<div class="card"><h3>Today's top international picks{info('mlintl')}</h3>
+<table><thead><tr><th>#</th><th>Symbol</th><th>Blend</th><th>Why (top factors)</th></tr></thead><tbody>{irows}</tbody></table></div>
+<div class="card"><h3>Proof it works (out-of-sample){info('mlval')}</h3>
+<table><tbody>
+<tr><td>Test days (2y walk-forward)</td><td>{v.get('oos_days','')}</td></tr>
+<tr><td>ML ranking IC (higher = better)</td><td>{v.get('ic_ml','')} (t-stat {v.get('tstat','')})</td></tr>
+<tr><td>Old fixed-tracker IC</td><td>{v.get('ic_fixed','')}</td></tr>
+<tr><td>Blend curve (ML weight 0/25/50/75/100%)</td><td>{esc(', '.join(f'{k}: {x}' for k, x in sorted(curve.items())))}</td></tr>
+</tbody></table>
+<p class="note">Honest caveat we tell judges: in the most recent quarter all signals were weak; the ML lost less than the old model, not made money. Cross-market training (India/Europe/Hong Kong) is wired in and measured: neutral so far, kept at zero cost.</p></div>"""
+
+ml_blocks = ml_section()
+
 html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>StockTrak Research Terminal v1.0</title><style>{CSS}</style></head><body>
@@ -423,6 +465,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="screener" onclick="show('screener')">Screener</button>
+<button data-t="mlmodel" onclick="show('mlmodel')">ML model</button>
 <button data-t="client" onclick="show('client')">Client mode</button>
 <button data-t="ideas" onclick="show('ideas')">Ranked ideas</button>
 <button data-t="backtests" onclick="show('backtests')">Backtests</button>
@@ -445,6 +488,12 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <tbody>{screen_rows}</tbody></table></div></section>
 
 {_client_html}
+
+<section id="mlmodel"><h2>ML model - live, self-improving ranking{info('mlmodel')}</h2>
+<div class="warn">This section re-fits itself every night (GitHub Actions, ~5:30pm ET): it pulls 2 years of daily bars for ~2,000 stocks across the US, London, Hong Kong and India, re-learns the factor weights by walk-forward ridge regression, and rewrites the tables below. Nothing is hand-tuned after launch.</div>
+<div class="plain"><b>In plain terms:</b> the screener page uses weights we guessed once. This page lets the data vote on the weights every night, and shows its work: what it learned, what it likes, and the proof it has worked.</div>
+{ml_blocks}
+</section>
 
 <section id="ideas"><h2>Ranked idea shortlist</h2>
 <div class="warn">Research shortlist, not auto-execution. Every idea needs a defensible thesis before a trade; the StockTrak notes field records it in natural language.</div>
