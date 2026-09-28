@@ -81,11 +81,17 @@ def main():
     syms = universe()
     print(f"intraday universe: {len(syms)} symbols")
     updated = failed = 0
-    for k, sym in enumerate(syms):
-        bars = fetch(sym)
-        if bars is None:
-            failed += 1
-            continue
+    pending = list(syms)
+    for rnd in range(3):  # Yahoo 429s are window-based; wait and retry failures
+        if rnd:
+            print(f"round {rnd+1}: {len(pending)} pending, waiting 75s")
+            time.sleep(75)
+        nxt = []
+        for k, sym in enumerate(pending):
+            bars = fetch(sym)
+            if bars is None:
+                nxt.append(sym)
+                continue
         path = os.path.join(OUT, f"{sym}.json")
         old = {}
         if os.path.exists(path):
@@ -98,10 +104,14 @@ def main():
         merged = sorted(old.values(), key=lambda b: b["t"])[-KEEP_BARS:]
         json.dump({"symbol": sym, "interval": "60m",
                    "updated_utc": int(time.time()), "bars": merged}, open(path, "w"))
-        updated += 1
-        if k % 20 == 19:
-            print(f"  {k+1}/{len(syms)} done")
-        time.sleep(0.7)
+            updated += 1
+            if k % 20 == 19:
+                print(f"  round {rnd+1}: {k+1}/{len(pending)} done")
+            time.sleep(1.2)
+        pending = nxt
+        if not pending:
+            break
+    failed = len(pending)
     print(f"updated={updated} failed={failed}")
 
 if __name__ == "__main__":
