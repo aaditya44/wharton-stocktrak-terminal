@@ -92,18 +92,18 @@ def main():
             if bars is None:
                 nxt.append(sym)
                 continue
-        path = os.path.join(OUT, f"{sym}.json")
-        old = {}
-        if os.path.exists(path):
-            try:
-                old = {b["t"]: b for b in json.load(open(path)).get("bars", [])}
-            except Exception:
-                old = {}
-        for b in bars:
-            old[b["t"]] = b
-        merged = sorted(old.values(), key=lambda b: b["t"])[-KEEP_BARS:]
-        json.dump({"symbol": sym, "interval": "60m",
-                   "updated_utc": int(time.time()), "bars": merged}, open(path, "w"))
+            path = os.path.join(OUT, f"{sym}.json")
+            old = {}
+            if os.path.exists(path):
+                try:
+                    old = {b["t"]: b for b in json.load(open(path)).get("bars", [])}
+                except Exception:
+                    old = {}
+            for b in bars:
+                old[b["t"]] = b
+            merged = sorted(old.values(), key=lambda b: b["t"])[-KEEP_BARS:]
+            json.dump({"symbol": sym, "interval": "60m",
+                       "updated_utc": int(time.time()), "bars": merged}, open(path, "w"))
             updated += 1
             if k % 20 == 19:
                 print(f"  round {rnd+1}: {k+1}/{len(pending)} done")
