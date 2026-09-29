@@ -1,0 +1,61 @@
+{
+ "horizon": 21,
+ "capital": 300000.0,
+ "slip_bps": 15,
+ "oos_periods": 286,
+ "results": {
+  "fixed": {
+   "n_periods": 277,
+   "top_n": 10,
+   "avg_21d_net_pct": 5.681,
+   "tstat": 7.72,
+   "hit_rate": 0.729,
+   "avg_21d_net_usd": 17044.0,
+   "annualized_usd": 204526.0,
+   "worst_21d_usd": -100061.0
+  },
+  "blend50": {
+   "n_periods": 277,
+   "top_n": 10,
+   "avg_21d_net_pct": 6.956,
+   "tstat": 8.33,
+   "hit_rate": 0.744,
+   "avg_21d_net_usd": 20868.0,
+   "annualized_usd": 250421.0,
+   "worst_21d_usd": -121940.0
+  },
+  "blend75": {
+   "n_periods": 277,
+   "top_n": 10,
+   "avg_21d_net_pct": 6.583,
+   "tstat": 7.91,
+   "hit_rate": 0.74,
+   "avg_21d_net_usd": 19750.0,
+   "annualized_usd": 236994.0,
+   "worst_21d_usd": -120169.0
+  },
+  "ml100": {
+   "n_periods": 277,
+   "top_n": 10,
+   "avg_21d_net_pct": 6.646,
+   "tstat": 8.48,
+   "hit_rate": 0.744,
+   "avg_21d_net_usd": 19938.0,
+   "annualized_usd": 239261.0,
+   "worst_21d_usd": -102845.0
+  }
+ },
+ "ml100_decile_profile": {
+  "D1": 4.361,
+  "D2": 3.139,
+  "D3": 2.067,
+  "D4": 1.517,
+  "D5": 1.149,
+  "D6": 1.261,
+  "D7": 1.018,
+  "D8": 0.88,
+  "D9": 1.047,
+  "D10": 0.632
+ },
+ "note": "returns are EXCESS over universe mean; commissions at top_n breadth"
+}
