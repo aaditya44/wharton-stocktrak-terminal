@@ -76,10 +76,57 @@ def fetch(sym):
             time.sleep(1.5)
     return None
 
+
+FINNHUB_KEY = os.environ.get("FINNHUB_API_KEY", "")
+QUOTES_OUT = os.path.join(DATA, "quotes_hourly")
+
+def finnhub_quote(sym):
+    url = f"https://finnhub.io/api/v1/quote?symbol={urllib.parse.quote(sym)}&token={FINNHUB_KEY}"
+    try:
+        j = json.loads(urllib.request.urlopen(url, timeout=15).read().decode())
+        if not j or not j.get("c"):
+            return None
+        return j
+    except Exception as e:
+        print(f"  {sym}: FINNHUB FAIL {e}")
+        return None
+
+def finnhub_main(syms):
+    """Free-tier path: sample /quote per symbol each run (~60 calls/min cap).
+    Stores raw ticks in data/quotes_hourly/<SYM>.json, deduped by minute."""
+    os.makedirs(QUOTES_OUT, exist_ok=True)
+    updated = failed = 0
+    now = int(time.time())
+    for k, sym in enumerate(syms):
+        q = finnhub_quote(sym)
+        if q is None:
+            failed += 1
+        else:
+            path = os.path.join(QUOTES_OUT, f"{sym}.json")
+            old = []
+            if os.path.exists(path):
+                try:
+                    old = json.load(open(path)).get("ticks", [])
+                except Exception:
+                    old = []
+            old.append({"t": now, "c": q["c"], "o": q.get("o"), "h": q.get("h"),
+                        "l": q.get("l"), "pc": q.get("pc")})
+            json.dump({"symbol": sym, "updated_utc": now,
+                       "ticks": old[-2000:]}, open(path, "w"))
+            updated += 1
+        if k % 20 == 19:
+            print(f"  finnhub: {k+1}/{len(syms)} done")
+        time.sleep(1.05)  # free tier: 60 calls/min
+    print(f"finnhub quotes updated={updated} failed={failed}")
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     syms = universe()
     print(f"intraday universe: {len(syms)} symbols")
+    if FINNHUB_KEY:
+        finnhub_main(syms)
+        if not os.environ.get("ALSO_YAHOO"):
+            return
     updated = failed = 0
     pending = list(syms)
     for rnd in range(3):  # Yahoo 429s are window-based; wait and retry failures

@@ -20,10 +20,12 @@ jobs:
       - name: Fetch hourly bars for intraday universe
         run: python3 hourly_bars.py
         timeout-minutes: 20
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
       - name: Commit hourly bars
         run: |
           git config user.name "hourly-bars[bot]"
           git config user.email "hourly-bars[bot]@users.noreply.github.com"
-          git add data/bars_hourly data/holdings.txt
+          git add data/bars_hourly data/quotes_hourly data/holdings.txt
           git diff --cached --quiet || git commit -m "hourly bars: $(date -u +%Y-%m-%d_%H:%M)Z"
           git push
