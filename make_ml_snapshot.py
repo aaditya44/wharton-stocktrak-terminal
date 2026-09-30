@@ -32,7 +32,7 @@ def main():
     rank = json.load(open(os.path.join(DATA, "ml_ranking.json")))
     val = json.load(open(os.path.join(DATA, "ml_validation.json")))
     hist = json.load(open(os.path.join(DATA, "ml_weights_history.json")))
-    latest_w = hist[-1] if hist else {}
+    latest_w = rank.get("weights", {})  # current ranking fit, not last historical OOS fit
     weights = []
     for f in ["ret_3m","ret_1m","on_sharpe","vol20","trend","hi52","ret3m_x_spyvol","vol20_x_spyret"]:
         name, plain = FEAT_EN[f]

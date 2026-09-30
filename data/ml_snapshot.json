@@ -1,12 +1,12 @@
 {
- "date": "2026-09-30 21:13 UTC",
+ "date": "2026-09-30 21:17 UTC",
  "mode": "unified",
  "weights": [
   {
    "factor": "ret_3m",
    "name": "3-month momentum",
    "plain": "how much the stock rose over the last 3 months",
-   "weight": -0.014
+   "weight": -0.02
   },
   {
    "factor": "ret_1m",
@@ -18,7 +18,7 @@
    "factor": "on_sharpe",
    "name": "overnight quality",
    "plain": "consistency of overnight (close-to-open) returns",
-   "weight": -0.001
+   "weight": -0.002
   },
   {
    "factor": "vol20",
@@ -30,25 +30,25 @@
    "factor": "trend",
    "name": "trend consistency",
    "plain": "share of recent days spent above the 50-day average",
-   "weight": 0.009
+   "weight": 0.012
   },
   {
    "factor": "hi52",
    "name": "52-week-high distance",
    "plain": "how close the price is to its 52-week high",
-   "weight": -0.016
+   "weight": -0.005
   },
   {
    "factor": "ret3m_x_spyvol",
    "name": "momentum x market fear",
    "plain": "3-month momentum scaled by market volatility",
-   "weight": -0.059
+   "weight": -0.057
   },
   {
    "factor": "vol20_x_spyret",
    "name": "vol x market direction",
    "plain": "own volatility scaled by recent market return",
-   "weight": -0.003
+   "weight": -0.009
   }
  ],
  "picks": [

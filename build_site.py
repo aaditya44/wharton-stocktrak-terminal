@@ -447,7 +447,7 @@ def ml_section():
 <div class="card"><h3>What the model learned (latest nightly fit){info('mlweight')}</h3>
 <table><thead><tr><th>Factor</th><th>Learned weight</th><th>What it means</th></tr></thead><tbody>{wrows}</tbody></table>
 <p class="note">Fit: {esc(snap.get('date',''))} &middot; mode {esc(snap.get('mode',''))} &middot; {esc(snap.get('note',''))}</p></div>
-<div class="card"><h3>Today's top US picks{info('mlpick')}</h3>
+<div class="card"><h3>Top US research ranks (before suitability filters){info('mlpick')}</h3>
 <table><thead><tr><th>#</th><th>Symbol</th><th>Model</th><th>Benchmark</th><th>Why (top factors)</th></tr></thead><tbody>{prows}</tbody></table></div>
 <div class="card"><h3>Today's top international picks{info('mlintl')}</h3>
 <table><thead><tr><th>#</th><th>Symbol</th><th>Model</th><th>Why (top factors)</th></tr></thead><tbody>{irows}</tbody></table></div>
@@ -466,7 +466,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>StockTrak Research Terminal v1.0</title><style>{CSS}</style></head><body>
 <header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v1.0</span></h1>
-<span class="sub">Wharton competition practice account &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
+<span class="sub">Wharton competition research (historical panels labeled) &middot; generated {NOW:%Y-%m-%d %H:%M} IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="screener" onclick="show('screener')">Screener</button>
 <button data-t="mlmodel" onclick="show('mlmodel')">ML model</button>
@@ -542,7 +542,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 <section id="casestudy"><h2>Client case - Laura Gao (Wharton 2026-2027){info('case')}</h2>
 <div class="card"><p>From the three official competition PDFs (case study, strategy roadmap, competition guide) supplied 2026-09-18. Competition documents override earlier generic assumptions.</p><ol>{case_items}</ol></div></section>
 
-<footer>StockTrak Research Terminal v1.0 &middot; Python-generated, single-file, no external assets &middot; data: Yahoo Finance daily bars through the 2026-09-18 US close, StockTrak scheduled snapshots &middot; built for the Wharton competition practice period</footer>
+<footer>StockTrak Research Terminal v1.0 &middot; Python-generated, single-file, no external assets &middot; data: cached Yahoo Finance daily bars, fit dates shown in the ML panel; historical practice panels are not the current account ledger</footer>
 <script>{JS}</script></body></html>"""
 
 out = os.path.join(HERE, "index.html")
