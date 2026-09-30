@@ -47,7 +47,7 @@ def main():
             skipped.append((s, f"vol {info['v20']:.0f}%>37.5% (0.2 band: not core-sleeve suitable)")); continue
         picks.append(dict(symbol=s, rank=len(picks)+len([1]), model_rank=rows.index(r)+1, **info))
         if len(picks) >= 12: break
-    # --- hysteresis (standing rule, adopted 2026-09-30, owner-approved option C):
+    # --- hysteresis (standing rule, adopted 2026-09-30: owner delegated the A/B/C choice ("do the best out of ABC", WhatsApp 11:30am IST), main selected C):
     # keep current holdings unless model rank falls beyond 1.5x the pick cutoff;
     # fill freed slots with the top-ranked picks not already held. Reduces whipsaw.
     hp = os.path.join(DATA, "holdings.json")
