@@ -174,7 +174,7 @@ TIPS = {
  "c_arch": "What: the two-sleeve structure (growth + reserve) and the year-by-year glidepath from the final 2026-09-19 due-diligence report.",
  "c_mandate": "What: the current operating authority - fully automated trading under Laura's mandate, no protected positions, every fill logged.",
  "c_pref": "What: sectors Laura's plan prefers or avoids. Ticking one off re-ranks instantly. Why: documents any sector tilts as conscious choices.",
- "c_book": "What: the real positions with live-computed weights. Edit a share count to test what-if scenarios - everything recomputes. Limitation: HCWC is frozen at cost by the platform; its displayed value is stale.",
+ "c_book": "What: historical September 18 practice-book positions with scenario weights. Not the active competition portfolio. Edit shares for a historical what-if only.",
  "c_flags": "What: automatic warnings - concentration above caps, suitability breaches, stale data. Reading: any red flag must be answered in the Trading Notes.",
  "c_base": "What: the raw model score before Laura's suitability filter.",
  "c_suit": "What: the suitability multiplier from the volatility band: 1.0 = fully suitable, lower = penalized, 0 = banned (over the 40% band). Why: a great stock that is too wild for Laura scores down automatically.",
