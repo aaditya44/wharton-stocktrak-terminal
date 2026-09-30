@@ -47,6 +47,34 @@ def main():
             skipped.append((s, f"vol {info['v20']:.0f}%>37.5% (0.2 band: not core-sleeve suitable)")); continue
         picks.append(dict(symbol=s, rank=len(picks)+len([1]), model_rank=rows.index(r)+1, **info))
         if len(picks) >= 12: break
+    # --- hysteresis (standing rule, adopted 2026-09-30, owner-approved option C):
+    # keep current holdings unless model rank falls beyond 1.5x the pick cutoff;
+    # fill freed slots with the top-ranked picks not already held. Reduces whipsaw.
+    hp = os.path.join(DATA, "holdings.json")
+    if os.path.exists(hp):
+        holdings = json.load(open(hp))
+        rank_of = {r["symbol"]: i+1 for i, r in enumerate(rows)}
+        cutoff = max((p["model_rank"] for p in picks), default=10**9)
+        buf = int(1.5*cutoff)
+        keep = [h for h in holdings if rank_of.get(h, 10**9) <= buf]
+        sell = [h for h in holdings if h not in keep]
+        buys = [p for p in picks if p["symbol"] not in keep][:max(0, 12-len(keep))]
+        GROWTH = 170000.0
+        per = GROWTH/12
+        buys = [p for p in buys if per*p["mult"]//p["last"] >= 1]
+        for p in buys:
+            p["dollars"] = round(per*p["mult"], 0)
+            p["shares"] = int(p["dollars"]//p["last"])
+        print(f"hysteresis on: pick cutoff {cutoff}, keep buffer rank<= {buf}")
+        print("KEEP:", " ".join(sorted(keep)))
+        print("SELL:", " ".join(sorted(sell)) if sell else "none")
+        print(f"{'BUY':7}{'mrank':>6}{'last':>9}{'v20':>6}{'mult':>5}{'shares':>8}{'$$':>9}")
+        for p in buys:
+            print(f"{p['symbol']:7}{p['model_rank']:>6}{p['last']:>9.2f}{p['v20']:>6.1f}{p['mult']:>5}{p['shares']:>8}{p['dollars']:>9.0f}")
+        json.dump(dict(source="ml_ranking_intl.json "+str(d.get("date")), rule="hysteresis 1.5x cutoff",
+                       cutoff=cutoff, buffer=buf, keep=sorted(keep), sell=sorted(sell), buys=buys,
+                       skipped_top=skipped[:30]), open("/home/sandbox/st/docs/ml_client_regen.json","w"), indent=1)
+        return
     GROWTH = 170000.0
     per = GROWTH/len(picks)
     picks = [p for p in picks if per*p["mult"]//p["last"] >= 1]  # zero-share guard
