@@ -1,5 +1,5 @@
 {
- "date": "2026-09-30 21:17 UTC",
+ "date": "2026-10-01 00:48 UTC",
  "mode": "unified",
  "weights": [
   {
@@ -222,15 +222,15 @@
  ],
  "validation": {
   "oos_days": 289,
-  "ic_ml": 0.0862,
-  "ic_fixed": -0.0019,
-  "tstat": 9.86,
+  "ic_ml": 0.0968,
+  "ic_fixed": -0.0013,
+  "tstat": 10.17,
   "blend_curve": {
-   "0.0": -0.0019,
-   "0.25": 0.0256,
-   "0.5": 0.0625,
-   "0.75": 0.0834,
-   "1.0": 0.0862
+   "0.0": -0.0013,
+   "0.25": 0.0297,
+   "0.5": 0.0712,
+   "0.75": 0.0943,
+   "1.0": 0.0968
   }
  },
  "note": "Walk-forward ridge, 21-day horizon, purged training; re-fits nightly."
