@@ -66,6 +66,11 @@ import json,os,subprocess,sys
 
 HERE=os.path.dirname(os.path.abspath(__file__)); DATA=os.path.join(HERE,'data')
 def main():
+    now=datetime.now(timezone.utc); local_date=now.astimezone(ET).date()
+    close=close_time(local_date)
+    if not close or now < close+timedelta(minutes=30):
+        print("No completed cash session today; skipping scheduled duplicate/pre-close run",flush=True)
+        return 0
     global prior_snapshot
     prior_snapshot=json.load(open(os.path.join(DATA,"ml_snapshot.json")))
     status=audit(); json.dump(status,open(os.path.join(DATA,'freshness.json'),'w'),indent=2)
