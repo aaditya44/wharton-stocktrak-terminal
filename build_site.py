@@ -444,21 +444,22 @@ def ml_section():
     fb = '<div class="warn"><b>Fallback active:</b> the model&#39;s out-of-sample edge faded, so tonight it stepped aside and the benchmark ranks. It returns automatically when it proves itself again.</div>' if snap.get("mode")=="fixed_fallback" else ''
     return f"""
 {fb}
-<div class="card"><h3>What the model learned (latest nightly fit){info('mlweight')}</h3>
+<div class="warn"><b>Research only. Not validated for trading.</b> Data status: {esc(snap.get("data_status", "UNVERIFIED"))}. Daily ranking input: {esc(snap.get("market_data_date", "unverified"))}. Required completed session: {esc(snap.get("expected_session", "unverified"))}. A new fit time does not mean new prices. Orders remain outside this terminal.</div>
+<div class="card"><h3>What the experimental model learned{info('mlweight')}</h3>
 <table><thead><tr><th>Factor</th><th>Learned weight</th><th>What it means</th></tr></thead><tbody>{wrows}</tbody></table>
-<p class="note">Fit: {esc(snap.get('date',''))} &middot; mode {esc(snap.get('mode',''))} &middot; {esc(snap.get('note',''))}</p></div>
+<p class="note">Last fit: {esc(snap.get('fit_at',snap.get('date','')))} &middot; mode {esc(snap.get('mode',''))} &middot; {esc(snap.get('note',''))}</p></div>
 <div class="card"><h3>Top US research ranks (before suitability filters){info('mlpick')}</h3>
 <table><thead><tr><th>#</th><th>Symbol</th><th>Model</th><th>Benchmark</th><th>Why (top factors)</th></tr></thead><tbody>{prows}</tbody></table></div>
-<div class="card"><h3>Today's top international picks{info('mlintl')}</h3>
+<div class="card"><h3>International research ranks (own data dates may differ){info('mlintl')}</h3>
 <table><thead><tr><th>#</th><th>Symbol</th><th>Model</th><th>Why (top factors)</th></tr></thead><tbody>{irows}</tbody></table></div>
-<div class="card"><h3>Proof it works (out-of-sample){info('mlval')}</h3>
+<div class="card"><h3>Historical ranking diagnostics (not proof of profits){info('mlval')}</h3>
 <table><tbody>
 <tr><td>Test days (2y walk-forward)</td><td>{v.get('oos_days','')}</td></tr>
-<tr><td>ML ranking IC (higher = better)</td><td>{v.get('ic_ml','')} (t-stat {v.get('tstat','')})</td></tr>
+<tr><td>Legacy ranking correlation (requires audit)</td><td>{v.get('ic_ml','')} (t-stat {v.get('tstat','')})</td></tr>
 <tr><td>Old fixed-tracker IC</td><td>{v.get('ic_fixed','')}</td></tr>
-<tr><td>Proof by learned-weight share (0/25/50/75/100%)</td><td>{esc(', '.join(f'{k}: {x}' for k, x in sorted(curve.items())))}</td></tr>
+<tr><td>Exploratory blend comparisons (not independent validation)</td><td>{esc(', '.join(f'{k}: {x}' for k, x in sorted(curve.items())))}</td></tr>
 </tbody></table>
-<p class="note">Honest caveat we tell judges: in the most recent quarter all signals were weak; the ML lost less than the old model, not made money. Cross-market training (India/Europe/Hong Kong) is wired in and measured: neutral so far, kept at zero cost.</p></div>"""
+<p class="note">These legacy diagnostics are not a fee-adjusted trading backtest. Overlapping targets and preprocessing need an independent audit; the displayed t-stat is not reliable proof of an edge. No return guarantee. Students must own strategy and trade decisions and cite any AI-assisted work.</p></div>"""
 
 ml_blocks = ml_section()
 
@@ -493,7 +494,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
 
 {_client_html}
 
-<section id="mlmodel"><h2>ML model - live, self-improving ranking{info('mlmodel')}</h2>
+<section id="mlmodel"><h2>ML model - experimental research ranking{info('mlmodel')}</h2>
 <div class="warn">This section re-fits itself every night (GitHub Actions, ~5:30pm ET): it pulls 2 years of daily bars for ~2,000 stocks across the US, London, Hong Kong and India, re-learns the factor weights by walk-forward ridge regression, and rewrites the tables below. Nothing is hand-tuned after launch.</div>
 <div class="plain"><b>In plain terms:</b> this is the one model behind the book's picks. It re-learns its own weights from fresh prices every night, says what it likes and why, and has to keep beating the old fixed model to stay in charge - if it stops proving itself, it steps aside automatically.</div>
 {ml_blocks}
