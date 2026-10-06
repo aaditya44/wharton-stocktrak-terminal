@@ -64,17 +64,19 @@ def main():
     spy_map = {}
     if spy is not None:
         sd_, sF = factor_panel(spy)
-        sv = zc(sF[:,3]); sr = zc(sF[:,1])  # time-series z of spy vol / ret
+        # Expanding past-only regime normalization; no future observations.
+        sv = np.array([zc(sF[:i+1,3])[-1] for i in range(len(sF))])
+        sr = np.array([zc(sF[:i+1,1])[-1] for i in range(len(sF))])
         spy_map = {int(d): (float(sv[i]), float(sr[i])) for i,d in enumerate(sd_)}
     # per-date sample store: date -> (syms, Xraw[n,6], y[n])
     by_date = {}
     nloaded = 0
+    maturity_by_date = {}
     for s in syms:
         if s in EXCLUDE: continue
         a = load_bars(s)
         if a is None: continue
-        tail = a[-20:,2]
-        if tail[-1] < 5.0 or float(tail.std()) == 0.0: continue  # sub-$5 or frozen/halted
+        # Historical eligibility is checked at each sample date, not today.
         ds, F = factor_panel(a)
         cl = a[:,2]
         ok = ~np.isnan(F).any(axis=1)
@@ -82,9 +84,13 @@ def main():
         nloaded += 1
         for j in idx:
             t = MINHIST + j
+            if cl[t] < 5.0 or float(cl[max(0,t-19):t+1].std()) == 0.0: continue
             if t+HOR >= len(cl): y = np.nan
             else: y = (cl[t+HOR]/cl[t]-1)*100
             d = int(ds[j])
+            if t+HOR < len(cl):
+                end_day = int(a[t+HOR,0] // 86400)
+                maturity_by_date[d] = max(maturity_by_date.get(d, 0), end_day)
             e = by_date.setdefault(d, [[],[],[]])
             e[0].append(s); e[1].append(F[j]); e[2].append(y)
     dates = sorted(by_date)
@@ -102,7 +108,8 @@ def main():
         X8 = np.column_stack([X, i1, i2])
         Xz = np.apply_along_axis(zc, 0, X8)
         m = ~np.isnan(y)
-        yz = np.where(m, zc(np.where(m,y,0)), np.nan)
+        yz = np.full(len(y),np.nan)
+        if m.any(): yz[m] = zc(y[m])
         Xz_by_date[d] = (syml, Xz); yz_by_date[d] = yz
         if m.sum() > 200:
             Xm = Xz[m]; ym = yz[m]
@@ -122,7 +129,7 @@ def main():
         while train_dates and dpos[train_dates[0]] <= di-HOR-1 or (not train_dates):
             break
         # rebuild cumulative gram lazily: keep pointer
-        matured = [dd for dd in dates if dpos[dd] <= di-HOR-1 and dd in gramS]
+        matured = [dd for dd in dates if maturity_by_date.get(dd, d) < d and dd in gramS]
         S = sum((gramS[dd] for dd in matured), np.zeros((8,8)))
         b = sum((gramb[dd] for dd in matured), np.zeros(8))
         w = np.linalg.solve(S + LAM*np.eye(8), b)
@@ -154,15 +161,17 @@ def main():
     ic_ml = np.array(ic_ml); ic_fx = np.array(ic_fx)
     ic_fx = np.where(np.isnan(ic_fx), ic_ml, ic_fx)  # masked dates fallback
     val = dict(
-        oos_dates=len(oos), horizon=HOR, lam=LAM, feats=FEATS,
+        oos_dates=len(ic_ml), horizon=HOR, lam=LAM, feats=FEATS,
+        validation_status="EXPERIMENTAL_NOT_PROMOTED",
+        notes="IC is not a net-cost trading backtest. Overlapping labels invalidate naive independent t-stats. Universe survivorship and raw corporate-action prices remain limitations.",
         ic_ml_mean=round(float(ic_ml.mean()),4), ic_ml_std=round(float(ic_ml.std()),4),
         ic_fixed_mean=round(float(ic_fx.mean()),4), ic_fixed_std=round(float(ic_fx.std()),4),
-        ic_ml_tstat=round(float(ic_ml.mean()/(ic_ml.std()/math.sqrt(len(ic_ml)) or 1)),2),
-        ic_fixed_tstat=round(float(ic_fx.mean()/(ic_fx.std()/math.sqrt(len(ic_fx)) or 1)),2),
+        ic_ml_tstat=None,
+        ic_fixed_tstat=None,
         blend_curve={str(k): round(float(np.mean(v)),4) for k,v in sorted(blend_ic.items())},
         blend_halves={str(k): [round(float(np.mean(v[:len(v)//2])),4), round(float(np.mean(v[len(v)//2:])),4)] for k,v in sorted(blend_ic.items())},
         ml_beats_fixed=bool(ic_ml.mean() > ic_fx.mean()),
-        blend_note="blend 50/50 only if ml_beats_fixed else pure fixed tracker")
+        blend_note="Research diagnostics only. No automatic promotion to trading based on these comparisons.")
     json.dump(val, open(os.path.join(DATA,"ml_validation.json"),"w"), indent=1)
     json.dump(weights_hist, open(os.path.join(DATA,"ml_weights_history.json"),"w"), indent=1)
     # latest-date ranking with per-name contributions
@@ -171,7 +180,7 @@ def main():
     # date (exchange holiday / missed ingest) still rank, scored on their own latest
     # features standardized against the ranking-date cross-section.
     STALE_MAX = 3
-    matured = [dd for dd in dates if dpos[dd] <= dpos[d]-HOR-1 and dd in gramS]
+    matured = [dd for dd in dates if maturity_by_date.get(dd, d) < d and dd in gramS]
     S = sum((gramS[dd] for dd in matured), np.zeros((8,8)))
     b = sum((gramb[dd] for dd in matured), np.zeros(8))
     w = np.linalg.solve(S + LAM*np.eye(8), b)
