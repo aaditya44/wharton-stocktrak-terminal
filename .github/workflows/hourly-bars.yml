@@ -1,31 +1,12 @@
-name: Hourly bars (intraday universe)
+name: Quote publisher paused (data rights)
 on:
-  schedule:
-    # 14:12-21:12 UTC Mon-Fri = 10:12am-5:12pm ET: every closed hourly bar of the
-    # US session, plus one post-close sweep. Late fires just backfill (bars are fixed).
-    - cron: '12 14-21 * * MON-FRI'
   workflow_dispatch: {}
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
-  collect:
+  status:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Fetch hourly bars for intraday universe
-        run: python3 hourly_bars.py
-        timeout-minutes: 20
-        env:
-          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
-      - name: Commit hourly bars
+      - name: Publication paused pending data rights and private storage
         run: |
-          git config user.name "hourly-bars[bot]"
-          git config user.email "hourly-bars[bot]@users.noreply.github.com"
-          git add data/bars_hourly data/quotes_hourly data/holdings.txt
-          git diff --cached --quiet || git commit -m "hourly bars: $(date -u +%Y-%m-%d_%H:%M)Z"
-          git push
+          echo '::warning::Scheduled raw Finnhub quote publication is paused. Personal-use terms do not authorize public redistribution. No quote fetch or public artifact upload. Daily model never consumed these snapshots.'
