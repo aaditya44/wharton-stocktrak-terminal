@@ -1,12 +1,14 @@
-name: Nightly ML re-fit
+name: Post-close research refresh
 on:
   schedule:
-    - cron: '30 21 * * *'   # 5:30pm ET after the US close
+    # The calendar guard handles DST, holidays and early closes. GitHub may fire late.
+    - cron: '47 20,21 * * MON-FRI'
   workflow_dispatch: {}
-
 permissions:
   contents: write
-
+concurrency:
+  group: research-data-refresh
+  cancel-in-progress: false
 jobs:
   refit:
     runs-on: ubuntu-latest
@@ -16,13 +18,23 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install numpy matplotlib
-      - name: Ingest bars, re-fit ML, rebuild site
+      - name: Test session and freshness guards
+        run: python3 -m py_compile nightly_ml.py ml_rank.py build_site.py
+      - name: Audit daily history and rebuild honest research status
+        id: research
         run: python3 nightly_ml.py
-        timeout-minutes: 120
-      - name: Commit refreshed snapshot + site
+        continue-on-error: true
+        timeout-minutes: 60
+      - name: Commit status and research output
+        if: always()
         run: |
-          git config user.name "nightly-ml[bot]"
-          git config user.email "nightly-ml[bot]@users.noreply.github.com"
-          git add index.html data/ml_snapshot.json data/ml_validation.json data/ml_weights_history.json data/ml_ranking.json data/ml_ranking_intl.json
-          git diff --cached --quiet || git commit -m "nightly ML re-fit: $(date -u +%Y-%m-%d)"
+          git config user.name "research-refresh[bot]"
+          git config user.email "research-refresh[bot]@users.noreply.github.com"
+          git add index.html data/freshness.json data/ml_snapshot.json data/ml_validation.json data/ml_weights_history.json data/ml_ranking.json data/ml_ranking_intl.json
+          git diff --cached --quiet || git commit -m "Post-close research status: $(date -u +%Y-%m-%dT%H:%MZ)"
           git push
+      - name: Flag stale or failed research refresh
+        if: steps.research.outcome == 'failure'
+        run: |
+          echo '::error::Research refresh blocked or failed. See data/freshness.json. No automated trades.'
+          exit 1
