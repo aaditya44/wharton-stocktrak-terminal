@@ -30,6 +30,8 @@ def load_bars(sym):
     if not os.path.exists(p): return None
     try: a = np.array(json.load(open(p)), dtype=float)
     except Exception: return None
+    if a.ndim != 2 or a.shape[1] < 3 or not np.isfinite(a).all(): return None
+    if (a[:,1:3] <= 0).any() or (np.diff(a[:,0]) <= 0).any(): return None
     return a if len(a) >= MINHIST + HOR + 5 else None
 
 def factor_panel(a):
@@ -94,6 +96,7 @@ def main():
             e = by_date.setdefault(d, [[],[],[]])
             e[0].append(s); e[1].append(F[j]); e[2].append(y)
     dates = sorted(by_date)
+    if not dates: raise ValueError("No valid eligible daily panels; refusing to overwrite output")
     print(f"panels={nloaded} dates={len(dates)} range={dates[0]}..{dates[-1]}")
     dpos = {d:i for i,d in enumerate(dates)}
     # per-date z-scored design, gram matrices
@@ -125,10 +128,7 @@ def main():
     train_dates = []
     for d in oos:
         di = dpos[d]
-        # add newly matured dates (embargo: date index <= di-HOR-1)
-        while train_dates and dpos[train_dates[0]] <= di-HOR-1 or (not train_dates):
-            break
-        # rebuild cumulative gram lazily: keep pointer
+        # Include only dates whose full label set matured before this date.
         matured = [dd for dd in dates if maturity_by_date.get(dd, d) < d and dd in gramS]
         S = sum((gramS[dd] for dd in matured), np.zeros((8,8)))
         b = sum((gramb[dd] for dd in matured), np.zeros(8))
@@ -155,11 +155,13 @@ def main():
             ic_fx.append(float(np.corrcoef(zc(fs2), yz[fm])[0,1]))
         else:
             ic_fx.append(dateIC_fixed[d])
-        weights_hist.append(dict(date=int(d), n_train=int(len(matured)*1400),
+        weights_hist.append(dict(date=int(d), n_train=sum(int(np.isfinite(yz_by_date[dd]).sum()) for dd in matured),
             **{f: round(float(wi),3) for f,wi in zip(FEATS,w)}, ic=round(ic,3),
             ic_fixed=round(dateIC_fixed[d],3)))
     ic_ml = np.array(ic_ml); ic_fx = np.array(ic_fx)
-    ic_fx = np.where(np.isnan(ic_fx), ic_ml, ic_fx)  # masked dates fallback
+    paired = np.isfinite(ic_ml) & np.isfinite(ic_fx)
+    ic_ml, ic_fx = ic_ml[paired], ic_fx[paired]
+    if not len(ic_ml): raise ValueError("No valid paired out-of-sample diagnostics; refusing ranking")
     val = dict(
         oos_dates=len(ic_ml), horizon=HOR, lam=LAM, feats=FEATS,
         validation_status="EXPERIMENTAL_NOT_PROMOTED",
