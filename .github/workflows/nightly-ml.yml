@@ -19,7 +19,9 @@ jobs:
           python-version: '3.11'
       - run: pip install numpy matplotlib
       - name: Test session and freshness guards
-        run: python3 -m py_compile nightly_ml.py ml_rank.py build_site.py
+        run: |
+          python3 -m py_compile nightly_ml.py ml_rank.py build_site.py quant_research.py
+          python3 quant_research.py self-test
       - name: Audit daily history and rebuild honest research status
         id: research
         run: python3 nightly_ml.py
