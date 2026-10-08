@@ -30,7 +30,7 @@ p{font-size:13px;line-height:1.55;margin:6px 0} ol{font-size:13px;line-height:1.
 footer{padding:16px 26px;color:#8b949e;font-size:12px;border-top:1px solid #30363d}
 </style></head><body>
 <header><h1>StockTrak Research Terminal <span style="color:#58a6ff">v1.0</span></h1>
-<span class="sub">Wharton competition research (historical panels labeled) &middot; generated 2026-10-07 05:41 IST &middot; all statistics from cached daily bars, sources dated</span></header>
+<span class="sub">Wharton competition research (historical panels labeled) &middot; generated 2026-10-08 05:57 IST &middot; all statistics from cached daily bars, sources dated</span></header>
 <nav>
 <button data-t="screener" onclick="show('screener')">Screener</button>
 <button data-t="mlmodel" onclick="show('mlmodel')">ML model</button>
@@ -75,7 +75,7 @@ Architecture<button type="button" class="info" aria-label="what is this">i</butt
 <div class="plain"><b>In plain terms:</b> this is an experimental research tool. It does not place orders. Refreshing data, refitting weights, validating a strategy and choosing a trade are separate steps. Neither the learned model nor the old baseline is approved merely because one has a higher correlation.</div>
 
 
-<div class="warn"><b>Research only. Not validated for trading.</b> Data status: STALE_HISTORY_BLOCKED. Daily ranking input: 2026-09-30. Required completed session: 2026-10-06. A new fit time does not mean new prices. Orders remain outside this terminal.</div>
+<div class="warn"><b>Research only. Not validated for trading.</b> Data status: STALE_HISTORY_BLOCKED. Daily ranking input: 2026-09-30. Required completed session: 2026-10-07. A new fit time does not mean new prices. Orders remain outside this terminal.</div>
 <div class="card"><h3>What the experimental model learned<button type="button" class="info" aria-label="what is this">i</button><span class="tip">What: coefficients from the last completed experimental fit. Positive or negative weights describe the fitted relationship, not a promised return. No fresh refit happens when daily history fails the gate.</span></h3>
 <table><thead><tr><th>Factor</th><th>Learned weight</th><th>What it means</th></tr></thead><tbody><tr><td>3-month momentum</td><td>-0.020</td><td class='sub'>how much the stock rose over the last 3 months</td></tr><tr><td>1-month momentum</td><td>+0.018</td><td class='sub'>how much the stock rose over the last month</td></tr><tr><td>overnight quality</td><td>-0.002</td><td class='sub'>consistency of overnight (close-to-open) returns</td></tr><tr><td>20-day volatility</td><td>+0.117</td><td class='sub'>how jumpy the stock has been over the last month</td></tr><tr><td>trend consistency</td><td>+0.012</td><td class='sub'>share of recent days spent above the 50-day average</td></tr><tr><td>52-week-high distance</td><td>-0.005</td><td class='sub'>how close the price is to its 52-week high</td></tr><tr><td>momentum x market fear</td><td>-0.057</td><td class='sub'>3-month momentum scaled by market volatility</td></tr><tr><td>vol x market direction</td><td>-0.009</td><td class='sub'>own volatility scaled by recent market return</td></tr></tbody></table>
 <p class="note">Last fit: 2026-10-06 01:58 UTC &middot; mode unified &middot; Experimental 21-session ranking, not a timing or profit forecast. No automated orders.</p></div>
