@@ -235,11 +235,11 @@
   },
   "note": "Experimental 21-session ranking, not a timing or profit forecast. No automated orders.",
   "market_data_date": "2026-09-30",
-  "expected_session": "2026-10-19",
+  "expected_session": "2026-10-20",
   "data_status": "STALE_HISTORY_BLOCKED",
   "freshness": {
-    "checked_at": "2026-10-19T23:57:53.166102+00:00",
-    "expected_session": "2026-10-19",
+    "checked_at": "2026-10-20T23:27:52.461574+00:00",
+    "expected_session": "2026-10-20",
     "history_latest_date": "2026-09-30",
     "daily_date_counts": {
       "2026-09-30": 1818,
