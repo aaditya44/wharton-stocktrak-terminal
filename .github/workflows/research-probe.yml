@@ -1,0 +1,77 @@
+name: Research source probe (generic tickers)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run SEC EDGAR probe
+        run: |
+          python3 << 'PYEOF'
+          import json, time, urllib.request, os
+          UA = {"User-Agent": "StudentResearchProject/1.0 (aaditya44@users.noreply.github.com)"}
+          os.makedirs("probe_out", exist_ok=True)
+          report = {}
+          def get(url):
+              req = urllib.request.Request(url, headers=UA)
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return r.status, r.read()
+              except Exception as e:
+                  return getattr(e, "code", None), str(e).encode()[:500]
+          def probe(name, url):
+              status, body = get(url)
+              time.sleep(2)
+              report[name] = {"url": url, "status": status, "bytes": len(body)}
+              return body if status == 200 else None
+          b = probe("company_tickers", "https://www.sec.gov/files/company_tickers.json")
+          if b:
+              report["company_tickers"]["filer_count"] = len(json.loads(b))
+          CONCEPTS = ["Revenues","RevenueFromContractWithCustomerExcludingAssessedTax","OperatingIncomeLoss","NetIncomeLoss","NetCashProvidedByUsedInOperatingActivities","LongTermDebt","LongTermDebtNoncurrent","StockholdersEquity","Assets","CashAndCashEquivalentsAtCarryingValue"]
+          CIKS = {"AAPL":"0000320193","MSFT":"0000789019","JNJ":"0000200406","TSM":"0001046179"}
+          summary = {}
+          for tkr, cik in CIKS.items():
+              b = probe("companyfacts_" + tkr, "https://data.sec.gov/api/xbrl/companyfacts/CIK" + cik + ".json")
+              entry = {}
+              if b:
+                  facts = json.loads(b).get("facts", {})
+                  gaap = facts.get("us-gaap", {})
+                  ifrs = facts.get("ifrs-full", {})
+                  entry["us_gaap_concepts"] = len(gaap)
+                  entry["ifrs_concepts"] = len(ifrs)
+                  for c in CONCEPTS:
+                      if c in gaap:
+                          units = gaap[c].get("units", {})
+                          usd = units.get("USD") or next(iter(units.values()), [])
+                          annual = [x for x in usd if x.get("form") in ("10-K","20-F") and x.get("fp") == "FY"]
+                          entry[c] = {"points": len(usd), "annual_points": len(annual), "latest_end": max((x.get("end","") for x in usd), default=None)}
+                  for c in ["Revenue","ProfitLoss","Assets"]:
+                      if c in ifrs:
+                          anyu = next(iter(ifrs[c].get("units", {}).values()), [])
+                          entry["ifrs-full:" + c] = {"points": len(anyu)}
+              summary[tkr] = entry
+          report["companyfacts_summary"] = summary
+          b = probe("frames_revenues_2026Q2", "https://data.sec.gov/api/xbrl/frames/us-gaap/Revenues/USD/CY2026Q2I.json")
+          if b:
+              report["frames_revenues_2026Q2"]["company_count"] = len(json.loads(b))
+          b = probe("submissions_AAPL", "https://data.sec.gov/submissions/CIK0000320193.json")
+          if b:
+              r = json.loads(b)["filings"]["recent"]
+              report["submissions_AAPL"]["recent_count"] = len(r["form"])
+              report["submissions_AAPL"]["latest"] = [{"form": f, "date": dt} for f, dt in list(zip(r["form"], r["filingDate"]))[:5]]
+          json.dump(report, open("probe_out/report.json","w"), indent=2)
+          with open("probe_out/report.md","w") as f:
+              f.write("# SEC EDGAR probe (generic tickers)\n\n```json\n" + json.dumps(report, indent=2) + "\n```\n")
+          print(json.dumps(report, indent=2)[:3000])
+          PYEOF
+      - name: Commit probe results
+        run: |
+          git config user.name "research-probe"
+          git config user.email "aaditya44@users.noreply.github.com"
+          git checkout -B research-probe
+          git add probe_out/
+          git commit -m "SEC EDGAR source probe (generic tickers)" || echo "nothing to commit"
+          git push -u origin research-probe
