@@ -90,14 +90,10 @@ def annual_series(concept_json):
     """Return annual (fp=FY, ~1-year duration) points deduped by end date,
     keeping the latest-filed per end date, sorted by end ascending."""
     units = concept_json.get("units", {})
-    points = None
-    for vals in units.values():
-        if points is None:
-            points = vals
-        else:  # merge across unit keys (rare); prefer USD-like first key
-            points = points + vals
-    if not points:
-        return []
+    if "USD" in units:
+        points = units["USD"]
+    else:
+        points = next(iter(units.values()), [])
     by_end = {}
     for p in points:
         if p.get("fp") != "FY" or p.get("form") not in ANNUAL_FORMS:
@@ -120,11 +116,10 @@ def instant_series(concept_json):
     """Balance-sheet (instant) facts: no start date, no duration check.
     Keep FY-form points deduped by end date (latest filed), sorted ascending."""
     units = concept_json.get("units", {})
-    points = None
-    for vals in units.values():
-        points = vals if points is None else points + vals
-    if not points:
-        return []
+    if "USD" in units:
+        points = units["USD"]
+    else:
+        points = next(iter(units.values()), [])
     instant_forms = ANNUAL_FORMS | {"10-Q", "10-Q/A"}
     by_end = {}
     for p in points:
@@ -238,13 +233,27 @@ def score_company(source, cik, name, today=None):
     for metric in CORE_METRICS + ["cash"]:
         res, err = pick_metric(source, cik, metric)
         if err:
-            out["flags"].append(f"missing metric {metric}: {err['tried'][-1] if err['tried'] else 'n/a'}")
+            note = err['tried'][-1] if err['tried'] else 'n/a'
+            extra = " (no standard debt concept filed - NOT evidence of zero debt)" if metric == "long_term_debt" else ""
+            out["flags"].append(f"missing metric {metric}: {note}{extra}")
             continue
         metrics[metric] = res
         f = res["citation"].get("filed")
         if f and (latest_filed is None or f > latest_filed):
             latest_filed = f
     out["latest_filing_date"] = latest_filed
+    ends = []
+    for mm in metrics.values():
+        lp = latest_point(mm.get("series", []))
+        if lp:
+            ends.append(lp["end"])
+    if len(ends) >= 2:
+        try:
+            span = (dt.date.fromisoformat(max(ends)) - dt.date.fromisoformat(min(ends))).days
+            if span > 731:
+                out["flags"].append(f"metric vintages span {span}d ({min(ends)}..{max(ends)}) - mixed-period evidence")
+        except Exception:
+            pass
 
     present = [m for m in CORE_METRICS if m in metrics]
     if len(present) < 4:
