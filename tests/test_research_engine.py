@@ -41,6 +41,19 @@ class AnnualSeriesTests(unittest.TestCase):
         self.assertEqual(s[0]["val"], 200)
 
 
+class InstantSeriesTests(unittest.TestCase):
+    def test_instant_facts_no_start_date(self):
+        pts = [{"start": None, "end": "2024-12-31", "val": 50, "accn": "a",
+                "fy": 2024, "fp": "FY", "form": "10-K", "filed": "2025-02-01"},
+               {"start": None, "end": "2024-12-31", "val": 55, "accn": "b",
+                "fy": 2024, "fp": "FY", "form": "10-K/A", "filed": "2025-03-01"},
+               {"start": None, "end": "2024-06-30", "val": 48, "accn": "c",
+                "fy": 2024, "fp": "Q2", "form": "10-Q", "filed": "2024-08-01"}]
+        s = re_eng.instant_series(concept(pts))
+        self.assertEqual(len(s), 2)  # FY 10-K/A dedupe + the 10-Q point
+        self.assertEqual(s[-1]["val"], 55)  # latest filed wins for 2024-12-31
+
+
 class CagrTests(unittest.TestCase):
     def test_known_cagr(self):
         # 100 -> 121 over exactly 2 years = 10% per year

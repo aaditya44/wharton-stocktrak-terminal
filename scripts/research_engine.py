@@ -42,7 +42,9 @@ STALE_FILING_DAYS = 400
 TAG_FALLBACKS = {
     "revenue": [
         ("us-gaap", "RevenueFromContractWithCustomerExcludingAssessedTax"),
+        ("us-gaap", "RevenueFromContractWithCustomerIncludingAssessedTax"),
         ("us-gaap", "Revenues"),
+        ("us-gaap", "SalesRevenueNet"),
         ("ifrs-full", "Revenue"),
     ],
     "operating_income": [
@@ -77,6 +79,7 @@ TAG_FALLBACKS = {
 
 CORE_METRICS = ["revenue", "operating_income", "net_income",
                 "operating_cash_flow", "long_term_debt", "equity"]
+INSTANT_METRICS = {"long_term_debt", "equity", "cash"}
 
 
 def _parse_date(s):
@@ -106,6 +109,26 @@ def annual_series(concept_json):
         except Exception:
             continue
         if dur < MIN_ANNUAL_DAYS:
+            continue
+        cur = by_end.get(p["end"])
+        if cur is None or p.get("filed", "") > cur.get("filed", ""):
+            by_end[p["end"]] = p
+    return [by_end[k] for k in sorted(by_end)]
+
+
+def instant_series(concept_json):
+    """Balance-sheet (instant) facts: no start date, no duration check.
+    Keep FY-form points deduped by end date (latest filed), sorted ascending."""
+    units = concept_json.get("units", {})
+    points = None
+    for vals in units.values():
+        points = vals if points is None else points + vals
+    if not points:
+        return []
+    instant_forms = ANNUAL_FORMS | {"10-Q", "10-Q/A"}
+    by_end = {}
+    for p in points:
+        if p.get("form") not in instant_forms or not p.get("end") or p.get("val") is None:
             continue
         cur = by_end.get(p["end"])
         if cur is None or p.get("filed", "") > cur.get("filed", ""):
@@ -189,9 +212,10 @@ def pick_metric(source, cik, metric):
         if not cj:
             tried.append(f"{tax}/{tag}: {how}")
             continue
-        series = annual_series(cj)
+        builder = instant_series if metric in INSTANT_METRICS else annual_series
+        series = builder(cj)
         if not series:
-            tried.append(f"{tax}/{tag}: no annual points")
+            tried.append(f"{tax}/{tag}: no usable points")
             continue
         end = series[-1]["end"]
         cit = {"taxonomy": tax, "tag": tag, "concept_label": cj.get("label"),
