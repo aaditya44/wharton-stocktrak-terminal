@@ -400,7 +400,7 @@ def render_md(res):
             L.append(f"- {r['rule']} -> {r['points']} pts")
         L.append("")
     if res.get("metrics"):
-        L.append("## Metrics (company-reported)")
+        L.append("## Derived metrics (calculated from the cited company-reported facts)")
         for k, v in res["metrics"].items():
             cit = v.get("citation") or {}
             cite = f" [{cit.get('taxonomy')}/{cit.get('tag')}, period end {cit.get('end')}, accn {cit.get('accn')}]" if cit else ""
