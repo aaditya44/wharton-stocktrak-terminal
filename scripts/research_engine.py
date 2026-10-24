@@ -294,6 +294,21 @@ def score_company(source, cik, name, today=None):
         except Exception:
             pass
 
+    # Continuity check: retrieval can be silently incomplete (valid JSON with
+    # facts dropped and no marker). Annual 10-K facts are mandatory, so a
+    # >550-day gap between consecutive recent annual points means the series
+    # is suspect. Flag only; the stale gate handles wholly-old series.
+    for metric in ["revenue", "operating_income", "net_income", "operating_cash_flow"]:
+        pts = metrics.get(metric, {}).get("series", [])[-5:]
+        for a, b in zip(pts, pts[1:]):
+            try:
+                gap = (dt.date.fromisoformat(b["end"]) - dt.date.fromisoformat(a["end"])).days
+            except Exception:
+                continue
+            if gap > 550:
+                out["flags"].append(
+                    f"possible missing annual facts in {metric}: gap {a['end']}..{b['end']} - series may be incomplete")
+
     # Derived values with same-period matching only.
     rev = metrics.get("revenue", {}).get("series", [])
     g, g_start, g_end = cagr(rev)

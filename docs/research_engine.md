@@ -21,6 +21,19 @@ Deterministic fundamentals research over SEC EDGAR XBRL company-reported facts.
   -> `INSUFFICIENT_DATA`.
 - Same-period matching only: margins are computed from identical period
   end dates, never mixed periods.
+- Annual-continuity check: a >550-day gap between consecutive recent
+  annual facts in a flow metric is flagged as possible missing data.
+
+## Data-integrity limitation (read before trusting any brief)
+The fetch route (an HTTP reader with a per-response size cap) can return
+silently incomplete concept JSON: valid syntax, facts dropped, no marker.
+Observed in practice (head+tail kept, middle elided). Mitigations in the
+engine: the stale-metric gate drops series whose latest fact is implausibly
+old, and the continuity check flags gaps inside recent annual series.
+Neither proves a response is complete: a partial response can still look
+current. Treat every brief as "best available from a capped retrieval",
+not a guaranteed-complete record. Facts carry citations (concept, period,
+accession number) so any number can be verified against the SEC original.
 
 ## What it is not
 - Not an AI model, not a price predictor, not investment advice, not a

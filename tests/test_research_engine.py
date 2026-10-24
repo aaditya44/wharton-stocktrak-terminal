@@ -191,6 +191,17 @@ class ScoreCompanyTests(unittest.TestCase):
         # score is 7 from the remaining four rules, not 9 with stale leverage
         self.assertEqual(r["score"], 7)
 
+    def test_annual_continuity_gap_flagged(self):
+        healthy_fixture(self.cache)
+        # a silently elided retrieval: FY2022 revenue fact missing from cache
+        rev = [pt(v, f"{y}-01-01", f"{y}-12-31", f"{y+1}-02-15")
+               for y, v in [(2021, 100), (2023, 126), (2024, 141)]]
+        write_fixture(self.cache, FIXTURE_CIK, "us-gaap",
+                      "RevenueFromContractWithCustomerExcludingAssessedTax", rev)
+        r = self.run_engine()
+        self.assertTrue(any("possible missing annual facts in revenue" in f
+                            for f in r["flags"]))
+
     def test_mixed_period_margin_refused(self):
         healthy_fixture(self.cache)
         # operating income only for a period with no matching revenue end date
