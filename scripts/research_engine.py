@@ -414,7 +414,10 @@ def render_md(res):
         for f in res["flags"]:
             L.append(f"- {f}")
         L.append("")
-    L.append(f"Latest filing date (from concept metadata; not comprehensive news coverage): {res.get('latest_filing_date')}")
+    if res.get("status") == "INSUFFICIENT_DATA":
+        L.append("Latest filing date: not shown - too little concept data retrieved to be meaningful.")
+    else:
+        L.append(f"Latest filing date (from concept metadata; not comprehensive news coverage): {res.get('latest_filing_date')}")
     return "\n".join(L) + "\n"
 
 
