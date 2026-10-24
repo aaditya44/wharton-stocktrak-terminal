@@ -211,6 +211,13 @@ def pick_metric(source, cik, metric):
         if not cj:
             tried.append(f"{tax}/{tag}: {how}")
             continue
+        units = cj.get("units", {}) if isinstance(cj, dict) else {}
+        # A real SEC concept response carries fact arrays. An empty OBJECT
+        # where an array belongs is a retrieval artifact (content silently
+        # dropped), not evidence the company files nothing.
+        if "USD" in units and not isinstance(units["USD"], list):
+            tried.append(f"{tax}/{tag}: suspect retrieval (facts array emptied) - not evidence of absence")
+            continue
         builder = instant_series if metric in INSTANT_METRICS else annual_series
         series = builder(cj)
         if not series:
@@ -237,8 +244,10 @@ def score_company(source, cik, name, today=None):
     for metric in CORE_METRICS + ["cash"]:
         res, err = pick_metric(source, cik, metric)
         if err:
-            note = err['tried'][-1] if err['tried'] else 'n/a'
-            extra = " (no standard debt concept filed - NOT evidence of zero debt)" if metric == "long_term_debt" else ""
+            note = "; ".join(err['tried']) if err['tried'] else 'n/a'
+            extra = ""
+            if metric == "long_term_debt" and err['tried'] and all(t.endswith(": missing") for t in err['tried']):
+                extra = " (no standard debt concept filed - NOT evidence of zero debt)"
             out["flags"].append(f"missing metric {metric}: {note}{extra}")
             continue
         metrics[metric] = res

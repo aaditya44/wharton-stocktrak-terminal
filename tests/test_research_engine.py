@@ -202,6 +202,26 @@ class ScoreCompanyTests(unittest.TestCase):
         self.assertTrue(any("possible missing annual facts in revenue" in f
                             for f in r["flags"]))
 
+    def test_emptied_facts_array_is_suspect_not_missing(self):
+        healthy_fixture(self.cache)
+        # retrieval artifact: facts array replaced by an empty object
+        write_fixture(self.cache, FIXTURE_CIK, "us-gaap", "LongTermDebt", {})
+        r = self.run_engine()
+        self.assertTrue(any("suspect retrieval" in f for f in r["flags"]))
+        self.assertNotIn("debt_to_equity", r["metrics"])
+        # debt wording must NOT claim "no standard debt concept filed"
+        self.assertFalse(any("NOT evidence of zero debt" in f for f in r["flags"]))
+
+    def test_missing_metric_lists_all_attempts(self):
+        healthy_fixture(self.cache)
+        os.remove(os.path.join(self.cache, FIXTURE_CIK + "_us-gaap_LongTermDebt.json"))
+        r = self.run_engine()
+        debt_flags = [f for f in r["flags"] if f.startswith("missing metric long_term_debt")]
+        self.assertEqual(len(debt_flags), 1)
+        self.assertIn("us-gaap/LongTermDebt", debt_flags[0])
+        self.assertIn("ifrs-full/NoncurrentBorrowings", debt_flags[0])
+        self.assertIn("NOT evidence of zero debt", debt_flags[0])
+
     def test_mixed_period_margin_refused(self):
         healthy_fixture(self.cache)
         # operating income only for a period with no matching revenue end date
