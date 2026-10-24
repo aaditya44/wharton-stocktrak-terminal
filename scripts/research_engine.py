@@ -6,8 +6,9 @@ WHAT THIS IS:
   endpoints (public US government data), using ordered tag fallbacks per metric.
 - Computes a fixed-rule scorecard (growth, margins, leverage, cash flow) with
   a citation (concept, period, accession number) for every number.
-- Fail-closed: insufficient data or stale filings produce explicit statuses,
-  never a guessed score.
+- Fail-closed: insufficient data, stale filings, or stale metric facts
+  (latest period end older than ~2 years) produce explicit statuses/flags
+  and exclusion from scoring, never a guessed score.
 
 WHAT THIS IS NOT:
 - Not an AI model, not a price predictor, not a recommendation to buy or sell.
@@ -37,6 +38,9 @@ SEC_BASE = "https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/{tax}/{tag}.js
 ANNUAL_FORMS = {"10-K", "10-K/A", "20-F", "20-F/A", "40-F", "40-F/A"}
 MIN_ANNUAL_DAYS = 300
 STALE_FILING_DAYS = 400
+# Metric facts whose latest period end is older than this are excluded from
+# scoring: an 11-year-old debt figure says nothing about current leverage.
+METRIC_STALE_DAYS = 731
 
 # Ordered fallbacks per metric: first tag with usable current annual data wins.
 TAG_FALLBACKS = {
@@ -242,19 +246,6 @@ def score_company(source, cik, name, today=None):
         if f and (latest_filed is None or f > latest_filed):
             latest_filed = f
     out["latest_filing_date"] = latest_filed
-    ends = []
-    for mm in metrics.values():
-        lp = latest_point(mm.get("series", []))
-        if lp:
-            ends.append(lp["end"])
-    if len(ends) >= 2:
-        try:
-            span = (dt.date.fromisoformat(max(ends)) - dt.date.fromisoformat(min(ends))).days
-            if span > 731:
-                out["flags"].append(f"metric vintages span {span}d ({min(ends)}..{max(ends)}) - mixed-period evidence")
-        except Exception:
-            pass
-
     present = [m for m in CORE_METRICS if m in metrics]
     if len(present) < 4:
         out["status"] = "INSUFFICIENT_DATA"
@@ -267,6 +258,39 @@ def score_company(source, cik, name, today=None):
                 out["status"] = "NOT_CURRENT"
                 out["flags"].append(f"latest filing {latest_filed} is {age}d old - stale")
                 return out
+        except Exception:
+            pass
+
+    # Staleness gate: exclude any metric whose latest point is too old to say
+    # anything about the company today (incomplete retrievals, tag migrations
+    # and abandoned tags all surface this way). Fail closed, never guess.
+    for metric in list(metrics):
+        lp = latest_point(metrics[metric].get("series", []))
+        if not lp:
+            continue
+        try:
+            age = (today - dt.date.fromisoformat(lp["end"])).days
+        except Exception:
+            continue
+        if age > METRIC_STALE_DAYS:
+            out["flags"].append(
+                f"stale metric {metric}: latest {lp['end']} is {age}d old - excluded from scoring")
+            del metrics[metric]
+    if len([m for m in CORE_METRICS if m in metrics]) < 4:
+        out["status"] = "INSUFFICIENT_DATA"
+        out["flags"].append("fewer than 4 current core metrics after stale-metric exclusion - not scored")
+        return out
+
+    ends = []
+    for mm in metrics.values():
+        lp = latest_point(mm.get("series", []))
+        if lp:
+            ends.append(lp["end"])
+    if len(ends) >= 2:
+        try:
+            span = (dt.date.fromisoformat(max(ends)) - dt.date.fromisoformat(min(ends))).days
+            if span > 731:
+                out["flags"].append(f"metric vintages span {span}d ({min(ends)}..{max(ends)}) - mixed-period evidence")
         except Exception:
             pass
 

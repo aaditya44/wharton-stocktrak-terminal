@@ -13,6 +13,12 @@ Deterministic fundamentals research over SEC EDGAR XBRL company-reported facts.
 - Fail-closed: fewer than 4 of 6 core metrics -> `INSUFFICIENT_DATA`;
   latest filing older than 400 days -> `NOT_CURRENT`. No score is emitted
   in either case.
+- Stale-metric gate: any metric whose latest period end is older than ~2
+  years (731 days) is excluded from scoring with an explicit flag. This
+  catches abandoned tags and silently incomplete retrievals (e.g. a
+  truncated concept response that ends years ago) instead of letting old
+  numbers drive a score. Fewer than 4 current core metrics after exclusion
+  -> `INSUFFICIENT_DATA`.
 - Same-period matching only: margins are computed from identical period
   end dates, never mixed periods.
 

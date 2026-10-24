@@ -180,6 +180,17 @@ class ScoreCompanyTests(unittest.TestCase):
         self.assertEqual(r["status"], "NOT_CURRENT")
         self.assertIsNone(r["score"])
 
+    def test_stale_metric_excluded_from_scoring(self):
+        healthy_fixture(self.cache)
+        # debt tag abandoned a decade ago (real pattern: filer stops using a tag)
+        write_fixture(self.cache, FIXTURE_CIK, "us-gaap", "LongTermDebt",
+                      [pt(50, "2014-01-01", "2014-12-31", "2015-02-15")])
+        r = self.run_engine()
+        self.assertNotIn("debt_to_equity", r["metrics"])
+        self.assertTrue(any("stale metric long_term_debt" in f for f in r["flags"]))
+        # score is 7 from the remaining four rules, not 9 with stale leverage
+        self.assertEqual(r["score"], 7)
+
     def test_mixed_period_margin_refused(self):
         healthy_fixture(self.cache)
         # operating income only for a period with no matching revenue end date
