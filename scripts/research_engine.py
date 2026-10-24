@@ -406,7 +406,8 @@ def render_md(res):
             cite = f" [{cit.get('taxonomy')}/{cit.get('tag')}, period end {cit.get('end')}, accn {cit.get('accn')}]" if cit else ""
             val = v.get("value")
             vs = f"{val:.4f}" if isinstance(val, float) else str(val)
-            L.append(f"- {k}: {vs} (end {v.get('end') or v.get('end_end')}){cite}")
+            end = v.get('end') or v.get('end_end')
+            L.append(f"- {k}: {vs}" + (f" (end {end})" if end else "") + cite)
         L.append("")
     if res.get("flags"):
         L.append("## Flags")
