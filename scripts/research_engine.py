@@ -200,6 +200,61 @@ class ConceptSource:
         return json.loads(body), "fetched"
 
 
+class StatementSource:
+    """Optional tier of figures extracted from original filing statements
+    (R-files) - e.g. when the companyconcept feed cannot deliver a metric
+    intact. Each point carries its own statement URL and extractor id.
+    Used only as a fallback after concept-feed attempts fail or are
+    excluded by integrity gates; flagged distinctly so statement-extracted
+    figures are never mistaken for concept-feed (automatic) coverage."""
+
+    def __init__(self, statements_dir=None):
+        self.dir = statements_dir
+
+    def get(self, cik, metric):
+        if not self.dir:
+            return None
+        path = os.path.join(self.dir, f"{cik}_{metric}.json")
+        if not os.path.exists(path):
+            return None
+        with open(path) as f:
+            pts = json.load(f)
+        return pts or None
+
+    def series(self, cik, metric):
+        """Fact-shaped points, same downstream handling as concept series."""
+        pts = self.get(cik, metric)
+        if not pts:
+            return None
+        by_end = {}
+        for p in pts:
+            if p.get("val") is None or not p.get("end"):
+                continue
+            if metric in INSTANT_METRICS:
+                pass  # no duration requirement for balance-sheet points
+            else:
+                if not p.get("start"):
+                    continue
+                try:
+                    if (_parse_date(p["end"]) - _parse_date(p["start"])).days < MIN_ANNUAL_DAYS:
+                        continue
+                except Exception:
+                    continue
+            cur = by_end.get(p["end"])
+            if cur is None or p.get("filed", "") > cur.get("filed", ""):
+                by_end[p["end"]] = p
+        series = [by_end[k] for k in sorted(by_end)]
+        if not series:
+            return None
+        lp = series[-1]
+        cit = {"taxonomy": None, "tag": None,
+               "extractor": lp.get("extractor", "agent-rfile"),
+               "statement_url": lp.get("statement_url"),
+               "accn": lp.get("accn"), "end": lp["end"], "filed": lp.get("filed")}
+        return {"series": series, "citation": cit,
+                "tried": [f"statements/rfile: {len(series)} pts, latest {lp['end']} (agent-extracted from original statement; not concept-feed coverage)"]}
+
+
 def pick_metric(source, cik, metric):
     """Try ordered tag fallbacks; return (series, citation) for the first tag
     whose latest annual end date is current enough to be usable, preferring
@@ -234,7 +289,7 @@ def pick_metric(source, cik, metric):
     return {"series": best[1], "citation": best[2], "tried": tried}, None
 
 
-def score_company(source, cik, name, today=None):
+def score_company(source, cik, name, today=None, statements=None):
     today = today or dt.date.today()
     out = {"cik": cik, "name": name, "as_of": today.isoformat(),
            "metrics": {}, "flags": [], "score": None, "band": None,
@@ -243,6 +298,14 @@ def score_company(source, cik, name, today=None):
     latest_filed = None
     for metric in CORE_METRICS + ["cash"]:
         res, err = pick_metric(source, cik, metric)
+        if err and statements:
+            res = statements.series(cik, metric)
+            if res:
+                out["flags"].append(
+                    f"metric {metric} filled from original filing statement (agent-extracted; "
+                    f"concept feed failed for this metric - not automatic coverage): "
+                    f"{res['citation'].get('statement_url')}")
+                err = None
         if err:
             note = "; ".join(err['tried']) if err['tried'] else 'n/a'
             extra = ""
@@ -282,9 +345,26 @@ def score_company(source, cik, name, today=None):
         except Exception:
             continue
         if age > METRIC_STALE_DAYS:
-            out["flags"].append(
-                f"stale metric {metric}: latest {lp['end']} is {age}d old - excluded from scoring")
-            del metrics[metric]
+            filled = False
+            if statements and metric in CORE_METRICS:
+                res = statements.series(cik, metric)
+                if res:
+                    slp = latest_point(res["series"])
+                    try:
+                        sage = (today - dt.date.fromisoformat(slp["end"])).days
+                    except Exception:
+                        sage = 10**9
+                    if sage <= METRIC_STALE_DAYS:
+                        out["flags"].append(
+                            f"metric {metric} filled from original filing statement after the concept-feed "
+                            f"series was excluded as stale (latest {lp['end']}, {age}d; agent-extracted, "
+                            f"not automatic coverage): {res['citation'].get('statement_url')}")
+                        metrics[metric] = res
+                        filled = True
+            if not filled:
+                out["flags"].append(
+                    f"stale metric {metric}: latest {lp['end']} is {age}d old - excluded from scoring")
+                del metrics[metric]
     if len([m for m in CORE_METRICS if m in metrics]) < 4:
         out["status"] = "INSUFFICIENT_DATA"
         out["flags"].append("fewer than 4 current core metrics after stale-metric exclusion - not scored")
@@ -412,7 +492,10 @@ def render_md(res):
         L.append("## Derived metrics (calculated from the cited company-reported facts)")
         for k, v in res["metrics"].items():
             cit = v.get("citation") or {}
-            cite = f" [{cit.get('taxonomy')}/{cit.get('tag')}, period end {cit.get('end')}, accn {cit.get('accn')}]" if cit else ""
+            if cit and cit.get("extractor"):
+                cite = f" [statement-extracted: {cit.get('statement_url')}, period end {cit.get('end')}, accn {cit.get('accn')}]"
+            else:
+                cite = f" [{cit.get('taxonomy')}/{cit.get('tag')}, period end {cit.get('end')}, accn {cit.get('accn')}]" if cit else ""
             val = v.get("value")
             vs = f"{val:.4f}" if isinstance(val, float) else str(val)
             end = v.get('end') or v.get('end_end')
@@ -436,17 +519,19 @@ def main():
     ap.add_argument("--cache-dir", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--fetch", action="store_true", help="Fetch missing concepts directly (declared UA, fair access).")
+    ap.add_argument("--statements-dir", help="Optional dir of agent-extracted original-statement figures ({cik}_{metric}.json); fallback only, flagged.")
     ap.add_argument("--sleep", type=float, default=2.0)
     args = ap.parse_args()
 
     with open(args.config) as f:
         companies = json.load(f)
     src = ConceptSource(args.cache_dir, allow_fetch=args.fetch, sleep_s=args.sleep)
+    stmts = StatementSource(args.statements_dir) if args.statements_dir else None
     os.makedirs(args.out, exist_ok=True)
     results = []
     for c in companies:
         cik = str(c["cik"]).zfill(10)
-        res = score_company(src, cik, c.get("name") or c.get("ticker") or cik)
+        res = score_company(src, cik, c.get("name") or c.get("ticker") or cik, statements=stmts)
         res["ticker"] = c.get("ticker")
         results.append(res)
         with open(os.path.join(args.out, f"{c.get('ticker', cik)}.md"), "w") as f:

@@ -222,6 +222,78 @@ class ScoreCompanyTests(unittest.TestCase):
         self.assertIn("ifrs-full/NoncurrentBorrowings", debt_flags[0])
         self.assertIn("NOT evidence of zero debt", debt_flags[0])
 
+
+    def _stmts_dir(self, files):
+        d = tempfile.TemporaryDirectory()
+        for name, pts in files.items():
+            with open(os.path.join(d.name, name + ".json"), "w") as f:
+                json.dump(pts, f)
+        self.addCleanup(d.cleanup)
+        return d.name
+
+    def _run_with_stmts(self, sdir):
+        src = re_eng.ConceptSource(self.cache, allow_fetch=False)
+        stmts = re_eng.StatementSource(sdir)
+        return re_eng.score_company(src, FIXTURE_CIK, "Test Co",
+                                    today=__import__("datetime").date(2025, 3, 1),
+                                    statements=stmts)
+
+    @staticmethod
+    def _spt(val, start, end, filed="2025-02-20"):
+        p = {"end": end, "val": val, "form": "10-K", "accn": "000-1",
+             "filed": filed, "statement_url": "https://www.sec.gov/x/R5.htm",
+             "extractor": "agent-rfile-v1"}
+        if start:
+            p["start"] = start
+        return p
+
+    def test_statements_fill_when_concept_missing(self):
+        healthy_fixture(self.cache)
+        os.remove(os.path.join(self.cache, FIXTURE_CIK + "_us-gaap_NetIncomeLoss.json"))
+        sdir = self._stmts_dir({
+            FIXTURE_CIK + "_net_income": [self._spt(20, "2024-01-01", "2024-12-31")],
+        })
+        r = self._run_with_stmts(sdir)
+        self.assertIn("net_margin", r["metrics"])
+        self.assertTrue(any("filled from original filing statement" in f and "not automatic coverage" in f
+                            for f in r["flags"]))
+        cit = r["metrics"]["net_margin"]
+        self.assertIsNotNone(cit.get("value"))
+
+    def test_statements_not_used_when_concept_healthy(self):
+        healthy_fixture(self.cache)
+        # statement tier carries a DIFFERENT (bogus) NI value; concept must win
+        sdir = self._stmts_dir({
+            FIXTURE_CIK + "_net_income": [self._spt(999999, "2024-01-01", "2024-12-31")],
+        })
+        r = self._run_with_stmts(sdir)
+        # healthy fixture NI is 21; net margin must use the concept value
+        self.assertAlmostEqual(r["metrics"]["net_margin"]["value"], 21 / 141, places=3)
+        self.assertFalse(any("filled from original filing statement" in f for f in r["flags"]))
+
+    def test_statements_fill_after_stale_exclusion(self):
+        healthy_fixture(self.cache)
+        write_fixture(self.cache, FIXTURE_CIK, "us-gaap", "NetIncomeLoss",
+                      [pt(5, "2014-01-01", "2014-12-31", "2015-02-15")])
+        sdir = self._stmts_dir({
+            FIXTURE_CIK + "_net_income": [self._spt(22, "2024-01-01", "2024-12-31")],
+        })
+        r = self._run_with_stmts(sdir)
+        self.assertIn("net_margin", r["metrics"])
+        self.assertAlmostEqual(r["metrics"]["net_margin"]["value"], 22 / 141, places=3)
+        self.assertTrue(any("after the concept-feed" in f and "excluded as stale" in f
+                            for f in r["flags"]))
+        self.assertFalse(any(f.startswith("stale metric net_income") for f in r["flags"]))
+
+    def test_statements_stale_fill_also_rejected(self):
+        healthy_fixture(self.cache)
+        os.remove(os.path.join(self.cache, FIXTURE_CIK + "_us-gaap_NetIncomeLoss.json"))
+        sdir = self._stmts_dir({
+            FIXTURE_CIK + "_net_income": [self._spt(22, "2010-01-01", "2010-12-31", filed="2011-02-01")],
+        })
+        r = self._run_with_stmts(sdir)
+        self.assertNotIn("net_margin", r["metrics"])
+
     def test_mixed_period_margin_refused(self):
         healthy_fixture(self.cache)
         # operating income only for a period with no matching revenue end date
