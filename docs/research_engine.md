@@ -86,8 +86,11 @@ accession number) so any number can be verified against the SEC original.
   and the identities of `skipped_rules`; candidate briefs state coverage
   prominently ("4 of 5 rules scored (7 of 9 points available); skipped:
   leverage").
-- Rank key: raw score first (skipped rules earn 0), then available points
-  (more coverage wins a tie: 7/9 outranks 7/7), then name. Percent of
-  available points is never used - it rewards missing evidence.
+- Rank key: raw score first (skipped rules earn no points), then available
+  points (more coverage wins a tie: 7/9 outranks 7/7), then name. Percent of
+  available points is never used - it rewards missing evidence. Skipped
+  rules remain UNKNOWNS: awarding no points is a reporting choice, not
+  evidence the rule would fail; skipped-rule identities stay visible in the
+  ranking and briefs so the unknowns travel with the result.
 - The ranking is a checklist ordering on reported facts, not a predictive
   ranking; `summary.json` says so in `ranking_note`.

@@ -352,13 +352,17 @@ def apply_screen(results, min_rules=4):
     without saying so. Returns (ranked, excluded).
 
     Ranking is deliberately conservative about missing data: the primary key
-    is the raw score, in which skipped rules earn 0 (a 7/7 cannot outrank an
-    8/9). Ties break toward MORE coverage (higher available points, i.e.
-    fewer skipped rules) - a 7/9 outranks a 7/7 because the same score with
-    more rules evidenced is better supported. Percentages of available points
-    are never used for ranking: they reward missing evidence (5/5 = 100%
-    would beat 7/9 = 78%). This is a checklist ordering on reported facts,
-    not a predictive ranking.
+    is the raw score, in which skipped rules earn no points (a 7/7 cannot
+    outrank an 8/9). Skipped rules remain UNKNOWNS - awarding no points is a
+    reporting choice, not evidence the rule would fail; the skipped-rule
+    identities travel with the result so the unknowns stay visible. Ties
+    break toward MORE coverage (higher available points, i.e. fewer
+    unknowns) - a 7/9 outranks a 7/7 because the same score with more rules
+    evidenced is better supported, not because the skipped rule is scored
+    against the company. Percentages of available points are never used for
+    ranking: they reward missing evidence (5/5 = 100% would beat 7/9 = 78%).
+    This is a checklist ordering on reported facts, not a predictive
+    ranking.
     """
     for r in results:
         if r.get("status") != "OK":
@@ -672,8 +676,10 @@ def main():
                                "n_flags": len(r.get("flags", []))}
                               for i, r in enumerate(ranked)]
         summary["ranking_note"] = ("Checklist ordering on reported facts, not a predictive "
-                                   "ranking. Skipped rules earn 0 in the score; ties break "
-                                   "toward more coverage (fewer skipped rules).")
+                                   "ranking. Skipped rules are UNKNOWNS, not failures: the "
+                                   "ordering awards them no points, which is a reporting "
+                                   "choice, not evidence they would fail. Ties break toward "
+                                   "more coverage (fewer unknowns).")
         summary["excluded"] = excluded
         # re-render ranked briefs with candidate wording after screening marks
         for r in results:
