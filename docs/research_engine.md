@@ -80,3 +80,14 @@ accession number) so any number can be verified against the SEC original.
   with per-candidate reasons.
 - Screening output is research groundwork for agent review; the universe
   list itself is chosen outside the engine and is not endorsed by it.
+
+### Ranking is coverage-aware, not normalized
+- Ranking entries carry `score`, `available_points`, `scored_rules`,
+  and the identities of `skipped_rules`; candidate briefs state coverage
+  prominently ("4 of 5 rules scored (7 of 9 points available); skipped:
+  leverage").
+- Rank key: raw score first (skipped rules earn 0), then available points
+  (more coverage wins a tie: 7/9 outranks 7/7), then name. Percent of
+  available points is never used - it rewards missing evidence.
+- The ranking is a checklist ordering on reported facts, not a predictive
+  ranking; `summary.json` says so in `ranking_note`.

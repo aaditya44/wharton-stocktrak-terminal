@@ -328,27 +328,54 @@ def resolve_ticker(src, ticker):
     return None
 
 
+RULE_MAX = {"revenue_cagr": 2, "operating_margin": 2, "net_margin": 1,
+            "debt_to_equity": 2, "ocf_positive_years": 2}
+RULE_LABELS = {"revenue_cagr": "revenue growth", "operating_margin": "operating margin",
+               "net_margin": "net margin", "debt_to_equity": "leverage",
+               "ocf_positive_years": "cash flow"}
+
+
+def coverage_info(r):
+    """Scored/skipped rule identities and available points for one result."""
+    metrics = r.get("metrics") or {}
+    scored = [k for k in RULE_METRICS if metrics.get(k, {}).get("value") is not None]
+    skipped = [k for k in RULE_METRICS if k not in scored]
+    available = sum(RULE_MAX[k] for k in scored)
+    return scored, skipped, available
+
+
 def apply_screen(results, min_rules=4):
     """Mark screening outcomes fail-closed and build the ranking.
 
     A candidate ranks only when it scored at least min_rules of the 5 rules.
     Thin-data candidates are SCREENED_OUT, never presented on partial data
     without saying so. Returns (ranked, excluded).
+
+    Ranking is deliberately conservative about missing data: the primary key
+    is the raw score, in which skipped rules earn 0 (a 7/7 cannot outrank an
+    8/9). Ties break toward MORE coverage (higher available points, i.e.
+    fewer skipped rules) - a 7/9 outranks a 7/7 because the same score with
+    more rules evidenced is better supported. Percentages of available points
+    are never used for ranking: they reward missing evidence (5/5 = 100%
+    would beat 7/9 = 78%). This is a checklist ordering on reported facts,
+    not a predictive ranking.
     """
     for r in results:
         if r.get("status") != "OK":
             r.setdefault("exclusion_reason", r.get("status"))
             continue
-        scored = sum(1 for k in RULE_METRICS
-                     if (r.get("metrics") or {}).get(k, {}).get("value") is not None)
-        r["scored_rules"] = scored
-        if scored < min_rules:
+        scored, skipped, available = coverage_info(r)
+        r["scored_rules"] = len(scored)
+        r["skipped_rules"] = skipped
+        r["available_points"] = available
+        if len(scored) < min_rules:
             r["status"] = "SCREENED_OUT"
-            r["exclusion_reason"] = (f"only {scored} of 5 rules scored "
+            r["exclusion_reason"] = (f"only {len(scored)} of 5 rules scored "
                                      f"(< min-rules {min_rules}) - too little "
                                      f"comparable data to rank")
     ranked = sorted([r for r in results if r.get("status") == "OK"],
-                    key=lambda r: (-(r.get("score") or 0), -r.get("scored_rules", 0),
+                    key=lambda r: (-(r.get("score") or 0),
+                                   -r.get("available_points", 0),
                                    r.get("name") or ""))
     excluded = [{"ticker": r.get("ticker"), "name": r.get("name"),
                  "status": r.get("status"),
@@ -558,6 +585,11 @@ def render_md(res, candidate=False):
     if res.get("exclusion_reason") and res.get("status") != "OK":
         L.append("")
         L.append(f"Excluded from ranking: {res['exclusion_reason']}")
+    if res.get("status") == "OK" and res.get("scored_rules") is not None:
+        cov = f"Coverage: {res['scored_rules']} of 5 rules scored ({res.get('available_points')} of 9 points available)"
+        if res.get("skipped_rules"):
+            cov += "; skipped: " + ", ".join(RULE_LABELS[k] for k in res["skipped_rules"]) + " (no usable data - not treated as pass or fail)"
+        L.append(cov)
     L.append("")
     if res.get("score_rules"):
         L.append("## Scorecard")
@@ -633,10 +665,15 @@ def main():
         summary["mode"] = "screen"
         summary["min_rules"] = args.min_rules
         summary["ranking"] = [{"rank": i + 1, "ticker": r.get("ticker"), "name": r["name"],
-                               "score": r["score"], "band": r["band"],
+                               "score": r["score"], "available_points": r["available_points"],
+                               "band": r["band"],
                                "scored_rules": r["scored_rules"],
+                               "skipped_rules": [RULE_LABELS[k] for k in r["skipped_rules"]],
                                "n_flags": len(r.get("flags", []))}
                               for i, r in enumerate(ranked)]
+        summary["ranking_note"] = ("Checklist ordering on reported facts, not a predictive "
+                                   "ranking. Skipped rules earn 0 in the score; ties break "
+                                   "toward more coverage (fewer skipped rules).")
         summary["excluded"] = excluded
         # re-render ranked briefs with candidate wording after screening marks
         for r in results:

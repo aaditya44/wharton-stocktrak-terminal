@@ -340,6 +340,43 @@ class ScoreCompanyTests(unittest.TestCase):
         src = re_eng.ConceptSource(self.cache, allow_fetch=False)
         self.assertIsNone(re_eng.resolve_ticker(src, "ABC"))
 
+
+    def test_screen_equal_score_more_coverage_ranks_higher(self):
+        # 7/9 (all 5 rules scored) vs 7/7 (leverage skipped): same raw score,
+        # the fully-evidenced one must rank first - percentages would tie them.
+        full = {"revenue_cagr": 0.10, "operating_margin": 0.20, "net_margin": 0.05,
+                "debt_to_equity": 1.0, "ocf_positive_years": 5}  # 2+2+1+1+... adjust: raw 7
+        nolev = {"revenue_cagr": 0.10, "operating_margin": 0.20, "net_margin": 0.05,
+                 "ocf_positive_years": 5}  # leverage skipped; raw also 7 (2+2+1+2)
+        full_r = self._mk("FullCo", 7, "adequate", full)
+        skip_r = self._mk("SkipCo", 7, "adequate", nolev)
+        ranked, _ = re_eng.apply_screen([skip_r, full_r], min_rules=4)
+        self.assertEqual([r["name"] for r in ranked], ["FullCo", "SkipCo"])
+        self.assertEqual(ranked[0]["available_points"], 9)
+        self.assertEqual(ranked[1]["available_points"], 7)
+        self.assertEqual(ranked[1]["skipped_rules"], ["debt_to_equity"])
+
+    def test_screen_never_ranks_by_percentage_of_available(self):
+        # 8/9 (89%) must outrank 7/7 (100%): raw score is primary, so missing
+        # evidence is never rewarded by normalization.
+        full = {k: 1.0 for k in re_eng.RULE_METRICS}
+        nolev = {"revenue_cagr": 0.1, "operating_margin": 0.2, "net_margin": 0.1,
+                 "ocf_positive_years": 5}
+        eight = self._mk("EightCo", 8, "strong", full)
+        seven = self._mk("SevenCo", 7, "adequate", nolev)
+        ranked, _ = re_eng.apply_screen([seven, eight], min_rules=4)
+        self.assertEqual([r["name"] for r in ranked], ["EightCo", "SevenCo"])
+
+    def test_screen_coverage_line_in_ranked_brief(self):
+        nolev = {"revenue_cagr": 0.1, "operating_margin": 0.2, "net_margin": 0.1,
+                 "ocf_positive_years": 5}
+        r = self._mk("SkipCo", 7, "adequate", nolev)
+        re_eng.apply_screen([r], min_rules=4)
+        md = re_eng.render_md(r, candidate=True)
+        self.assertIn("Coverage: 4 of 5 rules scored (7 of 9 points available)", md)
+        self.assertIn("skipped: leverage", md)
+        self.assertIn("not treated as pass or fail", md)
+
     def test_mixed_period_margin_refused(self):
         healthy_fixture(self.cache)
         # operating income only for a period with no matching revenue end date
