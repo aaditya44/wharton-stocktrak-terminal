@@ -289,6 +289,74 @@ def pick_metric(source, cik, metric):
     return {"series": best[1], "citation": best[2], "tried": tried}, None
 
 
+RULE_METRICS = ["revenue_cagr", "operating_margin", "net_margin",
+                "debt_to_equity", "ocf_positive_years"]
+
+
+def resolve_ticker(src, ticker):
+    """Resolve a ticker to a zero-padded CIK via SEC's company_tickers.json.
+
+    Cached in the concept cache dir; fetched only when the source allows
+    fetching (declared UA, SEC public file). Returns None when unresolved -
+    the caller must fail closed, never guess a CIK.
+    """
+    path = os.path.join(src.cache_dir, "_company_tickers.json")
+    data = None
+    if os.path.exists(path):
+        with open(path) as f:
+            data = json.load(f)
+    elif src.allow_fetch:
+        url = "https://www.sec.gov/files/company_tickers.json"
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                body = r.read()
+        except Exception as e:
+            src.fetch_log.append({"url": url, "status": getattr(e, "code", None),
+                                  "error": str(e)[:120]})
+            return None
+        src.fetch_log.append({"url": url, "status": 200, "bytes": len(body)})
+        os.makedirs(src.cache_dir, exist_ok=True)
+        with open(path, "wb") as f:
+            f.write(body)
+        data = json.loads(body)
+    if not data:
+        return None
+    for row in data.values():
+        if str(row.get("ticker", "")).upper() == str(ticker).upper():
+            return str(row["cik_str"]).zfill(10)
+    return None
+
+
+def apply_screen(results, min_rules=4):
+    """Mark screening outcomes fail-closed and build the ranking.
+
+    A candidate ranks only when it scored at least min_rules of the 5 rules.
+    Thin-data candidates are SCREENED_OUT, never presented on partial data
+    without saying so. Returns (ranked, excluded).
+    """
+    for r in results:
+        if r.get("status") != "OK":
+            r.setdefault("exclusion_reason", r.get("status"))
+            continue
+        scored = sum(1 for k in RULE_METRICS
+                     if (r.get("metrics") or {}).get(k, {}).get("value") is not None)
+        r["scored_rules"] = scored
+        if scored < min_rules:
+            r["status"] = "SCREENED_OUT"
+            r["exclusion_reason"] = (f"only {scored} of 5 rules scored "
+                                     f"(< min-rules {min_rules}) - too little "
+                                     f"comparable data to rank")
+    ranked = sorted([r for r in results if r.get("status") == "OK"],
+                    key=lambda r: (-(r.get("score") or 0), -r.get("scored_rules", 0),
+                                   r.get("name") or ""))
+    excluded = [{"ticker": r.get("ticker"), "name": r.get("name"),
+                 "status": r.get("status"),
+                 "reason": r.get("exclusion_reason")}
+                for r in results if r.get("status") != "OK"]
+    return ranked, excluded
+
+
 def score_company(source, cik, name, today=None, statements=None):
     today = today or dt.date.today()
     out = {"cik": cik, "name": name, "as_of": today.isoformat(),
@@ -475,13 +543,21 @@ def score_company(source, cik, name, today=None, statements=None):
     return out
 
 
-def render_md(res):
+def render_md(res, candidate=False):
     L = []
-    L.append(f"# Research brief - {res['name']} (CIK {res['cik']})")
+    kind = "Candidate screen brief" if candidate else "Research brief"
+    L.append(f"# {kind} - {res['name']} (CIK {res['cik']})")
     L.append(f"As of {res['as_of']} | status: {res['status']}"
              + (f" | score {res['score']} ({res['band']})" if res["score"] is not None else ""))
     L.append("")
-    L.append("Deterministic rule score from SEC-filed facts. Not a prediction or a recommendation.")
+    if candidate:
+        L.append("Screening candidate - not a holding. Deterministic rule score from SEC-filed facts; "
+                 "not a prediction, not a recommendation, not a solicitation.")
+    else:
+        L.append("Deterministic rule score from SEC-filed facts. Not a prediction or a recommendation.")
+    if res.get("exclusion_reason") and res.get("status") != "OK":
+        L.append("")
+        L.append(f"Excluded from ranking: {res['exclusion_reason']}")
     L.append("")
     if res.get("score_rules"):
         L.append("## Scorecard")
@@ -521,6 +597,10 @@ def main():
     ap.add_argument("--fetch", action="store_true", help="Fetch missing concepts directly (declared UA, fair access).")
     ap.add_argument("--statements-dir", help="Optional dir of agent-extracted original-statement figures ({cik}_{metric}.json); fallback only, flagged.")
     ap.add_argument("--sleep", type=float, default=2.0)
+    ap.add_argument("--screen", action="store_true",
+                    help="Candidate-screening mode: rank the config universe, fail closed on thin data.")
+    ap.add_argument("--min-rules", type=int, default=4,
+                    help="Screen mode: minimum scored rules (of 5) for a candidate to be ranked.")
     args = ap.parse_args()
 
     with open(args.config) as f:
@@ -530,17 +610,47 @@ def main():
     os.makedirs(args.out, exist_ok=True)
     results = []
     for c in companies:
-        cik = str(c["cik"]).zfill(10)
+        cik = str(c["cik"]).zfill(10) if c.get("cik") else None
+        if cik is None and c.get("ticker"):
+            cik = resolve_ticker(src, c["ticker"])
+        if cik is None:
+            res = {"ticker": c.get("ticker"), "name": c.get("name") or c.get("ticker"),
+                   "cik": None, "status": "EXCLUDED", "score": None, "band": None,
+                   "metrics": {}, "flags": [],
+                   "exclusion_reason": "ticker unresolved - no CIK (never guessed)",
+                   "as_of": dt.date.today().isoformat(), "latest_filing_date": None}
+            results.append(res)
+            continue
         res = score_company(src, cik, c.get("name") or c.get("ticker") or cik, statements=stmts)
         res["ticker"] = c.get("ticker")
         results.append(res)
         with open(os.path.join(args.out, f"{c.get('ticker', cik)}.md"), "w") as f:
-            f.write(render_md(res))
+            f.write(render_md(res, candidate=args.screen))
+    summary = {"as_of": dt.date.today().isoformat(), "results": results,
+               "fetch_log": src.fetch_log}
+    if args.screen:
+        ranked, excluded = apply_screen(results, args.min_rules)
+        summary["mode"] = "screen"
+        summary["min_rules"] = args.min_rules
+        summary["ranking"] = [{"rank": i + 1, "ticker": r.get("ticker"), "name": r["name"],
+                               "score": r["score"], "band": r["band"],
+                               "scored_rules": r["scored_rules"],
+                               "n_flags": len(r.get("flags", []))}
+                              for i, r in enumerate(ranked)]
+        summary["excluded"] = excluded
+        # re-render ranked briefs with candidate wording after screening marks
+        for r in results:
+            key = r.get("ticker") or r.get("cik")
+            if key:
+                with open(os.path.join(args.out, f"{key}.md"), "w") as f:
+                    f.write(render_md(r, candidate=True))
+        print(f"screen: {len(ranked)} ranked, {len(excluded)} excluded "
+              f"(min-rules {args.min_rules}); summary at {args.out}/summary.json")
+    else:
+        ok = sum(1 for r in results if r["status"] == "OK")
+        print(f"scored {ok}/{len(results)} companies OK; summary at {args.out}/summary.json")
     with open(os.path.join(args.out, "summary.json"), "w") as f:
-        json.dump({"as_of": dt.date.today().isoformat(), "results": results,
-                   "fetch_log": src.fetch_log}, f, indent=2)
-    ok = sum(1 for r in results if r["status"] == "OK")
-    print(f"scored {ok}/{len(results)} companies OK; summary at {args.out}/summary.json")
+        json.dump(summary, f, indent=2)
     return 0
 
 

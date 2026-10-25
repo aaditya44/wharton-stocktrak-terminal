@@ -60,3 +60,23 @@ accession number) so any number can be verified against the SEC original.
 ## Run
     python3 scripts/research_engine.py --config private_config.json \
         --cache-dir cache --out out
+
+## Candidate screening mode
+    python3 scripts/research_engine.py --config private_universe.json \
+        --cache-dir cache --out screen_out --screen [--min-rules 4]
+
+- Same deterministic pipeline and gates as holdings review; the universe
+  config is private, exactly like the holdings config.
+- Universe entries may omit `cik` and give only `ticker`: the CIK is resolved
+  from SEC's `company_tickers.json` (cached; fetched only under `--fetch`
+  with the declared UA). An unresolved ticker is EXCLUDED - never guessed.
+- A candidate ranks only when at least `--min-rules` of the 5 rules scored
+  (default 4). Below that it is marked SCREENED_OUT with the reason; the
+  brief says so. `INSUFFICIENT_DATA` candidates are excluded the same way.
+- Briefs are labeled "Candidate screen brief ... Screening candidate - not a
+  holding" with the same not-a-prediction wording plus "not a solicitation".
+- `summary.json` gains `mode: screen`, `min_rules`, a `ranking` array
+  (rank, score, band, scored_rules, flag count) and an `excluded` array
+  with per-candidate reasons.
+- Screening output is research groundwork for agent review; the universe
+  list itself is chosen outside the engine and is not endorsed by it.

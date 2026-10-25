@@ -294,6 +294,52 @@ class ScoreCompanyTests(unittest.TestCase):
         r = self._run_with_stmts(sdir)
         self.assertNotIn("net_margin", r["metrics"])
 
+
+    def _mk(self, name, score, band, metric_vals, status="OK"):
+        metrics = {k: {"value": v, "end": "2024-12-31"} for k, v in metric_vals.items()}
+        return {"ticker": name, "name": name, "cik": "0000000001", "status": status,
+                "score": score, "band": band, "metrics": metrics, "flags": [],
+                "as_of": "2025-03-01", "latest_filing_date": "2025-02-15"}
+
+    def test_screen_ranks_and_excludes_thin_data(self):
+        full = {k: 1.0 for k in re_eng.RULE_METRICS}
+        thin = {"revenue_cagr": 0.1, "net_margin": 0.2, "ocf_positive_years": 5}
+        results = [
+            self._mk("MidCo", 7, "adequate", full),
+            self._mk("TopCo", 9, "strong", full),
+            self._mk("ThinCo", 3, "weak", thin),
+            self._mk("NoData", None, None, {}, status="INSUFFICIENT_DATA"),
+        ]
+        ranked, excluded = re_eng.apply_screen(results, min_rules=4)
+        self.assertEqual([r["name"] for r in ranked], ["TopCo", "MidCo"])
+        self.assertEqual(ranked[0]["scored_rules"], 5)
+        by_name = {e["name"]: e for e in excluded}
+        self.assertIn("ThinCo", by_name)
+        self.assertIn("only 3 of 5 rules", by_name["ThinCo"]["reason"])
+        self.assertEqual(by_name["NoData"]["status"], "INSUFFICIENT_DATA")
+
+    def test_screen_exclusion_rendered_in_candidate_brief(self):
+        thin = {"revenue_cagr": 0.1}
+        r = self._mk("ThinCo", 3, "weak", thin)
+        re_eng.apply_screen([r], min_rules=4)
+        md = re_eng.render_md(r, candidate=True)
+        self.assertIn("Candidate screen brief", md)
+        self.assertIn("Screening candidate - not a holding", md)
+        self.assertIn("Excluded from ranking", md)
+        self.assertIn("not a solicitation", md)
+
+    def test_resolve_ticker_from_cached_map(self):
+        with open(os.path.join(self.cache, "_company_tickers.json"), "w") as f:
+            json.dump({"0": {"cik_str": 12345, "ticker": "ABC", "title": "Abc Corp"},
+                       "1": {"cik_str": 99999, "ticker": "XYZ", "title": "Xyz Inc"}}, f)
+        src = re_eng.ConceptSource(self.cache, allow_fetch=False)
+        self.assertEqual(re_eng.resolve_ticker(src, "abc"), "0000012345")
+        self.assertIsNone(re_eng.resolve_ticker(src, "QQQ"))
+
+    def test_resolve_ticker_no_map_no_fetch_returns_none(self):
+        src = re_eng.ConceptSource(self.cache, allow_fetch=False)
+        self.assertIsNone(re_eng.resolve_ticker(src, "ABC"))
+
     def test_mixed_period_margin_refused(self):
         healthy_fixture(self.cache)
         # operating income only for a period with no matching revenue end date
