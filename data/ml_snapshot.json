@@ -235,19 +235,19 @@
   },
   "note": "Experimental 21-session ranking, not a timing or profit forecast. No automated orders.",
   "market_data_date": "2026-09-30",
-  "expected_session": "2026-10-27",
+  "expected_session": "2026-10-28",
   "data_status": "STALE_HISTORY_BLOCKED",
   "freshness": {
-    "checked_at": "2026-10-28T00:04:17.387333+00:00",
-    "expected_session": "2026-10-27",
+    "checked_at": "2026-10-29T00:27:41.485683+00:00",
+    "expected_session": "2026-10-28",
     "history_latest_date": "2026-09-30",
     "daily_date_counts": {
       "2026-09-30": 1818,
       "2026-09-29": 236,
-      "2026-09-24": 9,
-      "2026-08-17": 1,
-      "2026-03-25": 1,
       "2026-08-04": 1,
+      "2026-09-24": 9,
+      "2026-03-25": 1,
+      "2026-08-17": 1,
       "2026-09-23": 1
     },
     "us_symbols": 1538,
@@ -255,8 +255,8 @@
     "fresh_us_fraction": 0.0,
     "spy_data_date": "2026-09-30",
     "invalid_symbols": [
-      "AVB",
-      "SATS"
+      "SATS",
+      "AVB"
     ],
     "invalid_symbols_excluded": true,
     "status": "STALE_HISTORY_BLOCKED",
